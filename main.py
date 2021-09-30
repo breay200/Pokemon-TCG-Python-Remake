@@ -1,4 +1,4 @@
-from Classes import *
+from classes import *
 
 def main():
     ##shit goes in here

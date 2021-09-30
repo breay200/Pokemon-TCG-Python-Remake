@@ -1,80 +1,5 @@
-import hashlib
 import getpass
-
-class Player:
-    def __init__(self, name, deck, hand):
-        self.name = name
-        self.deck = deck
-        self.hand = hand
-
-    def set_name(self, name):
-        self.name = name
-    
-    def get_name(self):
-        return self.name
-
-    #does this really need to be in the Player class?
-    def change_deck():
-        pass
-
-class Deck:
-    def __init__(self, list_of_cards):
-        self = list_of_cards
-    
-    def add_card():
-        pass
-
-    def remove_card():
-        pass
-
-    def get_cards():
-        #for card object in list print card details
-        pass
-
-class Hand:
-    def __init__(self, list_of_objects):
-        #the list of objects is the list of card objects
-        self.list_of_objects = list_of_objects
-
-    def send_to_graveyard(self):
-        pass
-
-    def send_to_hand(self):
-        pass
-
-    def send_to_deck(self):
-        pass
-
-class Card:
-    def __init__(self, name, type, description):
-        self.name = name
-        self.type = type
-        self.description = description
-    
-
-class Pokemon(Card):
-    def __init__(self, health):
-        self.health = health
-    
-    def get_health(self):
-        return self.get_health
-
-    def set_health(self, health):
-        self.health = health
-
-#abstract class
-#implement functionality in subclasses
-class TrainerCard(Card):
-    def __init__(self):
-        pass
-
-class Stadium(Card):
-    def __init__(self):
-        pass
-
-class Item(Card):
-    def __init__(self):
-        pass
+from misc_functions import *
 
 class Menu():
     def __init__(self):
@@ -204,44 +129,6 @@ class AccountCreator(AccountManager):
             else:
                 print("You did not enter a valid response.")
 
-##UNSURE WHERE TO PUT THESE FUNCTIONS - IN A CLASS?
-
-def append_to_file(filename, text):
-    try:
-        file = open(filename, "a")
-    except IOError:
-        print("Could not find file")
-        return
-    file.write(text + "\n")
-    file.close
-
-def hash_and_store(username, password):
-    password_hash = hashlib.md5(str(password).encode('utf-8'))
-    text = f"{username},{password_hash.hexdigest()}"
-    append_to_file("passwd.txt", text)
-
-def check_password(username, password):
-    file = open("passwd.txt", "r")
-    lines = file.readlines()
-    match = False
-    for line in lines:
-        us, pwd = line.strip().split(",")
-        if (username in us) and (password in pwd):
-            match = True
-            break
-    file.close()
-    return match
-
-def check_in_file(filename, text):
-    file = open(filename, "r")
-    lines = file.readlines()
-    found = False
-    for line in lines:
-        if text in line:
-            found = True
-            break
-    file.close()
-    return found
 
 
 
