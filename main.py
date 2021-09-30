@@ -1,7 +1,6 @@
-from classes import *
+from classes.Menu import *
 
 def main():
-    ##shit goes in here
     menu = Menu()
     menu.main_menu()
 
