@@ -1,0 +1,14 @@
+id,
+name,
+supertype,
+rules [],
+number,
+artist,
+rarity,
+legalities {
+unlimited
+},
+images {
+small,
+large
+}

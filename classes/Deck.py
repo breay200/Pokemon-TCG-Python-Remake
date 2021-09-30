@@ -1,5 +1,5 @@
 class Deck:
-    def __init__(self, list_of_cards):
+    def __init__(self, list_of_cards=[]):
         self = list_of_cards
     
     def add_card():

@@ -1,0 +1,44 @@
+id - string
+name - string
+supertype - string
+subtypes []
+level
+hp
+types []
+evolvesFrom
+abilities [
+name
+text
+type
+]
+attacks [
+name
+cost [
+"psychic",
+"psychic
+]
+convertedEnergyCost
+damage
+text
+]
+weaknesses [
+type
+value
+]
+retreatCost [
+"colorless"
+"colorless"
+]
+convertedRetreatCost
+number
+artist
+rarity
+flavorText
+nationalPokedexNumbers []
+legalities {
+unlimited
+}
+images{
+small
+large
+}
