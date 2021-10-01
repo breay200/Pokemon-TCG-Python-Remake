@@ -1,5 +1,6 @@
 class Card:
-    def __init__(self, name, type, description):
+    def __init__(self, id, name, supertype):
+        self.id = id
         self.name = name
-        self.type = type
-        self.description = description
+        self.supertype = supertype
+    

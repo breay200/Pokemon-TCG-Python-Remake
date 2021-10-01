@@ -1,5 +1,6 @@
 from classes.LoginForm import *
 from classes.User import *
+from classes.Deck import *
 
 class Menu():
     def __init__(self):
@@ -32,7 +33,8 @@ class Menu():
                 break
             elif response == 2:
                 #change deck method
-                print(2)
+                deck = Deck()
+                deck.get_decks("set1.json")
                 break
             elif response == 3:
                 user = User(username)
@@ -42,7 +44,6 @@ class Menu():
                 else:
                     user.create_user_data()
                     print(user)
-                
             elif response == 4:
                 print("Quitting Program")
                 quit()
