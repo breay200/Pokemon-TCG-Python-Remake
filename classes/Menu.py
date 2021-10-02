@@ -34,7 +34,10 @@ class Menu():
             elif response == 2:
                 #change deck method
                 deck = Deck()
-                deck.get_decks("set1.json")
+                decks = deck.get_decks("set1.json")
+                deck.set_active_deck(decks)
+                print(deck)
+                deck.load_deck("set1.json")
                 break
             elif response == 3:
                 user = User(username)
