@@ -15,8 +15,7 @@ class AccountCreator(AccountManager):
                 print("Please enter a valid response!")
             if response is 'Y':
                 print(response)
-                account_creator = AccountCreator()
-                account_creator.set_password(username)
+                self.set_password(username)
                 break
             elif response is 'N':
                 print(response)
@@ -32,8 +31,7 @@ class AccountCreator(AccountManager):
                 else:
                     print("Username is available")
                     username = temp_username
-                    account_creator = AccountCreator()
-                    account_creator.set_password(username)
+                    self.set_password(username)
                     break
             else:
                 print("You did not enter a valid response.")

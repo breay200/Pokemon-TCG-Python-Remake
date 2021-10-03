@@ -1,7 +1,7 @@
 class Hand:
-    def __init__(self, list_of_objects):
+    def __init__(self, list=[]):
         #the list of objects is the list of card objects
-        self.list_of_objects = list_of_objects
+        self.list = list
 
     def send_to_graveyard(self):
         pass
