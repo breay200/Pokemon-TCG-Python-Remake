@@ -4,6 +4,7 @@ from classes.EnergyCard import *
 from classes.TrainerCard import *
 from classes.PokemonCard import *
 from classes.Hand import *
+from classes.ActivePokemon import *
 
 class Game():
     def __init__(self, user):
@@ -28,10 +29,36 @@ class Game():
             else:
                 print("Need to implement this functionality. Save active deck to file and load in.")
         #GAME STARTS
-        #SHUFFLE CARDS
         deck.shuffle_deck()
-        #DRAW 7 CARDS
         hand = deck.draw_number_of_cards(7)
+        obj_list = self.load_card_data(hand)
+        hand_obj = Hand(obj_list)
+        hand_obj.find_basics()
+
+        while not hand_obj.basic_cards:
+            print("There were no Basic Pokemon in your hand\nRe-shuffling...")
+            deck.return_to_deck(hand)
+            deck.shuffle_deck()
+            hand = []
+            hand = deck.draw_number_of_cards(7)
+            obj_list = []
+            obj_list = self.load_card_data(hand)
+            hand_obj.list = obj_list
+            hand_obj.find_basics()
+
+        print("\nYOUR HAND: ")
+        hand_obj.print_cards(hand_obj.list)
+        print("\nBASIC CARDS IN YOUR HAND")
+        hand_obj.print_cards(hand_obj.basic_cards)
+        print(len(hand_obj.basic_cards))
+        chosen_pokemon = hand_obj.select_basic_active()
+        print(len(hand_obj.basic_cards))
+        active_pokemon = ActivePokemon(chosen_pokemon)
+        print(active_pokemon)
+        
+        print("\nworking on it\n")
+    
+    def load_card_data(self, hand):
         obj_list = []
         file = open("base1.json",encoding='utf-8')
         data = json.load(file)
@@ -80,7 +107,5 @@ class Game():
                             new_card = EnergyCard(x['name'], x['supertype'], x['subtypes'], x['number'], x['artist'], x['rarity'], x['images'])
                     obj_list.append(new_card)
         file.close()
-        hand_obj = Hand(obj_list)
-        hand_obj.see_hand()
-        print("\nworking on it\n")
+        return obj_list
         

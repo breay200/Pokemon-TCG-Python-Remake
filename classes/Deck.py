@@ -70,6 +70,10 @@ class Deck:
         for x in range(number):
             cards.append(self.id_list.pop(0))
         return cards
+    
+    def return_to_deck(self, cards):
+        for card in cards:
+            self.id_list.append(card)
 
             
         
