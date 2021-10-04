@@ -10,4 +10,11 @@ class TrainerCard(Card):
         self.rarity = rarity
         self.images = images
 
+    def __str__(self):
+        return f"name: {self.name}\ntype: {self.supertype}\nrules: {self.rules}"
+    
+    def print_card(self):
+        return f"name: {self.name}\ntype: {self.supertype}\nrules: {self.rules}"
+
+
     
