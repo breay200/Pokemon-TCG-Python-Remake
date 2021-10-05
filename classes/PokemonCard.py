@@ -1,4 +1,6 @@
-from classes.Card import Card
+from classes.Card import *
+from termcolor import colored, cprint
+from classes.Colours import *
 
 class PokemonCard(Card):
     def __init__(self, name="", supertype=[], subtypes=[], level=0, hp=0, types=[], evolvesFrom="", abilities=[], attacks=[], weaknesses=[], retreatCost=[], convertedRetreatCost=0, number=0, artist="", rarity="", flavorText="", nationalPokedexNumbers=[], images=[]):
@@ -25,6 +27,11 @@ class PokemonCard(Card):
             return f"name: {self.name}\ntype: {self.supertype}\nstage: {self.subtypes}\nlevel: {self.level}\nhp: {self.hp}\ntype(s): {self.types}\nevolves from: {self.evolvesFrom}\nabilities: {self.abilities}\nattack(s): {self.attacks}\nweaknesses: {self.weaknesses}\nretreat cost: {self.retreatCost} / {self.convertedRetreatCost}\nflavour text: {self.flavorText}"
         
     def print_card(self):
+        for val in self.types:
+            colour_obj = Colours()
+            colour = getattr(colour_obj, val)
+
+        print(colour)
         print(f"name: {self.name}")
         print(f"\ncard type: {self.supertype}")
         print("\n== stage ==\n")

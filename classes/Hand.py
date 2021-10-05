@@ -1,7 +1,7 @@
 from classes.TrainerCard import *
 from classes.PokemonCard import *
 from classes.EnergyCard import *
-from termcolor import colored
+from classes.Colours import *
 
 class Hand:
     def __init__(self, list=[], basic_cards=[]):
@@ -19,13 +19,13 @@ class Hand:
         pass
     
     def print_cards(self, list):
-        print(len(list))
         count = 0
         for card in list:
             count += 1
             print(colored(f"\nCARD {count}","red"))
             print("======")
             card.print_card()
+        print(Colours.Colorless)
     
     def find_basics(self):
         for card in self.list:

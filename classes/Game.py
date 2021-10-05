@@ -5,6 +5,7 @@ from classes.TrainerCard import *
 from classes.PokemonCard import *
 from classes.Hand import *
 from classes.ActivePokemon import *
+from classes.Colours import *
 
 class Game():
     def __init__(self, user):

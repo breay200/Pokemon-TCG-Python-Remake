@@ -1,4 +1,5 @@
 from classes.Card import *
+from classes.Colours import *
 
 class EnergyCard(Card):
     def __init__(self, name="", supertype=[], subtypes=[], rules=[], number=0, artist="", rarity="", images=[]):
@@ -16,4 +17,15 @@ class EnergyCard(Card):
         return f"name: {self.name}\ntype: {self.supertype}\nsubtype: {self.subtypes}"
 
     def print_card(self):
+        colour_list = ['Colorless', 'Fighting', 'Fire', 'Grass', 'Lightning', 'Psychic', 'Water']
+        colour = ""
+        for x in colour_list:
+            if x in self.name:
+                colour_obj = Colours()
+                colour = getattr(colour_obj, x)
+            else:
+                pass
+        print(colour)
         print(f"\n{self.name}")
+
+
