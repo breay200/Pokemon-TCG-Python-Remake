@@ -1,3 +1,4 @@
+from classes.Bench import Bench
 from classes.Player import *
 from classes.Deck import *
 from classes.EnergyCard import *
@@ -6,6 +7,7 @@ from classes.PokemonCard import *
 from classes.Hand import *
 from classes.ActivePokemon import *
 from classes.Colours import *
+from classes.Bench import *
 
 class Game():
     def __init__(self, user):
@@ -47,17 +49,18 @@ class Game():
             hand_obj.list = obj_list
             hand_obj.find_basics()
 
-        #print("\nYOUR HAND: ")
         hand_obj.print_cards(hand_obj.list)
         print("\nPLEASE SELECT A BASIC CARD FROM YOUR HAND")
-        #hand_obj.print_cards(hand_obj.basic_cards)
-        #print(len(hand_obj.basic_cards))
-        chosen_pokemon = hand_obj.select_basic_active()
-        #print(len(hand_obj.basic_cards))
+        hand_obj.print_card_names(hand_obj.basic_cards)
+        print("\nplease enter the name of Basic Pokémon you want to make the Active Pokemon")
+        chosen_pokemon = hand_obj.select_basic()
         active_pokemon = ActivePokemon(chosen_pokemon)
-        print(active_pokemon)
+        print(f"active pokemon: {active_pokemon.get_name()}")
+        bench = Bench()
+        hand_obj.add_to_bench(bench)
+        print(bench.list)
         
-        print("\nworking on it\n")
+        print("working on it...")
     
     def load_card_data(self, hand):
         obj_list = []

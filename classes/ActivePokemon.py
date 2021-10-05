@@ -9,6 +9,9 @@ class ActivePokemon():
         self.isParalyzed = isParalyzed
         self.isPoisoned = isPoisoned
 
+    def get_name(self):
+        return self.card_data.name
+
     def evolve(self):
         pass
 
