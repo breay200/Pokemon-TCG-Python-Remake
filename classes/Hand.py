@@ -22,8 +22,8 @@ class Hand:
         count = 0
         for card in list:
             count += 1
-            print(f"\ncard {count}")
-            print("======")
+            print(f"\nCARD {count}")
+            print("======\n")
             print(card.print_card())
     
     def find_basics(self):
