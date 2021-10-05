@@ -5,15 +5,15 @@ class EnergyCard(Card):
         #self.id = id
         self.name = name
         self.supertype = supertype
-        self.subtypes = subtypes #array
+        self.subtypes = subtypes
         self.rules = rules
         self.number = number
         self.artist = artist
         self.rarity = rarity
-        self.images = images #object
+        self.images = images
 
     def __str__(self):
         return f"name: {self.name}\ntype: {self.supertype}\nsubtype: {self.subtypes}"
 
     def print_card(self):
-        return f"name: {self.name}\ntype: {self.supertype}\nsubtype: {self.subtypes}"
+        print(f"\n{self.name}")

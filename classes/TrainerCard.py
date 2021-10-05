@@ -14,7 +14,11 @@ class TrainerCard(Card):
         return f"name: {self.name}\ntype: {self.supertype}\nrules: {self.rules}"
     
     def print_card(self):
-        return f"name: {self.name}\ntype: {self.supertype}\nrules: {self.rules}"
+        print(f"\ncard name: {self.name}")
+        print(f"\ncard type: {self.supertype}")
+        for text in self.rules:
+            print(f"\ncard rules: {text}")
+
 
 
     
