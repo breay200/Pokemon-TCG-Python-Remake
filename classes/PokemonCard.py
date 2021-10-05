@@ -26,26 +26,27 @@ class PokemonCard(Card):
         
     def print_card(self):
         print(f"name: {self.name}")
-        print(f"card type: {self.supertype}")
-        print("== stage ==")
+        print(f"\ncard type: {self.supertype}")
+        print("\n== stage ==\n")
 
         for stage in self.subtypes:
             print(stage)
-
+        
+        print("")
         print(f"level: {self.level}")
-        print(f"hp: {self.hp}")
-        print("== types ==")
+        print(f"\nhp: {self.hp}")
+        print("\n== types ==\n")
 
         for type in self.types:
             print(type)
 
         if self.evolvesFrom:
-            print(f"evolves from: {self.evolvesFrom}")
+            print(f"\nevolves from: {self.evolvesFrom}")
         else:
             pass
         
         if self.abilities:
-            print("== abilities ==")
+            print("\n== abilities ==\n")
             for ability in self.abilities:
                 print(ability)
         else:
@@ -57,9 +58,23 @@ class PokemonCard(Card):
                 count += 1
                 print(f"\n== attack {count} ==\n")
                 print(f"name: {attack.get('name')}")
-                print(f"required energies: {attack.get('convertedEnergyCost')} / {attack.get('cost')}")
-                print(f"damage: {attack.get('damage')}")
-                print(f"description: {attack.get('text')}\n")
+                #print(f"required energies: {attack.get('convertedEnergyCost')} / {attack.get('cost')}")
+                
+                if attack.get('convertedEnergyCost'):
+                    print("\n== required energies ==\n")
+                    energy_cost = set(attack.get('cost'))
+                    for energy in energy_cost:
+                        print(f"{attack.get('cost').count(energy)}x {energy} energies")
+
+                if attack.get('damage'):
+                    print(f"\ndamage: {attack.get('damage')}")
+                else:
+                    print("this attack does not damage the enemy (0)")
+                
+                if attack.get('text'):
+                    print(f"\ndescription: {attack.get('text')}\n")
+                else:
+                    pass
 
         else:
             pass
@@ -72,15 +87,19 @@ class PokemonCard(Card):
             pass
 
         if self.retreatCost:
-            print("== retreat cost ==")
-            for retreat in self.retreatCost:
-                print(retreat)
+            print("\n== retreat cost ==\n")
+            unique_energies = set(self.retreatCost)
+            for energies in unique_energies:
+                print(f"{self.retreatCost.count(energies)}x {energies} energies")
         else:
             pass
         
         if self.convertedRetreatCost != 0:
-            print(self.convertedRetreatCost)
+            print(f"total required energies: {self.convertedRetreatCost}")
         else:
             print("no retreat cost (0)")
         
-        print(f"flavour text: {self.flavorText}")
+        if self.flavorText:
+            print(f"\ncard description: {self.flavorText}")
+        else:
+            pass

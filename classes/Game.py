@@ -46,13 +46,13 @@ class Game():
             hand_obj.list = obj_list
             hand_obj.find_basics()
 
-        print("\nYOUR HAND: ")
-        hand_obj.print_cards(hand_obj.list)
+        #print("\nYOUR HAND: ")
+        #hand_obj.print_cards(hand_obj.list)
         print("\nBASIC CARDS IN YOUR HAND")
         hand_obj.print_cards(hand_obj.basic_cards)
-        print(len(hand_obj.basic_cards))
+        #print(len(hand_obj.basic_cards))
         chosen_pokemon = hand_obj.select_basic_active()
-        print(len(hand_obj.basic_cards))
+        #print(len(hand_obj.basic_cards))
         active_pokemon = ActivePokemon(chosen_pokemon)
         print(active_pokemon)
         

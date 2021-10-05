@@ -20,7 +20,7 @@ class Deck:
         pass
     
     def get_decks(self, filename):
-        print("Available Decks: ")
+        print("Available Decks: \n")
         file = open(filename,encoding='utf-8')
         data = json.load(file)
         decks = []
@@ -35,7 +35,7 @@ class Deck:
     def set_active_deck(self, list):
         for decks in list:
             print(decks)
-        print("Enter the name of the deck you want to select: ")
+        print("\nEnter the name of the deck you want to select: ")
         active_deck = ""
         while active_deck not in list:
             active_deck = input("Enter deck name: ")
