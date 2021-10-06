@@ -58,8 +58,6 @@ class Game():
         print(f"active pokemon: {active_pokemon.get_name()}")
         bench = Bench()
         hand_obj.add_to_bench(bench)
-        print(bench.list)
-        
         print("working on it...")
     
     def load_card_data(self, hand):

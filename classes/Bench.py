@@ -4,3 +4,6 @@ class Bench():
 
     def add_to_bench(self, benched_pokemon):
         self.list.append(benched_pokemon)
+
+    def get_list(self):
+        return self.list
