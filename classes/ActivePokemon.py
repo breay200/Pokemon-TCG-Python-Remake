@@ -1,5 +1,5 @@
 class ActivePokemon():
-    def __init__(self, card_data=object, health=0, energies=0, isAsleep=False, isBurned=False, isConfused=False, isParalyzed=False, isPoisoned=False):
+    def __init__(self, card_data=object, health=0, energies=[], isAsleep=False, isBurned=False, isConfused=False, isParalyzed=False, isPoisoned=False):
         self.card_data = card_data
         self.health = health
         self.energies = energies

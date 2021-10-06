@@ -4,6 +4,7 @@ from classes.PokemonCard import *
 from classes.EnergyCard import *
 from classes.Colours import *
 from classes.BenchedPokemon import *
+from classes.Bench import *
 
 class Hand:
     def __init__(self, list=[], basic_cards=[]):
@@ -86,12 +87,12 @@ class Hand:
         else:
             print("You chose not to add any more Pokemon to the Bench")
 
-    def attach_energy(self):
-        energy_count = 0
+    def attach_energy(self, active_pokemon, bench):
+        energy_list = []
         for card in self.list:
             if card.supertype == 'Energy':
-                energy_count += 1
-        if energy_count >= 1:
+                energy_list.append(card)
+        if len(energy_list) >= 1:
             print("Would you like to attach an energy to a Pokemon?")
             response = input("Enter y or n: ").lower()
             while response not in ['y', 'n']:
@@ -102,11 +103,52 @@ class Hand:
                 while choice not in ['a', 'b']:
                     choice = input("Enter a (Active) or b (Benched): ").lower()
                 if choice == 'a':
-                    #call place energy on active method
-                    pass
+                    energy_list_names = []
+                    for energy in energy_list:
+                        energy_list_names.append(energy.name)
+                    energy_list_names = set(energy_list_names)
+                    print("Enter the energy type you would like to attach to the active pokemon")
+                    for energy in energy_list_names:
+                        print(energy)
+                    energy_choice = input("Enter type: ")
+                    while energy_choice not in energy_list_names:
+                        energy_choice = input("Enter an energy type in your hand: ")
+                    for card in self.list:
+                        if self.list.name == energy_choice:
+                            buffer = card
+                            del self.list[self.list.index(card)]
+                            active_pokemon.attach_energy(buffer)
+                            return "you added an energy to the active pokemon"
                 else:
-                    #call place energy on bench method
-                    pass
-
+                    print("Enter the name of the pokemon you would like to attach an energy to")
+                    pokemon_names = []
+                    bench_index = 0 
+                    for pokemon in bench.list:
+                        pokemon_names.append(pokemon.card_data.name)
+                        print(pokemon.card_data.name)
+                    pokemon_choice = input("Enter a pokemon's name: ")
+                    while pokemon_choice not in pokemon_names:
+                        pokemon_choice = input("Enter a pokemon's name that is on the bench: ")
+                    for pokemon in bench.list:
+                        if pokemon.card_data.name == pokemon_choice:
+                            bench_index = bench.list.index(pokemon)
+                    energy_list_names = []
+                    for energy in energy_list:
+                        energy_list_names.append(energy.name)
+                    energy_list_names = set(energy_list_names)
+                    print(f"Enter the energy type you would like to attach to {pokemon_choice}")
+                    for energy in energy_list_names:
+                        print(energy)
+                    energy_choice = input("Enter type: ")
+                    while energy_choice not in energy_list_names:
+                        energy_choice = input("Enter an energy type in your hand: ")
+                    for card in self.list:
+                        #PROBLEM HERE AND BELOW AttributeError: 'list' object has no attribute 'name'
+                        if self.list.name == energy_choice:
+                            buffer = card
+                            del self.list[self.list.index(card)]
+                            #active_pokemon.attach_energy(buffer)
+                            bench.attach_energy_to_benched(bench_index, buffer)
+                            return f"you added an energy to the {pokemon_choice} pokemon"
             else:
                 print("You don't have any energies in your hand")
