@@ -60,9 +60,7 @@ class Hand:
         for card in self.basic_cards:
             if card.name == chosen_pokemon:
                 buffer = card
-                #print(len(self.basic_cards))
                 del self.basic_cards[self.basic_cards.index(card)]
-                #print(len(self.basic_cards))
                 return buffer
             else:
                 pass
@@ -77,13 +75,7 @@ class Hand:
             print("Please enter the name of Basic Pokémon you want to add to the Bench")
             card = self.select_basic()
             benched_pokemon = BenchedPokemon(card, getattr(card, 'hp'), 0)
-            #bench_list = bench.get_list()
-            #print(len(self.basic_cards))
-            #print(f"bench list length: {len(bench_list)}")
             bench.add_to_bench(benched_pokemon)
-            #print(f"bench list length: {len(bench_list)}")
-            #print(len(self.basic_cards))
-            
             if len(self.basic_cards)>=1:
                 print("Would you like to add any more Basic Pokemon to the Bench?")
                 response = input("Enter Y or N: ")
@@ -92,4 +84,19 @@ class Hand:
             else:
                 break
         else:
-            print("You chose not to add any more Pokemon to the Bench")         
+            print("You chose not to add any more Pokemon to the Bench")
+
+    def attach_energy(self):
+        energy_count = 0
+        for card in self.list:
+            if card.supertype == 'Energy':
+                energy_count += 1
+        if energy_count >= 1:
+            print("Would you like to attach an energy to a Pokemon?")
+            response = input("Enter Y or N: ")
+            while response not in ['Y', 'N']:
+                response = input("Enter Y or N: ")
+            if response == 'Y':
+                print("Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?")
+        else:
+            print("You don't have any energies in your hand")
