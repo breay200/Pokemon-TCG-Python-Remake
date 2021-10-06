@@ -93,10 +93,20 @@ class Hand:
                 energy_count += 1
         if energy_count >= 1:
             print("Would you like to attach an energy to a Pokemon?")
-            response = input("Enter Y or N: ")
-            while response not in ['Y', 'N']:
-                response = input("Enter Y or N: ")
-            if response == 'Y':
+            response = input("Enter y or n: ").lower()
+            while response not in ['y', 'n']:
+                response = input("Enter y or n: ")
+            if response == 'y':
                 print("Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?")
-        else:
-            print("You don't have any energies in your hand")
+                choice = input("Enter a (Active) or b (Benched): ").lower()
+                while choice not in ['a', 'b']:
+                    choice = input("Enter a (Active) or b (Benched): ").lower()
+                if choice == 'a':
+                    #call place energy on active method
+                    pass
+                else:
+                    #call place energy on bench method
+                    pass
+
+            else:
+                print("You don't have any energies in your hand")
