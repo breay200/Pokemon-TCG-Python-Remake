@@ -25,6 +25,7 @@ class Hand:
         count = 0
         for card in list:
             count += 1
+            print(Colours.Colorless)
             print(f"\nCARD {count}")
             print("======")
             card.print_card()
@@ -126,6 +127,18 @@ class Hand:
                     for pokemon in bench.list:
                         pokemon_names.append(pokemon.card_data.name)
                         print(pokemon.card_data.name)
+                    name_count = 0
+                    name_indices = []
+                    for name in pokemon_names:
+                        if (pokemon_names.count(name))>1:
+                            name_indices.append(pokemon_names.index(name))
+                    for name in pokemon_names:
+                        for index in name_indices:
+                            print(index)
+                            print(pokemon_names.index(name))
+                            if pokemon_names.index(name) == index:
+                                name_count += 1
+                                name = f"{name} {name_count}"
                     pokemon_choice = input("Enter a pokemon's name: ")
                     while pokemon_choice not in pokemon_names:
                         pokemon_choice = input("Enter a pokemon's name that is on the bench: ")
