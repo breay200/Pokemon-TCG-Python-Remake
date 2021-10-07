@@ -144,11 +144,11 @@ class Hand:
                         energy_choice = input("Enter an energy type in your hand: ")
                     for card in self.list:
                         #PROBLEM HERE AND BELOW AttributeError: 'list' object has no attribute 'name'
-                        if self.list.name == energy_choice:
+                        if card.name == energy_choice:
                             buffer = card
                             del self.list[self.list.index(card)]
                             #active_pokemon.attach_energy(buffer)
                             bench.attach_energy_to_benched(bench_index, buffer)
-                            return f"you added an energy to the {pokemon_choice} pokemon"
+                            return f"you added a {energy_choice} to {pokemon_choice}"
             else:
                 print("You don't have any energies in your hand")
