@@ -2,6 +2,7 @@ from classes.Bench import Bench
 from classes.Player import *
 from classes.Deck import *
 from classes.EnergyCard import *
+from classes.Prize import Prize
 from classes.TrainerCard import *
 from classes.PokemonCard import *
 from classes.Hand import *
@@ -59,6 +60,11 @@ class Game():
         bench = Bench()
         hand_obj.add_to_bench(bench)
         print(hand_obj.attach_energy(active_pokemon, bench))
+        prize = Prize()
+        print(f"deck size: {deck.get_deck_size()}")
+        prize.set_prize_cards(deck)
+        print(f"deck size: {deck.get_deck_size()}")
+
         print("working on it...")
     
     def load_card_data(self, hand):

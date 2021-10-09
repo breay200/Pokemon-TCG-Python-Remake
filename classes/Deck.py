@@ -75,6 +75,9 @@ class Deck:
         for card in cards:
             self.id_list.append(card)
 
+    def get_deck_size(self):
+        return len(self.id_list)
+
             
         
     
