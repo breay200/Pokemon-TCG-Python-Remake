@@ -25,7 +25,6 @@ class EnergyCard(Card):
                 colour = getattr(colour_obj, x)
             else:
                 pass
-        print(colour)
-        print(f"\n{self.name}")
+        print(f"\n{colour}{self.name}")
 
 

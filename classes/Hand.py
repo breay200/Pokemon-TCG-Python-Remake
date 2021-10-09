@@ -36,8 +36,14 @@ class Hand:
         print("===========")
         count = 0
         for card in list:
+            colour = ""
+            for val in card.types:
+                colour_obj = Colours()
+                colour = getattr(colour_obj, val)
             count += 1
-            print(f"{count}: {card.get_name()}")
+            print(f"{count}: {colour}{card.get_name()}")
+            print(Colours.Colorless)
+        print(Colours.Colorless)
     
     def find_basics(self):
         for card in self.list:
@@ -69,10 +75,10 @@ class Hand:
         
     def add_to_bench(self, bench):
         print("Would you like to add any Basic Pokemon to the Bench?")
-        response = input("Enter Y or N: ")
-        while response not in ['Y', 'N']:
-            response = input("Enter Y or N: ")
-        while response == 'Y':
+        response = input("Enter y or n: ").lower()
+        while response not in ['y', 'n']:
+            response = input("Enter y or n: ").lower()
+        while response == 'y':
             self.print_card_names(self.basic_cards)
             print("Please enter the name of Basic Pokémon you want to add to the Bench")
             card = self.select_basic()
@@ -81,8 +87,8 @@ class Hand:
             if len(self.basic_cards)>=1:
                 print("Would you like to add any more Basic Pokemon to the Bench?")
                 response = input("Enter Y or N: ")
-                while response not in ['Y', 'N']:
-                    response = input("Enter Y or N: ")
+                while response not in ['y', 'n']:
+                    response = input("Enter y or n: ").lower()
             else:
                 break
         else:
@@ -97,7 +103,7 @@ class Hand:
             print("Would you like to attach an energy to a Pokemon?")
             response = input("Enter y or n: ").lower()
             while response not in ['y', 'n']:
-                response = input("Enter y or n: ")
+                response = input("Enter y or n: ").lower()
             if response == 'y':
                 print("Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?")
                 choice = input("Enter a (Active) or b (Benched): ").lower()
@@ -127,6 +133,7 @@ class Hand:
                     for pokemon in bench.list:
                         pokemon_names.append(pokemon.card_data.name)
                         print(pokemon.card_data.name)
+                    ##PROBLEM STARTS HERE 
                     name_count = 0
                     name_indices = []
                     for name in pokemon_names:
@@ -138,7 +145,8 @@ class Hand:
                             print(pokemon_names.index(name))
                             if pokemon_names.index(name) == index:
                                 name_count += 1
-                                name = f"{name} {name_count}"
+                                #BROKEN BLOCK
+                                print(f"{name} {name_count}")
                     pokemon_choice = input("Enter a pokemon's name: ")
                     while pokemon_choice not in pokemon_names:
                         pokemon_choice = input("Enter a pokemon's name that is on the bench: ")
