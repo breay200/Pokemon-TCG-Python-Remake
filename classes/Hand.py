@@ -74,25 +74,28 @@ class Hand:
                 pass
         
     def add_to_bench(self, bench):
-        print("Would you like to add any Basic Pokemon to the Bench?")
-        response = input("Enter y or n: ").lower()
-        while response not in ['y', 'n']:
+        if (len(bench.list)<=5):
+            print("Would you like to add any Basic Pokemon to the Bench?")
             response = input("Enter y or n: ").lower()
-        while response == 'y':
-            self.print_card_names(self.basic_cards)
-            print("Please enter the name of Basic Pokémon you want to add to the Bench")
-            card = self.select_basic()
-            benched_pokemon = BenchedPokemon(card, getattr(card, 'hp'), 0)
-            bench.add_to_bench(benched_pokemon)
-            if len(self.basic_cards)>=1:
-                print("Would you like to add any more Basic Pokemon to the Bench?")
-                response = input("Enter Y or N: ")
-                while response not in ['y', 'n']:
-                    response = input("Enter y or n: ").lower()
+            while response not in ['y', 'n']:
+                response = input("Enter y or n: ").lower()
+            while response == 'y':
+                self.print_card_names(self.basic_cards)
+                print("Please enter the name of Basic Pokémon you want to add to the Bench")
+                card = self.select_basic()
+                benched_pokemon = BenchedPokemon(card, getattr(card, 'hp'), 0)
+                bench.add_to_bench(benched_pokemon)
+                if len(self.basic_cards)>=1 and (len(bench.list<=5)):
+                    print("Would you like to add any more Basic Pokemon to the Bench?")
+                    response = input("Enter Y or N: ")
+                    while response not in ['y', 'n']:
+                        response = input("Enter y or n: ").lower()
+                else:
+                    break
             else:
-                break
+                print("You chose not to add any more Pokemon to the Bench")
         else:
-            print("You chose not to add any more Pokemon to the Bench")
+            print("Your bench is already full")
 
     def attach_energy(self, active_pokemon, bench):
         energy_list = []

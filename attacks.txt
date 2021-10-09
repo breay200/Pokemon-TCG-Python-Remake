@@ -1,0 +1,5 @@
+Confuse Ray, confuse_ray
+Hydro Pump, hydro_pump
+Scrunch, scrunch
+Double-edge, double_edge
+Fire Spin, fire_spin

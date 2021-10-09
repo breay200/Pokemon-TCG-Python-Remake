@@ -118,3 +118,9 @@ class Game():
         file.close()
         return obj_list
         
+    def player_turn_loop(self, hand, deck, bench):
+        hand.append_to_hand(deck.pop_card())
+        hand.add_to_bench(bench)
+        
+
+        
