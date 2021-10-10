@@ -23,6 +23,7 @@ class Attacks():
             DMG = 50
         defending_pokemon.health = defending_pokemon.health - DMG
         print(f"{active_pokemon.card_data.name} dealt {DMG} damage to {defending_pokemon.card_data.name}!")
+        return active_pokemon, defending_pokemon
     
     def scrunch(self, active_pokemon):
         COIN = random.choice([True, False])
@@ -41,6 +42,37 @@ class Attacks():
 
     def fire_spin(self, active_pokemon, defending_pokemon):
         DMG = 100
-        active_pokemon.remove_energy("Fire Energy")
+        active_pokemon.remove_energy("Fire Energy", 2)
+        defending_pokemon.health = defending_pokemon.health - DMG
+        print(f"{active_pokemon.card_data.name} dealth {DMG} to {defending_pokemon.card_data.name}")
+        return active_pokemon, defending_pokemon
 
+    def sing(self, defending_pokemon):
+        COIN = random.choice([True, False])
+        if COIN:
+            defending_pokemon.isAsleep = True
+            print(f"{defending_pokemon.card_data.name} is now Asleep")
+        else:
+            print("Sing failed")
+        return defending_pokemon
+    
+    #TO DO: METRONOME
+
+    def dragon_rage(self, active_pokemon, defending_pokemon):
+        DMG = 50
+        defending_pokemon.health = defending_pokemon.health - DMG
+        print(f"{active_pokemon.card_data.name} dealt {DMG} to {defending_pokemon.card_data.health}")
+        return active_pokemon, defending_pokemon
+    
+    def bubblebeam(self, active_pokemon, defending_pokemon):
+        DMG = 40
+        COIN = random.choice([True, False])
+        defending_pokemon = defending_pokemon - DMG
+        if COIN:
+            defending_pokemon.isParalyzed = True
+            print(f"{active_pokemon.card_data.name} paralyzed and dealt {DMG} to {defending_pokemon.card_data.name}!")
+        else:
+            print(f"failed to paralyze {defending_pokemon.card_data.name}")
+            print(f"{active_pokemon.card_data.name} dealt {DMG} to {defending_pokemon.card_data.name}!")
+        return active_pokemon, defending_pokemon
 

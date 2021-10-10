@@ -3,3 +3,6 @@ Hydro Pump, hydro_pump
 Scrunch, scrunch
 Double-edge, double_edge
 Fire Spin, fire_spin
+Sing, sing
+Dragon Rage, dragon_rage
+Bubblebeam, bubblebeam
