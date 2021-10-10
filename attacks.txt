@@ -11,4 +11,6 @@ Special Punch, special_punch
 Seismic Toss, seismic_toss
 Thunder Wave, thunder_wave
 Selfdestruct, selfdestruct
+Psychic, psychic
 Barrier, barrier
+Thrash, thrash

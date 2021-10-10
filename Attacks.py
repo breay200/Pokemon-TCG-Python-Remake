@@ -137,7 +137,16 @@ class Attacks():
         print(f"{active_pokemon.card_data.name} is invulnerable to all damage done during your opponent's next turn (Any other effects of attacks still happen)")
         return active_pokemon, defending_pokemon
 
-
+    def thrash(self, active_pokemon, defending_pokemon):
+        DMG = 30
+        COIN = random.choice([True, False])
+        if COIN:
+            DMG += 10
+        else:
+            active_pokemon.health -= 10
+            defending_pokemon.health -= DMG
+            print(f"{active_pokemon.card_data.name} dealt 10 damage to itself and {DMG} to {defending_pokemon.card_data.name}")
+        return active_pokemon, defending_pokemon
 
 
     
