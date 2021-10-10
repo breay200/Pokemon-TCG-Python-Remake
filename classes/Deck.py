@@ -33,7 +33,7 @@ class Deck:
         return self.active_deck
 
     def set_active_deck(self):
-        self.active_deck = self.print_decks(self.get_decks("set1.json"))
+        self.active_deck = self.print_decks()
 
     def print_decks(self):
         decks = self.get_decks("set1.json")

@@ -28,10 +28,13 @@ class Game():
             if response == "y":
                 deck.set_active_deck()
                 deck.load_deck("set1.json")
+                print(deck)
                 break
             elif response == "n":
-                deck.active_deck = self.user.active_deck
+                
+                deck.active_deck = str(self.user.active_deck).replace(" ", "")
                 deck.load_deck("set1.json")
+                print(deck)
                 break
 
         #GAME STARTS
