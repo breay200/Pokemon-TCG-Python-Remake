@@ -12,7 +12,7 @@ class User():
         self.active_deck = active_deck
     
     def __str__(self):
-        return f"username: {self.username}\nmatches won: {self.matches_won}\nmatches lost: {self.matches_lost}\ndate joined: {self.date_joined}\nfavourite pokemon: {self.favourite_pokemon}\nemail address: {self.email_addr}"
+        return f"username: {self.username}\nmatches won: {self.matches_won}\nmatches lost: {self.matches_lost}\ndate joined: {self.date_joined}\nfavourite pokemon: {self.favourite_pokemon}\nemail address: {self.email_addr}\nactive deck: {self.active_deck}\n"
 
     def get_username(self):
         return self.username
