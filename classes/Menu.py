@@ -31,16 +31,12 @@ class Menu():
             except ValueError:
                 print("You did not enter a valid number!")
             if response == 1:
-                    #start match method
-                    #load deck when start game
-                    print(1)
                     game = Game(user)
                     game.main_game_loop()
             elif response == 2:
                     decks = deck.get_decks("set1.json")
                     deck.set_active_deck(decks)
                     deck.load_deck("set1.json")
-                    break
             elif response == 3:
                     if check_in_file("player_data.txt", username):
                         user.load_user_data()

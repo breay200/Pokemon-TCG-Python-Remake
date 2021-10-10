@@ -1,4 +1,5 @@
 from datetime import date
+from classes.ActivePokemon import ActivePokemon
 from misc_functions import append_to_file
 
 class User():
@@ -67,6 +68,7 @@ class User():
                 break
             else:
                 pass
+        
         self.active_deck = deck.print_decks() 
         today = date.today()
         self.date_joined = today.strftime("%d-%m-%Y")
@@ -79,7 +81,7 @@ class User():
         file = open("player_data.txt", "wr")
         lines = file.readlines()
         for line in lines:
-            username, matches_won, matches_lost, date_joined, favourite_pokemon, email_addr = line.strip().split(",")
+            username, matches_won, matches_lost, date_joined, favourite_pokemon, email_addr, active_deck = line.strip().split(",")
             if (self.username in username):
                 username = self.username
                 matches_won = self.matches_won
@@ -87,7 +89,8 @@ class User():
                 date_joined = self.date_joined
                 favourite_pokemon = self.favourite_pokemon
                 email_addr = self.email_addr
-                file.write(f"{username},{matches_won},{matches_lost},{date_joined},{favourite_pokemon},{email_addr}")
+                active_deck = self.active_deck
+                file.write(f"{username},{matches_won},{matches_lost},{date_joined},{favourite_pokemon},{email_addr},{active_deck}")
             else:
                 print("username not found")
             file.close()

@@ -9,6 +9,7 @@ from classes.Hand import *
 from classes.ActivePokemon import *
 from classes.Colours import *
 from classes.Bench import *
+from classes.User import *
 
 class Game():
     def __init__(self, user):
@@ -16,21 +17,23 @@ class Game():
 
     def main_game_loop(self):
         deck = Deck()
-        #player = Player(self.user.username)
-        print("Your current deck is: {}. Would you like to change your deck?")
+        print(f"Your current deck is:{self.user.active_deck}. Would you like to change your deck?")
         response = ""
-        while response not in ["Y", "N"]:
-            response = input("Enter Y or N: ")
+        while response not in ["y", "n"]:
+            response = input("Enter y or n: ").lower()
             try:
                 response = str(response)
             except ValueError:
                 print("You entered an invalid value!")
-            if response == "Y":
+            if response == "y":
                 deck.set_active_deck()
                 deck.load_deck("set1.json")
                 break
-            else:
-                print("Need to implement this functionality. Save active deck to file and load in.")
+            elif response == "n":
+                deck.active_deck = self.user.active_deck
+                deck.load_deck("set1.json")
+                break
+
         #GAME STARTS
         deck.shuffle_deck()
         hand = deck.draw_number_of_cards(7)
