@@ -32,18 +32,22 @@ class Deck:
     def get_active_deck(self):
         return self.active_deck
 
-    def set_active_deck(self, list):
-        for decks in list:
-            print(decks)
+    def set_active_deck(self):
+        self.active_deck = self.print_decks(self.get_decks("set1.json"))
+
+    def print_decks(self):
+        decks = self.get_decks("set1.json")
+        for deck in decks:
+            print(deck)
         print("\nEnter the name of the deck you want to select: ")
         active_deck = ""
-        while active_deck not in list:
+        while active_deck not in decks:
             active_deck = input("Enter deck name: ")
             try:
                 active_deck = str(active_deck)
             except ValueError:
                 print("You entered an invalid value!")
-        self.active_deck = active_deck
+        return active_deck
 
     def load_deck(self, filename):
         file = open(filename,encoding='utf-8')
@@ -55,6 +59,10 @@ class Deck:
                     for n in range(count):
                         self.id_list.append(x['id'])
         file.close()
+
+    def check_deck(self):
+        
+        pass
 
     def shuffle_deck(self):
         random.shuffle(self.id_list)

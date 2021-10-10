@@ -26,8 +26,7 @@ class Game():
             except ValueError:
                 print("You entered an invalid value!")
             if response == "Y":
-                decks = deck.get_decks("set1.json")
-                deck.set_active_deck(decks)
+                deck.set_active_deck()
                 deck.load_deck("set1.json")
                 break
             else:

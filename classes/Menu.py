@@ -46,7 +46,7 @@ class Menu():
                         user.load_user_data()
                         print(user)
                     else:
-                        user.create_user_data()
+                        user.create_user_data(deck)
                         print(user)
             elif response == 4:
                     print("Quitting Program")

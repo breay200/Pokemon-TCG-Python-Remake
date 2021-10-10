@@ -48,7 +48,7 @@ class User():
             file.close()
 
 
-    def create_user_data(self):
+    def create_user_data(self, deck):
         while True:
             print("Setting up your account for the first time...")
             print("Please enter the name of your favourite Pokemon")
@@ -67,11 +67,12 @@ class User():
                 break
             else:
                 pass
+        self.active_deck = deck.print_decks() 
         today = date.today()
         self.date_joined = today.strftime("%d-%m-%Y")
         self.favourite_pokemon = favourite_pokemon
         self.email_addr = email_addr
-        text = f"{self.username}, {self.matches_won}, {self.matches_lost}, {self.date_joined}, {self.favourite_pokemon}, {self.email_addr}"
+        text = f"{self.username}, {self.matches_won}, {self.matches_lost}, {self.date_joined}, {self.favourite_pokemon}, {self.email_addr}, {self.active_deck}"
         append_to_file("player_data.txt", text)
     
     def update_to_file(self):
