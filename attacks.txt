@@ -6,3 +6,9 @@ Fire Spin, fire_spin
 Sing, sing
 Dragon Rage, dragon_rage
 Bubblebeam, bubblebeam
+Jab, jab
+Special Punch, special_punch
+Seismic Toss, seismic_toss
+Thunder Wave, thunder_wave
+Selfdestruct, selfdestruct
+Barrier, barrier
