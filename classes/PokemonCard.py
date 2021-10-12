@@ -1,5 +1,4 @@
 from classes.Card import *
-from termcolor import colored, cprint
 from classes.Colours import *
 
 class PokemonCard(Card):

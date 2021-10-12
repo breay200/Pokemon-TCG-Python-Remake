@@ -27,7 +27,7 @@ class AccountCreator(AccountManager):
                     print("Please enter a valid response")
                 #checking to see if the username already exists
                 #THIS FILE DOES NOT EXIST!
-                if check_in_file("/data/usernames.txt", temp_username):
+                if check_in_file("data/usernames.txt", temp_username):
                     print("Username already exists")
                 else:
                     print("Username is available")

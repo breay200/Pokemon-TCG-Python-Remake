@@ -36,7 +36,7 @@ class Deck:
         self.active_deck = self.print_decks()
 
     def print_decks(self):
-        decks = self.get_decks("/data/set1.json")
+        decks = self.get_decks("data/set1.json")
         for deck in decks:
             print(deck)
         print("\nEnter the name of the deck you want to select: ")

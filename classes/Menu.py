@@ -34,11 +34,11 @@ class Menu():
                     game = Game(user)
                     game.main_game_loop()
             elif response == 2:
-                    decks = deck.get_decks("/data/set1.json")
+                    decks = deck.get_decks("data/set1.json")
                     deck.set_active_deck(decks)
-                    deck.load_deck("/data/set1.json")
+                    deck.load_deck("data/set1.json")
             elif response == 3:
-                    if check_in_file("/data/player_data.txt", username):
+                    if check_in_file("data/player_data.txt", username):
                         user.load_user_data()
                         print(user)
                     else:

@@ -27,13 +27,13 @@ class Game():
                 print("You entered an invalid value!")
             if response == "y":
                 deck.set_active_deck()
-                deck.load_deck("/data/set1.json")
+                deck.load_deck("data/set1.json")
                 print(deck)
                 break
             elif response == "n":
                 
                 deck.active_deck = str(self.user.active_deck).replace(" ", "")
-                deck.load_deck("/data/set1.json")
+                deck.load_deck("data/set1.json")
                 print(deck)
                 break
 
@@ -74,7 +74,7 @@ class Game():
     
     def load_card_data(self, hand):
         obj_list = []
-        file = open("/data/base1.json",encoding='utf-8')
+        file = open("data/base1.json",encoding='utf-8')
         data = json.load(file)
         for card in hand:
             count = 0

@@ -15,12 +15,12 @@ def hash_and_store(username, password):
     #This function hashes a password, and concatonates it with username before appending to file
     password_hash = hashlib.md5(str(password).encode('utf-8'))
     text = f"{username},{password_hash.hexdigest()}"
-    append_to_file("/data/passwd.txt", text)
+    append_to_file("data/passwd.txt", text)
 
 def check_password(username, password):
     #This function checks if a username and password match the input.
     #It is used in the login functionality. Should be apart of that class!
-    file = open("/data/passwd.txt", "r")
+    file = open("data/passwd.txt", "r")
     lines = file.readlines()
     match = False
     for line in lines:
