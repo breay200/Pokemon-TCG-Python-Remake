@@ -27,9 +27,7 @@ class ActivePokemon():
     def retreat(self):
         pass
 
-    def remove_energy(self, name, number):
-        #not sure this is how to define a discard object as global
-        global discard
+    def remove_energy(self, name, number, discard):
         removed_cards = []
         count = 0
         for energy in self.energies:

@@ -32,7 +32,7 @@ class User():
         pass
 
     def load_user_data(self):
-            file = open("player_data.txt", "r")
+            file = open("/data/player_data.txt", "r")
             lines = file.readlines()
             for line in lines:
                 username, matches_won, matches_lost, date_joined, favourite_pokemon, email_addr, active_deck = line.strip().split(",")
@@ -75,10 +75,10 @@ class User():
         self.favourite_pokemon = favourite_pokemon
         self.email_addr = email_addr
         text = f"{self.username}, {self.matches_won}, {self.matches_lost}, {self.date_joined}, {self.favourite_pokemon}, {self.email_addr}, {self.active_deck}"
-        append_to_file("player_data.txt", text)
+        append_to_file("/data/player_data.txt", text)
     
     def update_to_file(self):
-        file = open("player_data.txt", "wr")
+        file = open("/data/player_data.txt", "wr")
         lines = file.readlines()
         for line in lines:
             username, matches_won, matches_lost, date_joined, favourite_pokemon, email_addr, active_deck = line.strip().split(",")

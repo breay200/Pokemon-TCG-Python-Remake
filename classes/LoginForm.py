@@ -16,7 +16,7 @@ class LoginForm(Form):
                 str(username)
             except ValueError:
                 print("Please enter a string value!")
-            if check_in_file("passwd.txt", username):
+            if check_in_file("/data/passwd.txt", username):
                 login_form = LoginForm()
                 if login_form.login(username):
                     #return username and login status to create Player object?
@@ -24,7 +24,6 @@ class LoginForm(Form):
                 else:
                     print("You did not login successfully.")
             else:
-                #was unsure if I should put the create account function in this class or another class
                 print("User does not exist. Prompt user to create account.")
                 account_creator = AccountCreator()
                 account_creator.create_account(username)

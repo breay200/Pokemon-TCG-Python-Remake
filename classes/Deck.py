@@ -36,7 +36,7 @@ class Deck:
         self.active_deck = self.print_decks()
 
     def print_decks(self):
-        decks = self.get_decks("set1.json")
+        decks = self.get_decks("/data/set1.json")
         for deck in decks:
             print(deck)
         print("\nEnter the name of the deck you want to select: ")
@@ -85,19 +85,3 @@ class Deck:
 
     def get_deck_size(self):
         return len(self.id_list)
-
-            
-        
-    
-
-
-    '''
-    f = open('set1.json',encoding='utf-8')
-    data = json.load(f)
-    for i in data:
-        #print(i['name]) gets the names of the sets in this file
-        #if i['name] == 'setname':
-            #get info
-        print(i['cards'])
-    f.close()
-    '''

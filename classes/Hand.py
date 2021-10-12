@@ -87,7 +87,7 @@ class Hand:
                 bench.add_to_bench(benched_pokemon)
                 if len(self.basic_cards)>=1 and (len(bench.list<=5)):
                     print("Would you like to add any more Basic Pokemon to the Bench?")
-                    response = input("Enter Y or N: ")
+                    response = input("Enter y or n: ")
                     while response not in ['y', 'n']:
                         response = input("Enter y or n: ").lower()
                 else:
