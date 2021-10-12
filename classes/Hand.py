@@ -85,7 +85,8 @@ class Hand:
                 card = self.select_basic()
                 benched_pokemon = BenchedPokemon(card, getattr(card, 'hp'), 0)
                 bench.add_to_bench(benched_pokemon)
-                if len(self.basic_cards)>=1 and (len(bench.list<=5)):
+                bench_size = len(self.basic_cards)
+                if (len(self.basic_cards)>=1) and (len(bench.list)<=5):
                     print("Would you like to add any more Basic Pokemon to the Bench?")
                     response = input("Enter y or n: ")
                     while response not in ['y', 'n']:
@@ -124,7 +125,7 @@ class Hand:
                     while energy_choice not in energy_list_names:
                         energy_choice = input("Enter an energy type in your hand: ")
                     for card in self.list:
-                        if self.list.name == energy_choice:
+                        if card.name == energy_choice:
                             buffer = card
                             del self.list[self.list.index(card)]
                             active_pokemon.attach_energy(buffer)

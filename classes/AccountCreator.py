@@ -13,11 +13,11 @@ class AccountCreator(AccountManager):
                 str(response)
             except ValueError:
                 print("Please enter a valid response!")
-            if response is 'y':
+            if response == 'y':
                 print(response)
                 self.set_password(username)
                 break
-            elif response is 'n':
+            elif response == 'n':
                 print(response)
                 print("Please enter a username")
                 temp_username = input("Enter a username: ")
