@@ -15,7 +15,7 @@ class LoginForm(Form):
             print("Enter one of the following options\n1. login\n2. forgot password ")
             response = ""
             while response not in [1, 2]:
-                response = input("Enter 1 or 2: ")
+                response = int(input("Enter 1 or 2: "))
             if response == 1:
                 username = input("Enter username: ")
                 try:
