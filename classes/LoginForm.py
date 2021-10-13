@@ -36,7 +36,19 @@ class LoginForm(Form):
                     account_creator.create_account(username)
             else:
                 #NEED TO DO THIS - FORGOT PASSWORD METHOD
-                print("need to implement this functionality")
+                email = input("Please enter your email address: ")
+                try:
+                    email = str(email)
+                except TypeError:
+                    print("You enter an invalid value")
+                if check_in_file("data/player_data.txt", email):
+                    print("We are sending a password reset token to your email address")
+                    #NEED TO DO: SEND EMAIL RESET CODE - METHODS
+                    pass
+                else:
+                    print("This email isn't registered to an account")
+
+
         
     def login(self, username):
         failed_logins = 0
