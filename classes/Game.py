@@ -40,7 +40,7 @@ class Game():
             print("Would you like to make this Deck your go-to? ")
             response = ""
             while response not in ["y", "n"]:
-                print("Enter y or n: ")
+                response = input("Enter y or n: ")
             if response == "y":
                 #implement save to deck functionality 
                 pass
