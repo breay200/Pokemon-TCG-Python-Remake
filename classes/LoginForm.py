@@ -9,25 +9,35 @@ class LoginForm(Form):
         pass
 
     def check_account(self):
-        print("Enter a username to login or create an account!")
-        while True:
-            username = input("Enter username: ")
-            try:
-                str(username)
-            except ValueError:
-                print("Please enter a string value!")
-            if check_in_file("data/passwd.txt", username):
-                login_form = LoginForm()
-                if login_form.login(username):
-                    #return username and login status to create Player object?
-                    return username
+        print("Enter login or create account")
+        loop = False
+        while not loop:
+            print("Enter one of the following options\n1. login\n2. forgot password ")
+            response = ""
+            while response not in [1, 2]:
+                response = input("Enter 1 or 2: ")
+            if response == 1:
+                username = input("Enter username: ")
+                try:
+                    str(username)
+                except ValueError:
+                    print("Please enter a string value!")
+                
+                if check_in_file("data/passwd.txt", username):
+                    login_form = LoginForm()
+                    if login_form.login(username):
+                        #return username and login status to create Player object?
+                        return username
+                    else:
+                        print("You did not login successfully.")
                 else:
-                    print("You did not login successfully.")
+                    print("User does not exist. Prompt user to create account.")
+                    account_creator = AccountCreator()
+                    account_creator.create_account(username)
             else:
-                print("User does not exist. Prompt user to create account.")
-                account_creator = AccountCreator()
-                account_creator.create_account(username)
-    
+                #NEED TO DO THIS - FORGOT PASSWORD METHOD
+                print("need to implement this functionality")
+        
     def login(self, username):
         failed_logins = 0
         while True:
