@@ -47,6 +47,8 @@ class Deck:
                 active_deck = str(active_deck)
             except ValueError:
                 print("You entered an invalid value!")
+        self.active_deck = active_deck
+        #not sure if return is necessary
         return active_deck
 
     def load_deck(self, filename):
