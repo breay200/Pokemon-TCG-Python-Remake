@@ -17,25 +17,36 @@ class Game():
 
     def main_game_loop(self):
         deck = Deck()
-        print(f"Your current deck is:{self.user.active_deck}. Would you like to change your deck?")
-        response = ""
-        while response not in ["y", "n"]:
-            response = input("Enter y or n: ").lower()
-            try:
-                response = str(response)
-            except ValueError:
-                print("You entered an invalid value!")
+        if self.user.active_deck != "":
+            print(f"Your current deck is:{self.user.active_deck}. Would you like to change your deck?")
+            response = ""
+            while response not in ["y", "n"]:
+                response = input("Enter y or n: ").lower()
+                try:
+                    response = str(response)
+                except ValueError:
+                    print("You entered an invalid value!")
+                if response == "y":
+                    deck.set_active_deck()
+                    deck.load_deck("data/set1.json")
+                    break
+                elif response == "n":
+                    deck.active_deck = str(self.user.active_deck).replace(" ", "")
+                    deck.load_deck("data/set1.json")
+                    break
+        else:
+            print("You don't have an active deck selected, please choose one for your battle: ")
+            deck.set_active_deck()
+            print("Would you like to make this Deck your go-to? ")
+            response = ""
+            while response not in ["y", "n"]:
+                print("Enter y or n: ")
             if response == "y":
-                deck.set_active_deck()
-                deck.load_deck("data/set1.json")
-                print(deck)
-                break
-            elif response == "n":
-                
-                deck.active_deck = str(self.user.active_deck).replace(" ", "")
-                deck.load_deck("data/set1.json")
-                print(deck)
-                break
+                #implement save to deck functionality 
+                pass
+            else:
+                pass
+            deck.load_deck("data/set1.json")
 
         #GAME STARTS
         deck.shuffle_deck()
