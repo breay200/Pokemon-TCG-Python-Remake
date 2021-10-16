@@ -1,4 +1,4 @@
-from classes.Menu import *
+from classes.Menu import Menu
 
 def main():
     menu = Menu()

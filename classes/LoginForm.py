@@ -10,7 +10,9 @@ class LoginForm(Form):
     def __init__(self, master):
         self.master = master
         self.login_frame = tk.Frame(master)
-        
+
+        self.failed_logins = 0
+
         self.login_username_label = tk.Label(self.login_frame, text="Username: ")
         self.login_username_label.grid(column=3, row=2)
 
@@ -34,9 +36,9 @@ class LoginForm(Form):
         self.login_error_label = tk.Label(self.login_frame)
 
         self.login_create_btn = tk.Button(self.login_frame, text="Create Account", command=self.create_account)
-        self.login_create_btn.grid(column=4, row=5)
+        self.login_create_btn.grid(column=5, row=4)
 
-        self.login_fail_label = tk.Button(self.login_frame)
+        self.login_fail_label = tk.Label(self.login_frame)
 
         self.login_frame.grid(column=0, row=0)
 
@@ -61,7 +63,6 @@ class LoginForm(Form):
 
         
     def login(self, username):
-            failed_logins = 0
             password = self.login_password_entry.get()
             password_hash = hashlib.md5(str(password).encode('utf-8'))
             password = password_hash.hexdigest()
@@ -71,14 +72,15 @@ class LoginForm(Form):
                 #return a True value if login success
                 return True
             else:
-                failed_logins += 1
+                self.failed_logins += 1
                 self.login_error_label.configure(text="You have failed to login.")
                 self.login_error_label.grid(column=3, row=6)
-                self.login_fail_label.configure(text=f"There are {3-failed_logins} attempts remaining")
+                self.login_fail_label.configure(text=f"There are {3-self.failed_logins} attempts remaining")
                 self.login_fail_label.grid(column=4, row=6)
-                if failed_logins >= 3:
+                if self.failed_logins >= 3:
                     self.login_error_label.configure("You have failed too many times. Account has been locked.")
                     self.login_error_label.grid(column=3, row=6)
+                    self.login_submit_btn.destroy()
                     #need to create account lock method
                     #return a False value if login failed
                     return False
