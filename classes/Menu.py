@@ -2,6 +2,7 @@ from classes.LoginForm import *
 from classes.User import *
 from classes.Deck import *
 from classes.Game import *
+from classes.main_application import *
 
 class Menu():
     def __init__(self):
@@ -9,10 +10,17 @@ class Menu():
 
     def main_menu(self):
         print("Welcome to Pokemon Trading Card Game - Python Edition!")
-        login_form = LoginForm()
-        username = login_form.check_account()
-        self.game_menu(username)
-        #print(username)
+        
+        root = tk.Tk()
+        width = root.winfo_screenwidth() * 0.75
+        height = root.winfo_screenheight() * 0.75
+        root.geometry("%dx%d" % (width, height))
+        root.title("TCG REMAKE")
+        application = MainApplication(root)
+        root.mainloop()
+        
+        #self.game_menu(username)
+
 
     def game_menu(self, username):
         user = User(username)
