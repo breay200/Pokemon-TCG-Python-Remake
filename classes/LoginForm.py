@@ -43,19 +43,21 @@ class LoginForm(Form):
         self.login_frame.grid(column=0, row=0)
 
     def check_account(self):
-        temp_username = self.login_username.get()
-        if temp_username:
-            if check_in_file("data/passwd.txt", temp_username):
-                if self.login(temp_username):
-                    Config.username = temp_username
-                    print(Config.username)
+        username = self.login_username.get()
+        if username:
+            if check_in_file("data/passwd.txt", username):
+                if self.login(username):
+                    user = User(username)
+                    user.load_user_data()
+                    self.login_frame.destroy()
+                    game = Game(user)
                 else:
                     self.login_error_label.configure(text="You did not login successfully.")
                     self.login_error_label.grid(column=3, row=5)
             else:
                 self.login_error_label.configure(text="User does not exist")
                 self.login_error_label.grid(column=3, row=5)
-        elif not temp_username:
+        elif not username:
             self.login_error_label.configure(text="You did not enter a username")
             self.login_error_label.grid(column=3, row=5)
 
