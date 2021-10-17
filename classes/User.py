@@ -52,16 +52,12 @@ class User():
             file.close()
 
 
-    def create_user_data(self, favourite_pokemon, email_addr):
-        deck_ui = DeckUI()
-        self.username = Config.username
+    def create_user_data(self, fav_poke, email):
         today = date.today()
         self.date_joined = today.strftime("%d-%m-%Y")
-        self.favourite_pokemon = favourite_pokemon
-        self.email_addr = email_addr
-        self.active_deck = Config.deck.active_deck
-        text = f"{self.username}, {self.matches_won}, {self.matches_lost}, {self.date_joined}, {self.favourite_pokemon}, {self.email_addr}, {self.active_deck}"
-        append_to_file("data/player_data.txt", text)
+        self.favourite_pokemon = fav_poke
+        self.email_addr = email
+        deck_ui = DeckUI(self)
     
     def update_to_file(self):
         file = open("data/player_data.txt", "wr")

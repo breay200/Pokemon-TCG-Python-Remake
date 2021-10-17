@@ -3,6 +3,7 @@ from classes.User import *
 from misc_functions import check_in_file
 import tkinter as tk
 from classes.config import *
+from classes.Game import *
 
 class AccountCreator(AccountManager):
     def __init__(self):
@@ -60,10 +61,8 @@ class AccountCreator(AccountManager):
             if (self.password.get()) == (self.password2.get()):
                 hash_and_store(username, password)
                 self.create_account_frame.destroy()
-                Config.user = User(Config.username)
-                Config.user.create_user_data(self.fav_poke.get(), self.email.get())
-                print("nothing went wrong lol")
-                #start game method / main menu
+                user = User(username)
+                user.create_user_data(self.fav_poke.get(), self.email.get())
             else:
                 self.error_msg.configure(text="Passwords must match")
                 self.error_msg.grid(column=1, row=12)

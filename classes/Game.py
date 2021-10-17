@@ -17,6 +17,7 @@ class Game():
         self.user = user
         self.game_frame = tk.Frame(Config.master)
         self.game_frame.grid(column=0, row=0)
+        print(user)
 
     def main_game_loop(self):
         deck = Deck()
