@@ -10,10 +10,13 @@ from classes.ActivePokemon import *
 from classes.Colours import *
 from classes.Bench import *
 from classes.User import *
+from classes.config import *
 
 class Game():
     def __init__(self, user):
         self.user = user
+        self.game_frame = tk.Frame(Config.master)
+        self.game_frame.grid(column=0, row=0)
 
     def main_game_loop(self):
         deck = Deck()

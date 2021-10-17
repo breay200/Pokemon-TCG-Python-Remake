@@ -10,7 +10,7 @@ def append_to_file(filename, text):
     file.write(text + "\n")
     file.close
 
-#This is very specific - maybe include in a class?
+#could probably include in account creator class.
 def hash_and_store(username, password):
     #This function hashes a password, and concatonates it with username before appending to file
     password_hash = hashlib.md5(str(password).encode('utf-8'))

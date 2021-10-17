@@ -5,11 +5,11 @@ from misc_functions import check_in_file, check_password
 import tkinter as tk
 import getpass
 import hashlib
+from classes.config import *
 
 class LoginForm(Form):
-    def __init__(self, master):
-        self.master = master
-        self.login_frame = tk.Frame(master)
+    def __init__(self):
+        self.login_frame = tk.Frame(Config.master)
 
         self.failed_logins = 0
 
@@ -43,27 +43,25 @@ class LoginForm(Form):
         self.login_frame.grid(column=0, row=0)
 
     def check_account(self):
-        username = self.login_username.get()
-        if username:
-            if check_in_file("data/passwd.txt", username):
-                if self.login(username):
-                    print(username)
-                    #return username
-                    #need to see menu
+        temp_username = self.login_username.get()
+        if temp_username:
+            if check_in_file("data/passwd.txt", temp_username):
+                if self.login(temp_username):
+                    Config.username = temp_username
+                    print(Config.username)
                 else:
                     self.login_error_label.configure(text="You did not login successfully.")
                     self.login_error_label.grid(column=3, row=5)
             else:
                 self.login_error_label.configure(text="User does not exist")
                 self.login_error_label.grid(column=3, row=5)
-        elif not username:
+        elif not temp_username:
             self.login_error_label.configure(text="You did not enter a username")
             self.login_error_label.grid(column=3, row=5)
 
     def create_account(self):
-        #account_creator = AccountCreator()
-        #account_creator.create_account(self.master, username)
-        pass
+        self.login_frame.destroy()
+        account_creator = AccountCreator()
         
     def login(self, username):
             password = self.login_password_entry.get()
