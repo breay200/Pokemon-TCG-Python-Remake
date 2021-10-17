@@ -43,48 +43,55 @@ class LoginForm(Form):
         self.login_frame.grid(column=0, row=0)
 
     def check_account(self):
-        username = self.login_password_entry.get()
-        if check_in_file("data/passwd.txt", username):
-            if self.login(username):
-                print(username)
-                #return username
-                #need to see menu
+        username = self.login_username.get()
+        if username:
+            if check_in_file("data/passwd.txt", username):
+                if self.login(username):
+                    print(username)
+                    #return username
+                    #need to see menu
+                else:
+                    self.login_error_label.configure(text="You did not login successfully.")
+                    self.login_error_label.grid(column=3, row=5)
             else:
-                self.login_error_label.configure(text="You did not login successfully.")
+                self.login_error_label.configure(text="User does not exist")
                 self.login_error_label.grid(column=3, row=5)
-        else:
-            self.login_error_label.configure(text="User does not exist")
+        elif not username:
+            self.login_error_label.configure(text="You did not enter a username")
             self.login_error_label.grid(column=3, row=5)
 
-
     def create_account(self):
+        #account_creator = AccountCreator()
+        #account_creator.create_account(self.master, username)
         pass
-
-
         
     def login(self, username):
             password = self.login_password_entry.get()
-            password_hash = hashlib.md5(str(password).encode('utf-8'))
-            password = password_hash.hexdigest()
-            if check_password(username, password):
-                self.login_error_label.configure(text="You have logged in successfully!")
-                self.login_error_label.grid(column=3, row=6)
-                #return a True value if login success
-                return True
-            else:
-                self.failed_logins += 1
-                self.login_error_label.configure(text="You have failed to login.")
-                self.login_error_label.grid(column=3, row=6)
-                self.login_fail_label.configure(text=f"There are {3-self.failed_logins} attempts remaining")
-                self.login_fail_label.grid(column=4, row=6)
-                if self.failed_logins >= 3:
-                    self.login_error_label.configure("You have failed too many times. Account has been locked.")
+            if password and username:
+                password_hash = hashlib.md5(str(password).encode('utf-8'))
+                password = password_hash.hexdigest()
+                if check_password(username, password):
+                    self.login_error_label.configure(text="You have logged in successfully!")
                     self.login_error_label.grid(column=3, row=6)
-                    self.login_submit_btn.destroy()
-                    #need to create account lock method
-                    #return a False value if login failed
-                    return False
-
+                    #return a True value if login success
+                    return True
+                else:
+                    self.failed_logins += 1
+                    self.login_error_label.configure(text="You have failed to login.")
+                    self.login_error_label.grid(column=3, row=6)
+                    self.login_fail_label.configure(text=f"There are {3-self.failed_logins} attempts remaining")
+                    self.login_fail_label.grid(column=4, row=6)
+                    if self.failed_logins >= 3:
+                        print(self.failed_logins)
+                        self.login_error_label.configure("You have failed too many times. Account has been locked.")
+                        self.login_error_label.grid(column=3, row=6)
+                        self.login_submit_btn.grid_remove()
+                        #need to create account lock method
+                        #return a False value if login failed
+                        return False
+            else:
+                self.login_error_label.configure(text="You need to enter a username and password")
+                self.login_error_label.grid(column=3, row=5)
 '''
             self.login_frame.
             account_creator = AccountCreator()
