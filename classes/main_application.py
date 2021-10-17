@@ -14,17 +14,18 @@ class MainApplication:
 
         self.main_frame.grid(column=0, row=0)
 
-        hand = [1, 2, 3, 4, 5, 6, 7]
-
-        buttons=[] 
-        for number in hand: 
-            card = tk.Button(self.main_frame, text="card", width=20, height=70)
-            buttons.append(card)
         
-        count=3
-        for value in buttons:
-            value.grid(column=count, row=3)
-            count += 1
+        #hand = [1, 2, 3, 4, 5, 6, 7]
+
+        #buttons=[] 
+        #for number in hand: 
+        #    card = tk.Button(self.main_frame, text="card", width=20, height=70)
+        #    buttons.append(card)
+        
+        #count=3
+        #for value in buttons:
+        #    value.grid(column=count, row=3)
+        #    count += 1
 
     def quit(self):
         Config.master.destroy()
