@@ -8,18 +8,22 @@ parameters = {
 
 #response = requests.get("https://api.pokemontcg.io/v2/cards", params=parameters)
 
+#gets all cards
 url = "https://api.pokemontcg.io/v2/cards"
 
 response = requests.get(url, parameters)
 data = json.loads(response.text)
 
-name = input("Enter pokemon name: ")
+name = "Gengar"#input("Enter pokemon name: ")
 
 for key in data:
+    print(key)
     if key == 'data':
         for shit in data['data']:
             if shit['name'] == name:
                 print(shit['id'])
+    elif key == 'page':
+        print(data['page'])
 
 #print(response.status_code)
 
