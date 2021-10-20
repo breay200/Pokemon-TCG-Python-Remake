@@ -85,9 +85,13 @@ class MainGameLoop:
             hand_obj.find_basics()
         
         ## I AM UP TO HERE
-        hand_obj.print_cards(hand_obj.list)
-        print("\nPLEASE SELECT A BASIC CARD FROM YOUR HAND")
-        hand_obj.print_card_names(hand_obj.basic_cards)
+        #hand_obj.print_cards(hand_obj.list)
+        #print("\nPLEASE SELECT A BASIC CARD FROM YOUR HAND")
+        #hand_obj.print_card_names(hand_obj.basic_cards)
+        
+        for card in hand_obj.basic_cards:
+            
+        
         print("\nplease enter the name of Basic Pokémon you want to make the Active Pokemon")
         chosen_pokemon = hand_obj.select_basic()
         active_pokemon = ActivePokemon(chosen_pokemon)
