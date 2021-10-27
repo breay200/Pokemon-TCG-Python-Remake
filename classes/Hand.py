@@ -86,10 +86,18 @@ class Hand:
                 return
     
     def ui_add_to_bench(self, bench):
-        def add_to_bench():
+        def add_to_bench(basic_card):
+            benched_pokemon = BenchedPokemon(basic_card, getattr(basic_card, 'hp'), 0)
+            bench.add_to_bench(benched_pokemon)
+            self.remove_basic_card(basic_card)
+            bench_size = len(self.basic_cards)
+            if (len(self.basic_cards)>=1) and (len(bench.list)<=5):
+                
             pass
         
         def yes():
+            self.yes_btn.destroy()
+            self.no_btn.destroy()
             for basic_card in self.basic_cards:
                 buttons=[] 
                 card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: add_to_bench(basic_card))#(hand_obj, basic_card, active_pokemon))
@@ -100,7 +108,7 @@ class Hand:
                 value.grid(column=count, row=3)
                 count += 1
         
-        if (len(bench.list)<=5):
+        if (len(bench.list)<6):
             message = "Would you like to add any Pokemon to the Bench"
             self.block_inner_label.configure(text=message)
             self.block_inner_label.grid(column=0, row=0)
@@ -110,13 +118,15 @@ class Hand:
 
             self.no_btn = tk.Button(self.block_label, text="No", command=yes)#)
             self.no_btn.grid(column=1, row=1)
+        else:
+            message = "You have the maximum number of Pokemon on the bench"
+            self.block_inner_label.configure(text=message)
+            self.block_inner_label.grid(column=0, row=0
 
     
     def add_to_bench(self, bench):
-                benched_pokemon = BenchedPokemon(card, getattr(card, 'hp'), 0)
-                bench.add_to_bench(benched_pokemon)
-                bench_size = len(self.basic_cards)
-                if (len(self.basic_cards)>=1) and (len(bench.list)<=5):
+                
+                
                     print("Would you like to add any more Basic Pokemon to the Bench?")
                     response = input("Enter y or n: ")
                     while response not in ['y', 'n']:
