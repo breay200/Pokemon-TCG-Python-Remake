@@ -44,16 +44,28 @@ class MainGameLoop:
         
         self.mgl_frame.grid(column=0, row=0)
 
-    def change_deck(self):
-        self.deck.set_active_deck()
-        self.deck.load_deck("data/set1.json")
-                    
-    def load_current_deck(self):
-        self.deck.active_deck = str(self.user.active_deck).replace(" ", "")
-        self.deck.load_deck("data/set1.json")
-        self.initiate_game()
-
+    
+    
     def initiate_game(self):
+        def set_active_pokemon(basic_card):
+            hand_obj.remove_basic_card(basic_card)
+            active_pokemon.set_card_data(basic_card)
+            for value in buttons:
+                value.destroy()
+            print(f"active pokemon: {active_pokemon.get_name()}")
+            bench_function()
+
+        def bench_function():
+            hand_obj.add_to_bench(bench)
+            print(hand_obj.attach_energy(active_pokemon, bench))
+            prize = Prize()
+            print(f"deck size: {deck.get_deck_size()}")
+            prize.set_prize_cards(deck)
+            print(f"deck size: {deck.get_deck_size()}")
+
+            print("working on it...")
+            pass
+        
         if self.yes_btn:
             self.yes_btn.destroy()
             self.no_btn.destroy()
@@ -61,9 +73,6 @@ class MainGameLoop:
         message = "STARTING GAME!"
         self.block_inner_label.configure(text=message)
         self.block_inner_label.grid(column=0, row=0)
-        
-        time.sleep(1)
-
         self.deck.shuffle_deck()
         hand = self.deck.draw_number_of_cards(7)
         obj_list = self.load_card_data(hand)
@@ -72,7 +81,6 @@ class MainGameLoop:
 
         while not hand_obj.basic_cards:
             message = "There were no Basic Pokemon in your hand\nRe-shuffling..."
-            time.sleep(1)
             self.block_inner_label.configure(text=message)
             self.block_inner_label.grid(column=0, row=0)
             self.deck.return_to_deck(hand)
@@ -84,28 +92,27 @@ class MainGameLoop:
             hand_obj.list = obj_list
             hand_obj.find_basics()
         
-        ## I AM UP TO HERE
-        #hand_obj.print_cards(hand_obj.list)
-        #print("\nPLEASE SELECT A BASIC CARD FROM YOUR HAND")
-        #hand_obj.print_card_names(hand_obj.basic_cards)
-        
-        for card in hand_obj.basic_cards:
-            
-        
-        print("\nplease enter the name of Basic Pokémon you want to make the Active Pokemon")
-        chosen_pokemon = hand_obj.select_basic()
-        active_pokemon = ActivePokemon(chosen_pokemon)
-        print(f"active pokemon: {active_pokemon.get_name()}")
+        active_pokemon = ActivePokemon()
         bench = Bench()
-        hand_obj.add_to_bench(bench)
-        print(hand_obj.attach_energy(active_pokemon, bench))
-        prize = Prize()
-        print(f"deck size: {deck.get_deck_size()}")
-        prize.set_prize_cards(deck)
-        print(f"deck size: {deck.get_deck_size()}")
 
-        print("working on it...")
+        #should make a card frame to put cards into
+
+        print("Here")
+        for basic_card in hand_obj.basic_cards:
+            buttons=[] 
+            card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: set_active_pokemon(basic_card))#(hand_obj, basic_card, active_pokemon))
+            buttons.append(card)
+        
+        count=0
+        for value in buttons:
+            value.grid(column=count, row=3)
+            count += 1
+
+        message = "Please click on the Pokemon you would like to make the Active!"
+        self.block_inner_label.configure(text=message)
+        self.block_inner_label.grid(column=0, row=0)
     
+
     def load_card_data(self, hand):
         obj_list = []
         file = open("data/base1.json",encoding='utf-8')
@@ -160,3 +167,12 @@ class MainGameLoop:
     def player_turn_loop(self, hand, deck, bench):
         hand.append_to_hand(deck.pop_card())
         hand.add_to_bench(bench)
+
+    def change_deck(self):
+        self.deck.set_active_deck()
+        self.deck.load_deck("data/set1.json")
+            
+    def load_current_deck(self):
+        self.deck.active_deck = str(self.user.active_deck).replace(" ", "")
+        self.deck.load_deck("data/set1.json")
+        self.initiate_game()

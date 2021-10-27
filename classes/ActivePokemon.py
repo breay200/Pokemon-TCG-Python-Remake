@@ -11,6 +11,9 @@ class ActivePokemon():
         self.isParalyzed = isParalyzed
         self.isPoisoned = isPoisoned
         self.isProtectedFromAttackNextTurn = isProtectedFromAttackNextTurn
+    
+    def set_card_data(self, card_data):
+        self.card_data = card_data
 
     def get_name(self):
         return self.card_data.name

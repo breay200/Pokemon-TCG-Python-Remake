@@ -5,6 +5,7 @@ from classes.EnergyCard import *
 from classes.Colours import *
 from classes.BenchedPokemon import *
 from classes.Bench import *
+import tkinter as tk
 
 class Hand:
     def __init__(self, list=[], basic_cards=[]):
@@ -30,6 +31,11 @@ class Hand:
             print("======")
             card.print_card()
         print(Colours.Colorless)
+
+    def ui_card_names(self, list):
+        message = "Basic Cards"
+        for card in list:
+            pass
 
     def print_card_names(self, list):
         print(f"\nBASIC CARDS")
@@ -72,17 +78,41 @@ class Hand:
                 return buffer
             else:
                 pass
+    
+    def remove_basic_card(self, basic_card):
+        for card in self.basic_cards:
+            if (card.name == basic_card.name) and (card.nationalPokedexNumbers == basic_card.nationalPokedexNumbers):
+                del self.basic_cards[self.basic_cards.index(card)]
+                return
+    
+    def ui_add_to_bench(self, bench):
+        def add_to_bench():
+            pass
         
-    def add_to_bench(self, bench):
+        def yes():
+            for basic_card in self.basic_cards:
+                buttons=[] 
+                card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: add_to_bench(basic_card))#(hand_obj, basic_card, active_pokemon))
+                buttons.append(card)
+        
+            count=0
+            for value in buttons:
+                value.grid(column=count, row=3)
+                count += 1
+        
         if (len(bench.list)<=5):
-            print("Would you like to add any Basic Pokemon to the Bench?")
-            response = input("Enter y or n: ").lower()
-            while response not in ['y', 'n']:
-                response = input("Enter y or n: ").lower()
-            while response == 'y':
-                self.print_card_names(self.basic_cards)
-                print("Please enter the name of Basic Pokémon you want to add to the Bench")
-                card = self.select_basic()
+            message = "Would you like to add any Pokemon to the Bench"
+            self.block_inner_label.configure(text=message)
+            self.block_inner_label.grid(column=0, row=0)
+
+            self.yes_btn = tk.Button(self.block_label, text="Yes")
+            self.yes_btn.grid(column=0, row=1)
+
+            self.no_btn = tk.Button(self.block_label, text="No", command=yes)#)
+            self.no_btn.grid(column=1, row=1)
+
+    
+    def add_to_bench(self, bench):
                 benched_pokemon = BenchedPokemon(card, getattr(card, 'hp'), 0)
                 bench.add_to_bench(benched_pokemon)
                 bench_size = len(self.basic_cards)
