@@ -171,7 +171,57 @@ class Hand:
                     mgl.block_inner_label.grid(column=0, row=0)
 
             def benched():
-                pass
+                def select_pokemon(pokemon, buttons):
+                    def attach_energy(energy, pokemon):
+                        for card in self.list:
+                            if card.name == energy.name:
+                                buffer = card
+                                del self.list[self.list.index(card)]
+                                for card in bench.list:
+                                    if card.card_data.name == pokemon.card_data.name:
+                                        bench_index = bench.list.index(card)
+                                bench.attach_energy_to_benched(bench_index, buffer)
+                                for widget in buttons:
+                                    widget.destroy()
+                                message = f"Attached a {energy.name} to {pokemon.card_data.name}."
+                                mgl.block_inner_label.configure(text=message)
+                                mgl.block_inner_label.grid(column=0, row=0)
+
+
+                    for widget in buttons:
+                        widget.destroy()
+                    
+                    buttons=[] 
+                    
+                    for energy in energy_list:
+                        card = tk.Button(mgl.mgl_frame, text=energy.name, width=20, height=70, command= lambda: attach_energy(energy, pokemon))
+                        buttons.append(card)
+            
+                    count=0
+                    for widget in buttons:
+                        widget.grid(column=count, row=3)
+                        count += 1
+
+                    message = "Select the Energy Card you would like to attach to the Active Pokemon."
+                    mgl.block_inner_label.configure(text=message)
+                    mgl.block_inner_label.grid(column=0, row=0)
+                        
+
+                message = "Select the the Pokemon on the Bench that you want to attach an Energy to."
+                mgl.block_inner_label.configure(text=message)
+                mgl.block_inner_label.grid(column=0, row=0)
+
+                buttons = []
+
+                for pokemon in bench.list:
+                    card = tk.Button(mgl.mgl_frame, text=pokemon.card_data.name, width=20, height=70, command= lambda: select_pokemon(pokemon, buttons))
+                    buttons.append(card)
+        
+                count=0
+                for card in buttons:
+                    card.grid(column=count, row=3)
+                    count += 1
+
             
             if self.completed:
                 pass
@@ -183,59 +233,13 @@ class Hand:
                 mgl.yes_btn.destroy()
                 mgl.no_btn.destroy()
 
-                mgl.active_btn = tk.Button(mgl.block_label, text="Attach to the Active Pokemon", command= lambda: active())
+                mgl.active_btn = tk.Button(mgl.block_label, text="Attach to the Active Pokemon", command=active)
                 mgl.active_btn.grid(column=0, row=1)
 
                 mgl.benched_btn = tk.Button(mgl.block_label, text="Attach to a Pokemon on the Bench.", command=benched)
                 mgl.benched_btn.grid(column=1, row=1)
                 
 
-            '''
-                print("Enter the name of the pokemon you would like to attach an energy to")
-                pokemon_names = []
-                bench_index = 0 
-                for pokemon in bench.list:
-                    pokemon_names.append(pokemon.card_data.name)
-                    print(pokemon.card_data.name)
-                ##PROBLEM STARTS HERE 
-                name_count = 0
-                name_indices = []
-                for name in pokemon_names:
-                    if (pokemon_names.count(name))>1:
-                        name_indices.append(pokemon_names.index(name))
-                for name in pokemon_names:
-                    for index in name_indices:
-                        print(index)
-                        print(pokemon_names.index(name))
-                        if pokemon_names.index(name) == index:
-                            name_count += 1
-                            #BROKEN BLOCK
-                            print(f"{name} {name_count}")
-                pokemon_choice = input("Enter a pokemon's name: ")
-                while pokemon_choice not in pokemon_names:
-                    pokemon_choice = input("Enter a pokemon's name that is on the bench: ")
-                for pokemon in bench.list:
-                    if pokemon.card_data.name == pokemon_choice:
-                        bench_index = bench.list.index(pokemon)
-                energy_list_names = []
-                for energy in energy_list:
-                    energy_list_names.append(energy.name)
-                energy_list_names = set(energy_list_names)
-                print(f"Enter the energy type you would like to attach to {pokemon_choice}")
-                for energy in energy_list_names:
-                    print(energy)
-                energy_choice = input("Enter type: ")
-                while energy_choice not in energy_list_names:
-                    energy_choice = input("Enter an energy type in your hand: ")
-                for card in self.list:
-                    #PROBLEM HERE AND BELOW AttributeError: 'list' object has no attribute 'name'
-                    if card.name == energy_choice:
-                        buffer = card
-                        del self.list[self.list.index(card)]
-                        #active_pokemon.attach_energy(buffer)
-                        bench.attach_energy_to_benched(bench_index, buffer)
-                        return f"you added a {energy_choice} to {pokemon_choice}"
-                '''
         
         def no():
             message = "You chose not to add any energies to your Pokemon."

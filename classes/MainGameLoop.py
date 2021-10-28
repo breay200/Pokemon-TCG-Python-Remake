@@ -23,6 +23,7 @@ class MainGameLoop:
         self.bench = object
         self.active_pokemon = object
         self.obj_list = object
+        self.prize = object
 
         self.mgl_frame = tk.Frame(Config.master)
         
@@ -111,12 +112,9 @@ class MainGameLoop:
             self.block_inner_label.grid(column=0, row=0)
         else:
             self.hand_obj.ui_add_to_bench(self, self.bench)
-            print(self.active_pokemon.card_data.name)
             self.hand_obj.attach_energy(self, self.active_pokemon, self.bench)
-            prize = Prize()
-            print(f"deck size: {self.deck.get_deck_size()}")
-            prize.set_prize_cards(self.deck)
-            print(f"deck size: {self.deck.get_deck_size()}")
+            self.prize = Prize()
+            self.prize.set_prize_cards(self.deck)
             print("working on it...")
 
 
