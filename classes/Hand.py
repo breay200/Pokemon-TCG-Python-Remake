@@ -12,6 +12,7 @@ class Hand:
         #the list of objects is the list of card objects
         self.list = list
         self.basic_cards = basic_cards
+        self.completed = False
 
     def send_to_graveyard(self):
         pass
@@ -91,17 +92,12 @@ class Hand:
             bench.add_to_bench(benched_pokemon)
             self.remove_basic_card(basic_card)
             card.destroy()
-            if (len(self.basic_cards)>=1) and (len(bench.list)<=5):
-                mgl.yes_btn = tk.Button(mgl.block_label, text="Yes", command=yes)
-                mgl.yes_btn.grid(column=0, row=1)
-                mgl.no_btn = tk.Button(mgl.block_label, text="No", command=no)
-                mgl.no_btn.grid(column=1, row=1)
+            self.ui_add_to_bench(mgl, bench)
         
         def no():
             message = "You chose not to add any cards to the Bench."
             mgl.block_inner_label.configure(text=message)
             mgl.block_inner_label.grid(column=0, row=0)
-            return
 
         def yes():
             mgl.yes_btn.destroy()
@@ -117,7 +113,7 @@ class Hand:
                 count += 1
 
         if self.basic_cards:  
-            if (len(bench.list)<6):
+            if (len(self.basic_cards)>=1) and (len(bench.list)<=5):
                 message = "Would you like to add any Pokemon to the Bench"
                 mgl.block_inner_label.configure(text=message)
                 mgl.block_inner_label.grid(column=0, row=0)
@@ -151,42 +147,48 @@ class Hand:
                             message = f"Attached a {energy.name} to {active_pokemon.card_data.name}."
                             mgl.block_inner_label.configure(text=message)
                             mgl.block_inner_label.grid(column=0, row=0)
-                            return
-                        
-                mgl.active_btn.destroy()
-                mgl.benched_btn.destroy()
-                
-                buttons=[] 
-                
-                for energy in energy_list:
-                    card = tk.Button(mgl.mgl_frame, text=energy.name, width=20, height=70, command= lambda: attach_energy(energy))
-                    buttons.append(card)
-        
-                count=0
-                for value in buttons:
-                    value.grid(column=count, row=3)
-                    count += 1
+                            self.completed = True 
 
-                message = "Select the Energy Card you would like to attach to the Active Pokemon."
-                mgl.block_inner_label.configure(text=message)
-                mgl.block_inner_label.grid(column=0, row=0)
+                if self.completed:
+                    pass
+                else:
+                    mgl.active_btn.destroy()
+                    mgl.benched_btn.destroy()
+                    
+                    buttons=[] 
+                    
+                    for energy in energy_list:
+                        card = tk.Button(mgl.mgl_frame, text=energy.name, width=20, height=70, command= lambda: attach_energy(energy))
+                        buttons.append(card)
+            
+                    count=0
+                    for value in buttons:
+                        value.grid(column=count, row=3)
+                        count += 1
+
+                    message = "Select the Energy Card you would like to attach to the Active Pokemon."
+                    mgl.block_inner_label.configure(text=message)
+                    mgl.block_inner_label.grid(column=0, row=0)
 
             def benched():
                 pass
             
-            message = "Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?"
-            mgl.block_inner_label.configure(text=message)
-            mgl.block_inner_label.grid(column=0, row=0)
-            
-            mgl.yes_btn.destroy()
-            mgl.no_btn.destroy()
+            if self.completed:
+                pass
+            else:
+                message = "Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?"
+                mgl.block_inner_label.configure(text=message)
+                mgl.block_inner_label.grid(column=0, row=0)
+                
+                mgl.yes_btn.destroy()
+                mgl.no_btn.destroy()
 
-            mgl.active_btn = tk.Button(mgl.block_label, text="Attach to the Active Pokemon", command=active)
-            mgl.active_btn.grid(column=0, row=1)
+                mgl.active_btn = tk.Button(mgl.block_label, text="Attach to the Active Pokemon", command= lambda: active())
+                mgl.active_btn.grid(column=0, row=1)
 
-            mgl.benched_btn = tk.Button(mgl.block_label, text="Attach to a Pokemon on the Bench.", command=benched)
-            mgl.benched_btn.grid(column=1, row=1)
-            
+                mgl.benched_btn = tk.Button(mgl.block_label, text="Attach to a Pokemon on the Bench.", command=benched)
+                mgl.benched_btn.grid(column=1, row=1)
+                
 
             '''
                 print("Enter the name of the pokemon you would like to attach an energy to")

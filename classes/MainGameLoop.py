@@ -1,3 +1,4 @@
+from os import error
 from classes.Bench import Bench
 from classes.Player import *
 from classes.Deck import *
@@ -15,6 +16,13 @@ import time
 class MainGameLoop:
     def __init__(self, user) -> None:
         self.user = user
+
+        self. completed = False
+
+        self.hand_obj = object
+        self.bench = object
+        self.active_pokemon = object
+        self.obj_list = object
 
         self.mgl_frame = tk.Frame(Config.master)
         
@@ -48,70 +56,69 @@ class MainGameLoop:
     
     def initiate_game(self):
         def set_active_pokemon(basic_card):
-            hand_obj.remove_basic_card(basic_card)
-            active_pokemon.set_card_data(basic_card)
-            for value in buttons:
-                value.destroy()
-            print(f"active pokemon: {active_pokemon.get_name()}")
-            bench_function()
+            self.hand_obj.remove_basic_card(basic_card)
+            self.active_pokemon.set_card_data(basic_card)
+            for widget in buttons:
+                widget.destroy()
+            print(f"active pokemon: {self.active_pokemon.get_name()}")
+            self.completed = True
+            self.initiate_game()
 
-        def bench_function():
-            hand_obj.ui_add_to_bench(self, bench)
-            hand_obj.attach_energy(self, active_pokemon, bench)
-
-            prize = Prize()
-            print(f"deck size: {deck.get_deck_size()}")
-            prize.set_prize_cards(deck)
-            print(f"deck size: {deck.get_deck_size()}")
-
-            print("working on it...")
-            pass
-        
-        if self.yes_btn:
-            self.yes_btn.destroy()
+        try:
             self.no_btn.destroy()
-        
-        message = "STARTING GAME!"
-        self.block_inner_label.configure(text=message)
-        self.block_inner_label.grid(column=0, row=0)
-        self.deck.shuffle_deck()
-        hand = self.deck.draw_number_of_cards(7)
-        obj_list = self.load_card_data(hand)
-        hand_obj = Hand(obj_list)
-        hand_obj.find_basics()
-
-        while not hand_obj.basic_cards:
-            message = "Re-shuffling deck..."
-            self.block_inner_label.configure(text=message)
-            self.block_inner_label.grid(column=0, row=0)
-            self.deck.return_to_deck(hand)
-            self.deck.shuffle_deck()
-            hand = []
-            hand = self.deck.draw_number_of_cards(7)
-            obj_list = []
-            obj_list = self.load_card_data(hand)
-            hand_obj.list = obj_list
-            hand_obj.find_basics()
-        
-        active_pokemon = ActivePokemon()
-        bench = Bench()
+            self.yes_btn.destroy()
+        except error:
+            print("Error trying to destroy yes and no buttons")
 
         #should make a card frame to put cards into
+        if not self.completed:
+            message = "STARTING GAME!"
+            self.block_inner_label.configure(text=message)
+            self.block_inner_label.grid(column=0, row=0)
+            self.deck.shuffle_deck()
+            self.hand = self.deck.draw_number_of_cards(7)
+            self.obj_list = self.load_card_data(self.hand)
+            self.hand_obj = Hand(self.obj_list)
+            self.hand_obj.find_basics()
 
-        for basic_card in hand_obj.basic_cards:
-            buttons=[] 
-            card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: set_active_pokemon(basic_card))
-            buttons.append(card)
-        
-        count=0
-        for value in buttons:
-            value.grid(column=count, row=3)
-            count += 1
+            while not self.hand_obj.basic_cards:
+                message = "Re-shuffling deck..."
+                self.block_inner_label.configure(text=message)
+                self.block_inner_label.grid(column=0, row=0)
+                self.deck.return_to_deck(hand)
+                self.deck.shuffle_deck()
+                hand = []
+                hand = self.deck.draw_number_of_cards(7)
+                obj_list = []
+                obj_list = self.load_card_data(hand)
+                self.hand_obj.list = obj_list
+                self.hand_obj.find_basics()
+            
+            self.active_pokemon = ActivePokemon()
+            self.bench = Bench()
+            buttons = []
+            for basic_card in self.hand_obj.basic_cards: 
+                card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: set_active_pokemon(basic_card))
+                buttons.append(card)
+                
+            count=0
+            for value in buttons:
+                value.grid(column=count, row=3)
+                count += 1
 
-        message = "Please click on the Pokemon you would like to make the Active!"
-        self.block_inner_label.configure(text=message)
-        self.block_inner_label.grid(column=0, row=0)
-    
+            message = "Please click on the Pokemon you would like to make the Active!"
+            self.block_inner_label.configure(text=message)
+            self.block_inner_label.grid(column=0, row=0)
+        else:
+            self.hand_obj.ui_add_to_bench(self, self.bench)
+            print(self.active_pokemon.card_data.name)
+            self.hand_obj.attach_energy(self, self.active_pokemon, self.bench)
+            prize = Prize()
+            print(f"deck size: {self.deck.get_deck_size()}")
+            prize.set_prize_cards(self.deck)
+            print(f"deck size: {self.deck.get_deck_size()}")
+            print("working on it...")
+
 
     def load_card_data(self, hand):
         obj_list = []
