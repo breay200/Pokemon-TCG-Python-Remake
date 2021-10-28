@@ -57,7 +57,8 @@ class MainGameLoop:
 
         def bench_function():
             hand_obj.ui_add_to_bench(self, bench)
-            print(hand_obj.attach_energy(active_pokemon, bench))
+            hand_obj.attach_energy(self, active_pokemon, bench)
+
             prize = Prize()
             print(f"deck size: {deck.get_deck_size()}")
             prize.set_prize_cards(deck)
@@ -80,7 +81,7 @@ class MainGameLoop:
         hand_obj.find_basics()
 
         while not hand_obj.basic_cards:
-            message = "There were no Basic Pokemon in your hand\nRe-shuffling..."
+            message = "Re-shuffling deck..."
             self.block_inner_label.configure(text=message)
             self.block_inner_label.grid(column=0, row=0)
             self.deck.return_to_deck(hand)
@@ -99,7 +100,7 @@ class MainGameLoop:
 
         for basic_card in hand_obj.basic_cards:
             buttons=[] 
-            card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: set_active_pokemon(basic_card))#(hand_obj, basic_card, active_pokemon))
+            card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: set_active_pokemon(basic_card))
             buttons.append(card)
         
         count=0
