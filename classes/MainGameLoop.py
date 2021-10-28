@@ -56,7 +56,7 @@ class MainGameLoop:
             bench_function()
 
         def bench_function():
-            hand_obj.add_to_bench(bench)
+            hand_obj.ui_add_to_bench(self, bench)
             print(hand_obj.attach_energy(active_pokemon, bench))
             prize = Prize()
             print(f"deck size: {deck.get_deck_size()}")
@@ -97,7 +97,6 @@ class MainGameLoop:
 
         #should make a card frame to put cards into
 
-        print("Here")
         for basic_card in hand_obj.basic_cards:
             buttons=[] 
             card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: set_active_pokemon(basic_card))#(hand_obj, basic_card, active_pokemon))
