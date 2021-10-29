@@ -86,60 +86,32 @@ class Hand:
                 del self.basic_cards[self.basic_cards.index(card)]
                 return
     
-    def ui_add_to_bench(self, mgl, bench):
-        def add_to_bench(basic_card, card):
-            benched_pokemon = BenchedPokemon(basic_card, getattr(basic_card, 'hp'), 0)
-            bench.add_to_bench(benched_pokemon)
-            self.remove_basic_card(basic_card)
-            card.destroy()
-            self.ui_add_to_bench(mgl, bench)
-        
-        def no():
-            try:
-                mgl.yes_btn.destroy()
-                mgl.no_btn.destroy()
-            except error:
-                print("error trying to delete btn")
-            message = "You chose not to add any cards to the Bench."
-            mgl.block_inner_label.configure(text=message)
-            mgl.block_inner_label.grid(column=0, row=0)
 
-        def yes():
-            try:
-                mgl.yes_btn.destroy()
-                mgl.no_btn.destroy()
-            except error:
-                print("error trying to delete btn")
-            for basic_card in self.basic_cards:
-                buttons=[] 
-                card = tk.Button(mgl.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: add_to_bench(basic_card, card))
-                buttons.append(card)
-        
-            count=0
-            for value in buttons:
-                value.grid(column=count, row=3)
-                count += 1
+    def add_to_bench(self, basic_card, card, bench):
+        benched_pokemon = BenchedPokemon(basic_card, getattr(basic_card, 'hp'), 0)
+        bench.add_to_bench(benched_pokemon)
+        self.remove_basic_card(basic_card)
+        card.destroy()
 
-        if self.basic_cards:  
-            print("HELLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            if (len(bench.list)<6):
-                message = "Would you like to add any Pokemon to the Bench"
-                mgl.block_inner_label.configure(text=message)
-                mgl.block_inner_label.grid(column=0, row=0)
+    def attach_energy_to_active(self, energy, active_pokemon):
+        for card in self.list:
+            if card.name == energy.name:
+                buffer = card
+                del self.list[self.list.index(card)]
+                active_pokemon.attach_energy(buffer)
 
-                mgl.yes_btn = tk.Button(mgl.block_label, text="Yes", command=yes)
-                mgl.yes_btn.grid(column=0, row=1)
 
-                mgl.no_btn = tk.Button(mgl.block_label, text="No", command=no)
-                mgl.no_btn.grid(column=1, row=1)
-            else:
-                message = "You have the maximum number of Pokemon on the bench"
-                mgl.block_inner_label.configure(text=message)
-                mgl.block_inner_label.grid(column=0, row=0)
-        else:
-            message = "There are no basic cards in your hand."
-            mgl.block_inner_label.configure(text=message)
-            mgl.block_inner_label.grid(column=0, row=0)
+    def attach_energy_to_benched(self, energy, bench, pokemon):
+        for card in self.list:
+            if card.name == energy.name:
+                buffer = card
+                del self.list[self.list.index(card)]
+                for card in bench.list:
+                    if card.card_data.name == pokemon.card_data.name:
+                        bench_index = bench.list.index(card)
+                        break
+                bench.attach_energy_to_benched(bench_index, buffer)
+
 
     def attach_energy(self, mgl, active_pokemon, bench):
         def yes():
@@ -275,5 +247,4 @@ class Hand:
         else:
             message = "There are no energies in your hand."
             mgl.block_inner_label.configure(text=message)
-            mgl.block_inner_label.grid(column=0, row=0)
-            
+            mgl.block_inner_label.grid(column=0, row=0)  

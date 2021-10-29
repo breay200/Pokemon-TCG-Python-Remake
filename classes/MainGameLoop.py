@@ -17,7 +17,9 @@ class MainGameLoop:
     def __init__(self, user) -> None:
         self.user = user
 
-        self. completed = False
+        self.completed = False
+        self.added_to_bench = False
+        self.attached_energy = False
 
         self.hand_obj = object
         self.bench = object
@@ -66,13 +68,13 @@ class MainGameLoop:
             self.initiate_game()
 
         def add_to_bench():
-            def add_to_bench(basic_card, card):
-                benched_pokemon = BenchedPokemon(basic_card, getattr(basic_card, 'hp'), 0)
-                bench.add_to_bench(benched_pokemon)
-                self.remove_basic_card(basic_card)
-                card.destroy()
-                self.ui_add_to_bench(mgl, bench)
-        
+            def call_hand_methods(basic_card, card):
+                self.hand_obj.add_to_bench(basic_card, card, self.bench)
+                if basic_card:
+                    add_to_bench()
+                else:
+                    self.added_to_bench = True
+                    self.initiate_game()
             def no():
                 try:
                     self.yes_btn.destroy()
@@ -82,24 +84,21 @@ class MainGameLoop:
                 message = "You chose not to add any cards to the Bench."
                 self.block_inner_label.configure(text=message)
                 self.block_inner_label.grid(column=0, row=0)
-
             def yes():
                 try:
                     self.yes_btn.destroy()
                     self.no_btn.destroy()
                 except error:
                     print("error trying to delete btn")
-                for basic_card in self.basic_cards:
+                for basic_card in self.hand_obj.basic_cards:
                     buttons=[] 
-                    #need to change to command
-                    card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: self.hand_obj.add_to_bench(basic_card, card))
+                    card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: call_hand_methods(basic_card, card))
                     buttons.append(card)
                 count=0
                 for widget in buttons:
                     widget.grid(column=count, row=3)
                     count += 1
-
-            if self.basic_cards:  
+            if self.hand_obj.basic_cards:  
                 if (len(self.bench.list)<6):
                     message = "Would you like to add any Pokemon to the Bench"
                     self.block_inner_label.configure(text=message)
@@ -117,10 +116,137 @@ class MainGameLoop:
             else:
                 message = "There are no basic cards in your hand."
                 self.block_inner_label.configure(text=message)
+                self.block_inner_label.grid(column=0, row=0)   
+       
+        def attach_energy():
+            """attach_energy: called by the main game loop - it lets the user decide whether they want to attach an energy to their pokemon"""
+            def no():
+                """no: called by no_btn when user does not want to add an energy to one of their pokemon"""
+                message = "You chose not to add any energies to your Pokemon."
+                self.block_inner_label.configure(text=message)
+                self.block_inner_label.grid(column=0, row=0)
+            
+            def yes():
+                """yes: called by yes_btn when the user chooses to add an energy to either an active or benched pokemon"""
+                def attach_to_active():
+                    """attach_to_active: called when user chooses to add an energy to their active pokemon"""
+                    def attach_energy(energy):
+                        """attach_energy: calls the functionality in hand object to attach the energy to the active pokemon object"""
+                        self.hand_obj.attach_energy_to_active(energy, self.active_pokemon)
+                        for widget in buttons:
+                            widget.destroy()
+                        message = f"Attached a {energy.name} to {self.active_pokemon.card_data.name}."
+                        self.block_inner_label.configure(text=message)
+                        self.block_inner_label.grid(column=0, row=0)
+                        self.attached_energy = True
+                        self.initiate_game()
+
+                    try:
+                        self.active_btn.destroy()
+                        self.benched_btn.destroy()
+                    except error:
+                        print("error trying to destroy btn")
+                    
+                    buttons=[] 
+                    
+                    for energy in energy_list:
+                        card = tk.Button(self.mgl_frame, text=energy.name, width=20, height=70, command= lambda: attach_energy(energy))
+                        buttons.append(card)
+            
+                    count=0
+
+                    for value in buttons:
+                        value.grid(column=count, row=3)
+                        count += 1
+
+                    message = "Select the Energy Card you would like to attach to the Active Pokemon."
+                    self.block_inner_label.configure(text=message)
+                    self.block_inner_label.grid(column=0, row=0)
+
+                def attach_to_benched():
+                    """attach_to_benched: called when the user chooses to attach an energy to a Benched Pokemon"""
+                    def select_pokemon(pokemon, buttons):
+                        """select_pokemon: responsible for making the user choose what Benched Pokemon to add the energy to"""
+                        def attach_energy(energy, pokemon):
+                            """attach_energy: the method that actually attaches the energy to the Benched Pokemon"""
+                            self.hand_obj.attach_energy_to_benched(energy, self.bench, pokemon)
+                            for widget in buttons:
+                                widget.destroy()
+                            message = f"Attached a {energy.name} to {pokemon.card_data.name}."
+                            self.block_inner_label.configure(text=message)
+                            self.block_inner_label.grid(column=0, row=0)
+                            self.attached_energy = True
+                            self.initiate_game()
+
+                        for widget in buttons:
+                            widget.destroy()
+                        
+                        buttons=[] 
+                        
+                        for energy in energy_list:
+                            card = tk.Button(self.mgl_frame, text=energy.name, width=20, height=70, command= lambda: attach_energy(energy, pokemon))
+                            buttons.append(card)
+                
+                        count=0
+                        for widget in buttons:
+                            widget.grid(column=count, row=3)
+                            count += 1
+
+                        message = f"Select the Energy Card you would like to attach to the {pokemon.card_data.name}."
+                        self.block_inner_label.configure(text=message)
+                        self.block_inner_label.grid(column=0, row=0)
+                            
+
+                    message = "Select the the Pokemon on the Bench that you want to attach an Energy to."
+                    self.block_inner_label.configure(text=message)
+                    self.block_inner_label.grid(column=0, row=0)
+
+                    buttons = []
+
+                    for pokemon in self.bench.list:
+                        card = tk.Button(self.mgl_frame, text=pokemon.card_data.name, width=20, height=70, command= lambda: select_pokemon(pokemon, buttons))
+                        buttons.append(card)
+            
+                    count=0
+                    for card in buttons:
+                        card.grid(column=count, row=3)
+                        count += 1
+
+                if not (self.bench.list):
+                    attach_to_active()
+                else:
+                    message = "Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?"
+                    self.block_inner_label.configure(text=message)
+                    self.block_inner_label.grid(column=0, row=0)
+                    
+                    self.yes_btn.destroy()
+                    self.no_btn.destroy()
+
+                    self.active_btn = tk.Button(self.block_label, text="Attach to the Active Pokemon", command=attach_to_active)
+                    self.active_btn.grid(column=0, row=1)
+
+                    self.benched_btn = tk.Button(self.block_label, text="Attach to a Pokemon on the Bench.", command=attach_to_benched)
+                    self.benched_btn.grid(column=1, row=1)
+            
+            energy_list = []
+            for card in self.hand_obj.list:
+                if card.supertype == 'Energy':
+                    energy_list.append(card)
+            if len(energy_list) >= 1:
+                message = "Would you like to attach an energy to a Pokemon?"
+                self.block_inner_label.configure(text=message)
                 self.block_inner_label.grid(column=0, row=0)
 
-            
+                self.yes_btn = tk.Button(self.block_label, text="Yes", command=yes)
+                self.yes_btn.grid(column=0, row=1)
 
+                self.no_btn = tk.Button(self.block_label, text="No", command=no)
+                self.no_btn.grid(column=1, row=1)
+            else:
+                message = "There are no energies in your hand."
+                self.block_inner_label.configure(text=message)
+                self.block_inner_label.grid(column=0, row=0)  
+                
         try:
             self.no_btn.destroy()
             self.yes_btn.destroy()
@@ -166,9 +292,11 @@ class MainGameLoop:
             message = "Please click on the Pokemon you would like to make the Active!"
             self.block_inner_label.configure(text=message)
             self.block_inner_label.grid(column=0, row=0)
+        elif not self.added_to_bench:
+            add_to_bench()
+        elif not self.attached_energy:
+            attach_energy()
         else:
-            self.hand_obj.ui_add_to_bench(self, self.bench)
-            self.hand_obj.attach_energy(self, self.active_pokemon, self.bench)
             self.prize = Prize()
             self.prize.set_prize_cards(self.deck)
             print("working on it...")
