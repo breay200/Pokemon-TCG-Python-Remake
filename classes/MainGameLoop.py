@@ -70,11 +70,12 @@ class MainGameLoop:
         def add_to_bench():
             def call_hand_methods(basic_card, card):
                 self.hand_obj.add_to_bench(basic_card, card, self.bench)
-                if basic_card:
+                if self.hand_obj.basic_cards:
                     add_to_bench()
                 else:
                     self.added_to_bench = True
                     self.initiate_game()
+            
             def no():
                 try:
                     self.yes_btn.destroy()
@@ -84,6 +85,7 @@ class MainGameLoop:
                 message = "You chose not to add any cards to the Bench."
                 self.block_inner_label.configure(text=message)
                 self.block_inner_label.grid(column=0, row=0)
+
             def yes():
                 try:
                     self.yes_btn.destroy()
@@ -98,6 +100,7 @@ class MainGameLoop:
                 for widget in buttons:
                     widget.grid(column=count, row=3)
                     count += 1
+
             if self.hand_obj.basic_cards:  
                 if (len(self.bench.list)<6):
                     message = "Would you like to add any Pokemon to the Bench"
@@ -116,7 +119,9 @@ class MainGameLoop:
             else:
                 message = "There are no basic cards in your hand."
                 self.block_inner_label.configure(text=message)
-                self.block_inner_label.grid(column=0, row=0)   
+                self.block_inner_label.grid(column=0, row=0)  
+                self.added_to_bench = True
+                self.initiate_game() 
        
         def attach_energy():
             """attach_energy: called by the main game loop - it lets the user decide whether they want to attach an energy to their pokemon"""
@@ -180,6 +185,12 @@ class MainGameLoop:
 
                         for widget in buttons:
                             widget.destroy()
+                        
+                        try:
+                            self.active_btn.destroy()
+                            self.benched_btn.destroy()
+                        except error:
+                            print("error trying to destroy btn")
                         
                         buttons=[] 
                         
@@ -245,7 +256,9 @@ class MainGameLoop:
             else:
                 message = "There are no energies in your hand."
                 self.block_inner_label.configure(text=message)
-                self.block_inner_label.grid(column=0, row=0)  
+                self.block_inner_label.grid(column=0, row=0)
+                self.attached_energy = True
+                self.initiate_game()
                 
         try:
             self.no_btn.destroy()
