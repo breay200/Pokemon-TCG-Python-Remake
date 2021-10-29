@@ -1,4 +1,4 @@
-from os import get_terminal_size
+from os import error, get_terminal_size
 from classes.TrainerCard import *
 from classes.PokemonCard import *
 from classes.EnergyCard import *
@@ -95,13 +95,21 @@ class Hand:
             self.ui_add_to_bench(mgl, bench)
         
         def no():
+            try:
+                mgl.yes_btn.destroy()
+                mgl.no_btn.destroy()
+            except error:
+                print("error trying to delete btn")
             message = "You chose not to add any cards to the Bench."
             mgl.block_inner_label.configure(text=message)
             mgl.block_inner_label.grid(column=0, row=0)
 
         def yes():
-            mgl.yes_btn.destroy()
-            mgl.no_btn.destroy()
+            try:
+                mgl.yes_btn.destroy()
+                mgl.no_btn.destroy()
+            except error:
+                print("error trying to delete btn")
             for basic_card in self.basic_cards:
                 buttons=[] 
                 card = tk.Button(mgl.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: add_to_bench(basic_card, card))
@@ -113,7 +121,8 @@ class Hand:
                 count += 1
 
         if self.basic_cards:  
-            if (len(self.basic_cards)>=1) and (len(bench.list)<=5):
+            print("HELLO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            if (len(bench.list)<6):
                 message = "Would you like to add any Pokemon to the Bench"
                 mgl.block_inner_label.configure(text=message)
                 mgl.block_inner_label.grid(column=0, row=0)
@@ -131,7 +140,6 @@ class Hand:
             message = "There are no basic cards in your hand."
             mgl.block_inner_label.configure(text=message)
             mgl.block_inner_label.grid(column=0, row=0)
-            return
 
     def attach_energy(self, mgl, active_pokemon, bench):
         def yes():
@@ -152,8 +160,11 @@ class Hand:
                 if self.completed:
                     pass
                 else:
-                    mgl.active_btn.destroy()
-                    mgl.benched_btn.destroy()
+                    try:
+                        mgl.active_btn.destroy()
+                        mgl.benched_btn.destroy()
+                    except error:
+                        print("error trying to destroy btn")
                     
                     buttons=[] 
                     
@@ -226,26 +237,26 @@ class Hand:
             if self.completed:
                 pass
             else:
-                message = "Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?"
-                mgl.block_inner_label.configure(text=message)
-                mgl.block_inner_label.grid(column=0, row=0)
+                if not (bench.list):
+                    active()
+                else:
+                    message = "Would you like to attach an energy to the Active Pokemon or a Benched Pokemon?"
+                    mgl.block_inner_label.configure(text=message)
+                    mgl.block_inner_label.grid(column=0, row=0)
+                    
+                    mgl.yes_btn.destroy()
+                    mgl.no_btn.destroy()
+
+                    mgl.active_btn = tk.Button(mgl.block_label, text="Attach to the Active Pokemon", command=active)
+                    mgl.active_btn.grid(column=0, row=1)
+
+                    mgl.benched_btn = tk.Button(mgl.block_label, text="Attach to a Pokemon on the Bench.", command=benched)
+                    mgl.benched_btn.grid(column=1, row=1)
                 
-                mgl.yes_btn.destroy()
-                mgl.no_btn.destroy()
-
-                mgl.active_btn = tk.Button(mgl.block_label, text="Attach to the Active Pokemon", command=active)
-                mgl.active_btn.grid(column=0, row=1)
-
-                mgl.benched_btn = tk.Button(mgl.block_label, text="Attach to a Pokemon on the Bench.", command=benched)
-                mgl.benched_btn.grid(column=1, row=1)
-                
-
-        
         def no():
             message = "You chose not to add any energies to your Pokemon."
             mgl.block_inner_label.configure(text=message)
             mgl.block_inner_label.grid(column=0, row=0)
-            return
 
         energy_list = []
         for card in self.list:
@@ -265,4 +276,4 @@ class Hand:
             message = "There are no energies in your hand."
             mgl.block_inner_label.configure(text=message)
             mgl.block_inner_label.grid(column=0, row=0)
-            return
+            

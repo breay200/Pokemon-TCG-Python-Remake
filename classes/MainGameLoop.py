@@ -65,6 +65,62 @@ class MainGameLoop:
             self.completed = True
             self.initiate_game()
 
+        def add_to_bench():
+            def add_to_bench(basic_card, card):
+                benched_pokemon = BenchedPokemon(basic_card, getattr(basic_card, 'hp'), 0)
+                bench.add_to_bench(benched_pokemon)
+                self.remove_basic_card(basic_card)
+                card.destroy()
+                self.ui_add_to_bench(mgl, bench)
+        
+            def no():
+                try:
+                    self.yes_btn.destroy()
+                    self.no_btn.destroy()
+                except error:
+                    print("error trying to delete btn")
+                message = "You chose not to add any cards to the Bench."
+                self.block_inner_label.configure(text=message)
+                self.block_inner_label.grid(column=0, row=0)
+
+            def yes():
+                try:
+                    self.yes_btn.destroy()
+                    self.no_btn.destroy()
+                except error:
+                    print("error trying to delete btn")
+                for basic_card in self.basic_cards:
+                    buttons=[] 
+                    #need to change to command
+                    card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: self.hand_obj.add_to_bench(basic_card, card))
+                    buttons.append(card)
+                count=0
+                for widget in buttons:
+                    widget.grid(column=count, row=3)
+                    count += 1
+
+            if self.basic_cards:  
+                if (len(self.bench.list)<6):
+                    message = "Would you like to add any Pokemon to the Bench"
+                    self.block_inner_label.configure(text=message)
+                    self.block_inner_label.grid(column=0, row=0)
+
+                    self.yes_btn = tk.Button(self.block_label, text="Yes", command=yes)
+                    self.yes_btn.grid(column=0, row=1)
+
+                    self.no_btn = tk.Button(self.block_label, text="No", command=no)
+                    self.no_btn.grid(column=1, row=1)
+                else:
+                    message = "You have the maximum number of Pokemon on the bench"
+                    self.block_inner_label.configure(text=message)
+                    self.block_inner_label.grid(column=0, row=0)
+            else:
+                message = "There are no basic cards in your hand."
+                self.block_inner_label.configure(text=message)
+                self.block_inner_label.grid(column=0, row=0)
+
+            
+
         try:
             self.no_btn.destroy()
             self.yes_btn.destroy()
@@ -86,12 +142,12 @@ class MainGameLoop:
                 message = "Re-shuffling deck..."
                 self.block_inner_label.configure(text=message)
                 self.block_inner_label.grid(column=0, row=0)
-                self.deck.return_to_deck(hand)
+                self.deck.return_to_deck(self.hand)
                 self.deck.shuffle_deck()
-                hand = []
-                hand = self.deck.draw_number_of_cards(7)
+                self.hand = []
+                self.hand = self.deck.draw_number_of_cards(7)
                 obj_list = []
-                obj_list = self.load_card_data(hand)
+                obj_list = self.load_card_data(self.hand)
                 self.hand_obj.list = obj_list
                 self.hand_obj.find_basics()
             
