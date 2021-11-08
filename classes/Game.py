@@ -1,6 +1,8 @@
+from classes.MainGameLoop import MainGameLoop
 from classes.User import *
 from classes.config import *
 from classes.MainGameLoop import *
+import tkinter as tk
 
 class Game():
     def __init__(self, user):

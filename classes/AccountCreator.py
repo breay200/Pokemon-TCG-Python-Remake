@@ -10,7 +10,7 @@ class AccountCreator(AccountManager):
         self.create_account_frame = tk.Frame(Config.master)
         
         self.title_label = tk.Label(self.create_account_frame, text="Enter information below to create an account")
-        self.title_label.grid(column=1,row=0) # columnspan?
+        self.title_label.grid(column=1,row=0)
 
         self.username_label = tk.Label(self.create_account_frame, text="Enter a username: ")
         self.username_label.grid(column=1, row=1)
@@ -63,6 +63,8 @@ class AccountCreator(AccountManager):
                 self.create_account_frame.destroy()
                 user = User(username)
                 user.create_user_data(self.fav_poke.get(), self.email.get())
+                deck_ui = DeckUI(user)
+
             else:
                 self.error_msg.configure(text="Passwords must match")
                 self.error_msg.grid(column=1, row=12)

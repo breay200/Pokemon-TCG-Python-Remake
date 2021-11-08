@@ -1,8 +1,7 @@
 from datetime import date
-from classes.ActivePokemon import ActivePokemon
 from classes.Deck import *
-from classes.Deck_UI import DeckUI
-from misc_functions import append_to_file
+from classes.Deck_UI import *
+from misc_functions import *
 from classes.config import *
 
 class User():
@@ -57,7 +56,6 @@ class User():
         self.date_joined = today.strftime("%d-%m-%Y")
         self.favourite_pokemon = fav_poke
         self.email_addr = email
-        deck_ui = DeckUI(self)
     
     def update_to_file(self):
         file = open("data/player_data.txt", "wr")

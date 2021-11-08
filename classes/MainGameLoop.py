@@ -10,8 +10,9 @@ from classes.Hand import *
 from classes.ActivePokemon import *
 from classes.Colours import *
 from classes.Bench import *
-from classes.config import Config
-import time
+from classes.config import *
+from classes.Deck_UI import *
+from misc_functions import *
 
 class MainGameLoop:
     def __init__(self, user) -> None:
@@ -20,6 +21,7 @@ class MainGameLoop:
         self.completed = False
         self.added_to_bench = False
         self.attached_energy = False
+        self.changed_deck = False
 
         self.hand_obj = object
         self.bench = object
@@ -41,21 +43,18 @@ class MainGameLoop:
             self.block_inner_label.configure(text=message)
             self.block_inner_label.grid(column=0, row=0)
 
-            self.yes_btn = tk.Button(self.block_label, text="Yes")
+            self.yes_btn = tk.Button(self.block_label, text="Yes", command=self.change_deck)
             self.yes_btn.grid(column=0, row=1)
 
             self.no_btn = tk.Button(self.block_label, text="No", command=self.load_current_deck)
             self.no_btn.grid(column=1, row=1)
-
         else:
-            #call method to choose deck
             message = "You don't have an active deck selected, please choose one for your battle: "
             self.block_inner_label.configure(text=message)
             self.block_inner_label.grid(column=0, row=0)
         
         self.mgl_frame.grid(column=0, row=0)
 
-    
     
     def initiate_game(self):
         def set_active_pokemon(basic_card):
@@ -163,7 +162,7 @@ class MainGameLoop:
                     for value in buttons:
                         value.grid(column=count, row=3)
                         count += 1
-
+        
                     message = "Select the Energy Card you would like to attach to the Active Pokemon."
                     self.block_inner_label.configure(text=message)
                     self.block_inner_label.grid(column=0, row=0)
@@ -206,7 +205,7 @@ class MainGameLoop:
                         message = f"Select the Energy Card you would like to attach to the {pokemon.card_data.name}."
                         self.block_inner_label.configure(text=message)
                         self.block_inner_label.grid(column=0, row=0)
-                            
+
 
                     message = "Select the the Pokemon on the Bench that you want to attach an Energy to."
                     self.block_inner_label.configure(text=message)
@@ -259,7 +258,7 @@ class MainGameLoop:
                 self.block_inner_label.grid(column=0, row=0)
                 self.attached_energy = True
                 self.initiate_game()
-                
+
         try:
             self.no_btn.destroy()
             self.yes_btn.destroy()
@@ -269,6 +268,15 @@ class MainGameLoop:
         #should make a card frame to put cards into
         if not self.completed:
             message = "STARTING GAME!"
+            try:
+                if not self.block_label or self.block_inner_label:
+                    self.block_label = tk.Label(self.mgl_frame, width=400, height=200, background='#4A7A8C')
+                    self.block_label.grid(column=0, row=0)
+                    self.block_inner_label = tk.Label(self.block_label)
+                    self.block_label.grid(column=0, row=0)
+            except error:
+                print(error)
+            self.block_inner_label = tk.Label(self.block_label)
             self.block_inner_label.configure(text=message)
             self.block_inner_label.grid(column=0, row=0)
             self.deck.shuffle_deck()
@@ -321,7 +329,7 @@ class MainGameLoop:
             """let the user decide"""
         else:
             """wait for user to decide"""
-            
+
 
     def flip_coin(self):
         """flip_coin: call this method when you need to flip a coin and return the result. Returns True if 0, and 1 if false"""
@@ -387,8 +395,35 @@ class MainGameLoop:
         hand.add_to_bench(bench)
 
     def change_deck(self):
-        self.deck.set_active_deck()
-        self.deck.load_deck("data/set1.json")
+        """change_deck: calls the deck_ui class which prompts the user to choose a new deck"""
+        def get_active(deck):
+            self.user.active_deck = deck
+            self.deck.active_deck = deck
+            text = f"{self.user.username}, {self.user.matches_won}, {self.user.matches_lost}, {self.user.date_joined}, {self.user.favourite_pokemon}, {self.user.email_addr}, {self.user.active_deck}"
+            append_to_file("data/player_data.txt", text)
+            self.block_label.destroy()
+            self.load_current_deck()
+            
+        for widget in self.mgl_frame.winfo_children():
+            widget.destroy()
+        
+        self.block_label = tk.Label(self.mgl_frame, width=400, height=200, background='#4A7A8C')
+        
+        #probably want to delete the previous frame
+        decks = self.deck.get_decks("data/set1.json")
+        deck_widgets = []
+        
+        for deck in decks:
+            card_widget = tk.Button(self.block_label, text=deck, command=lambda: get_active(deck))
+            deck_widgets.append(card_widget)
+        widget_count = 0
+        
+        for widget in deck_widgets:
+            widget.grid(column = widget_count, row = 1)
+            widget_count += 1
+        
+        self.block_label.grid(column=0, row=0)
+    
             
     def load_current_deck(self):
         self.deck.active_deck = str(self.user.active_deck).replace(" ", "")

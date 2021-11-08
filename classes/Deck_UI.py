@@ -25,4 +25,3 @@ class DeckUI(Deck):
         text = f"{user.username}, {user.matches_won}, {user.matches_lost}, {user.date_joined}, {user.favourite_pokemon}, {user.email_addr}, {user.active_deck}"
         append_to_file("data/player_data.txt", text)
         self.print_decks_frame.destroy()
-        game = Game(user)
