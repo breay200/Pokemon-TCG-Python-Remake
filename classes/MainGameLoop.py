@@ -315,6 +315,22 @@ class MainGameLoop:
             print("working on it...")
 
 
+    def choose_player_order(self):
+        """choose_player_order: this method decides which player goes first. If flip coin returns true, then the player decides. Else, we wait for the opponent to decide."""
+        if self.flip_coin:
+            """let the user decide"""
+        else:
+            """wait for user to decide"""
+            
+
+    def flip_coin(self):
+        """flip_coin: call this method when you need to flip a coin and return the result. Returns True if 0, and 1 if false"""
+        self.coin_result = random.randint(0, 1)
+        if self.coin_result == 0:
+            return True
+        else:
+            return False
+
     def load_card_data(self, hand):
         obj_list = []
         file = open("data/base1.json",encoding='utf-8')

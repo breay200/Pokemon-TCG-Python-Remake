@@ -1,3 +1,4 @@
+from os import execl
 from typing import Text
 from classes.AccountCreator import *
 from classes.Form import *
@@ -30,7 +31,7 @@ class LoginForm(Form):
         self.login_submit_btn = tk.Button(self.login_frame, text="Login", command=self.check_account)
         self.login_submit_btn.grid(column=3, row=4)
 
-        self.login_forgot_btn = tk.Button(self.login_frame, text="Forgot Password")
+        self.login_forgot_btn = tk.Button(self.login_frame, text="Forgot Password", command=self.forgot_password)
         self.login_forgot_btn.grid(column=4, row=4)
 
         self.login_error_label = tk.Label(self.login_frame)
@@ -92,6 +93,19 @@ class LoginForm(Form):
             else:
                 self.login_error_label.configure(text="You need to enter a username and password")
                 self.login_error_label.grid(column=3, row=5)
+
+    def forgot_password(self):
+        """forgot_password: call this method when the user clicks on the forgot password button. Checks to see if the user has entered a username, and continues with the password reset."""
+        try:
+            username = self.login_username.get()
+        except error:
+            print(error)
+        
+        if len(username)>1:
+            print("username greater than 1")
+        else:
+            print("no username")
+
 '''
             self.login_frame.
             account_creator = AccountCreator()
