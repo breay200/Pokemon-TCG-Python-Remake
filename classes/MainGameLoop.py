@@ -84,6 +84,9 @@ class MainGameLoop:
                 message = "You chose not to add any cards to the Bench."
                 self.block_inner_label.configure(text=message)
                 self.block_inner_label.grid(column=0, row=0)
+                self.added_to_bench = True
+                self.initiate_game()
+
 
             def yes():
                 try:
@@ -144,12 +147,6 @@ class MainGameLoop:
                         self.block_inner_label.grid(column=0, row=0)
                         self.attached_energy = True
                         self.initiate_game()
-
-                    try:
-                        self.active_btn.destroy()
-                        self.benched_btn.destroy()
-                    except error:
-                        print("error trying to destroy btn")
                     
                     buttons=[] 
                     
@@ -321,6 +318,7 @@ class MainGameLoop:
             self.prize = Prize()
             self.prize.set_prize_cards(self.deck)
             print("working on it...")
+            self.choose_player_order()
 
 
     def choose_player_order(self):
@@ -329,6 +327,10 @@ class MainGameLoop:
             """let the user decide"""
         else:
             """wait for user to decide"""
+            
+    
+    def rock_paper_scissors(self):
+        pass
 
 
     def flip_coin(self):
