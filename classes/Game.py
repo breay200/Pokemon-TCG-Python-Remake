@@ -3,6 +3,7 @@ from classes.User import *
 from classes.config import *
 from classes.MainGameLoop import *
 import tkinter as tk
+from classes.Lobby import *
 
 class Game():
     def __init__(self, user):
@@ -25,7 +26,9 @@ class Game():
         self.game_frame.grid(column=0, row=0)
 
     def start_game(self):
-        self.game_frame.destroy()  
-        mgl = MainGameLoop(self.user)      
+        self.game_frame.destroy()
+        lobby = Lobby()
+        """I COMMENTED THIS OUT AND THIS NEEDS TO BE UNCOMMENTED ONCE I FIGURE OUT THE LOBBY STUFF XX"""
+        #mgl = MainGameLoop(self.user)   
 
         

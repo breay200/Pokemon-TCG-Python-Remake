@@ -2,8 +2,11 @@ from os import error
 import socket
 import tkinter as tk
 from threading import Thread
+global HEADER_LENGTH
+HEADER_LENGTH = 1024
 
-def connect():
+
+def recv():
     # Create a TCP/IP socket
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_address = (ip.get(), int(port.get()))
@@ -14,17 +17,62 @@ def connect():
         print(error)
     while True:
         try:
-            message = sock.recv(1024).decode()
+            header = sock.recv(HEADER_LENGTH)
+            print(header)
+            data_length = int(float(header.decode('utf-8').strip()))
+            data = sock.recv(data_length).decode('utf-8')
+            print(data)
+            if len(data)>1:
+                sock.close
+            """message = sock.recv(1024).decode()
             if len(message)>1:
                 print(message)
                 sock.close()
                 print("closed socket")
-                break
-        except error:
-            print(error)
+                break"""
+        except Exception as e:
+            print(e)
 
-thread = Thread(target = connect, daemon=True)
-    
+def send():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_address = (ip.get(), int(port.get()))
+    print('connecting to %s port %s' % server_address)
+    try:
+        sock.connect(server_address)
+    except error:
+        print(error)
+    try:
+        data = "username: Brandon"
+        data = data.encode('utf-8')
+        header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
+        sock.send(header+data)
+        sock.close
+        """message = sock.recv(1024).decode()
+        if len(message)>1:
+            print(message)
+            sock.close()
+            print("closed socket")
+            break"""
+    except Exception as e:
+        print(e)
+
+
+def encodeAndSend(data, sock):
+    data = data.encode('utf-8')
+    header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
+    print(header)
+    sock.send(header+data)
+
+def decodeData(sock):
+    header = sock.recv(HEADER_LENGTH)
+    print(header)
+    data_length = int(float(header.decode('utf-8').strip()))
+    data = sock.recv(data_length).decode('utf-8')
+    print(data)
+
+
+receiving = Thread(target = recv, daemon=True)
+sending = Thread(target = send, daemon= True)
 
 print("Client Test")
 master = tk.Tk()
@@ -49,11 +97,14 @@ port = tk.StringVar()
 port_entry = tk.Entry(main_frame, textvariable=port)
 port_entry.grid(column=1, row=1, columnspan=2, sticky="ew")
 
-connect_btn = tk.Button(main_frame, text="Connect", command=lambda: thread.start(), width=25)
+connect_btn = tk.Button(main_frame, text="Receive", command=lambda: receiving.start(), width=25)
 connect_btn.grid(column=0, row=2)
 
+send_btn = tk.Button(main_frame, text="Send", command=lambda: send(), width=25)
+send_btn.grid(column=1, row=2)
+
 quit_btn = tk.Button(main_frame, text="Quit", command=lambda: quit(), width=25)
-quit_btn.grid(column=1, row=2)
+quit_btn.grid(column=2, row=2)
 
 main_frame.columnconfigure(1, weight=1)
 main_frame.rowconfigure(1, weight=1)

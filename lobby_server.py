@@ -17,29 +17,12 @@ def initiate_server():
     sock.bind((HOST, PORT))
     sock.listen(3)
     while True:
-        clientsocket, address = sock.accept()
-        clientsocket.send(f"{address} connected to {HOST}".encode())
         try:
-            data = dataReceived(clientsocket)
-            print(data.decode('utf-8'))
-            if data:
-                clientsocket.send(data['header'] + data['data'])
+            clientsocket, address = sock.accept()
+            clientsocket.send(f"{address} connected to {HOST}".encode())
+            clientsocket.close()
         except Exception as e:
             print(e)
-
-def dataReceived(client_socket):
-    try:
-        data_header = client_socket.recv(header_len)
-
-        if not len(data_header):
-            return False
-        
-        data_length = int(data_header.decode('utf-8').strip())
-        #returns a dict
-        return {"header" : data_header, "data" : client_socket.recv(data_length)}
-    except:
-        print("false")
-        return False
 
 
 thread = Thread(target = initiate_server, daemon=True)    
