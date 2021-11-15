@@ -1,0 +1,13 @@
+user2 scissors
+user2 paper
+user2 scissors
+user2 scissors
+user2 scissors
+user2 scissors
+user2 scissors
+user2 scissors
+user2 scissors
+user2 scissors
+user2 scissors
+user2 paper
+user2 paper

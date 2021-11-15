@@ -1,0 +1,9 @@
+user1 rock
+user1 paper
+user1 scissors
+user1 paper
+user1 paper
+user1 rock
+user1 rock
+user1 scissors
+user1 paper

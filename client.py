@@ -1,77 +1,80 @@
 from os import error
 import socket
 import tkinter as tk
-from threading import Thread
+from threading import Thread, stack_size
 global HEADER_LENGTH
-HEADER_LENGTH = 1024
 
-
-def recv():
-    # Create a TCP/IP socket
+def receive():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_address = (ip.get(), int(port.get()))
+    #server_address = (ip.get(), int(port.get()))
+    server_address = ('127.0.0.1', 65432)
     print('connecting to %s port %s' % server_address)
-    try:
-        sock.connect(server_address)
-    except error:
-        print(error)
     while True:
         try:
-            header = sock.recv(HEADER_LENGTH)
-            print(header)
-            data_length = int(float(header.decode('utf-8').strip()))
-            data = sock.recv(data_length).decode('utf-8')
-            print(data)
-            if len(data)>1:
-                sock.close
-            """message = sock.recv(1024).decode()
-            if len(message)>1:
-                print(message)
-                sock.close()
-                print("closed socket")
-                break"""
+            sock.connect(server_address)
+            data = sock.recv(1024)
+            data = data.decode('utf-8')
+
+            #header = sock.recv(1024)
+            #data_length = int(float(header.decode('utf-8').strip()))
+            #data = sock.recv(data_length).decode('utf-8')
+            if data:
+                print("data received: ", data)
+                with open("rps.txt", "w") as file1:
+                    file1.write("data")
+            else:
+                print("no data")
+
+            sock.close()
         except Exception as e:
             print(e)
 
-def send():
+def send(data):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_address = (ip.get(), int(port.get()))
+    #server_address = (ip.get(), int(port.get()))
+    server_address = ('127.0.0.1', 65432)
+
     print('connecting to %s port %s' % server_address)
+
     try:
         sock.connect(server_address)
-    except error:
-        print(error)
-    try:
-        data = "username: Brandon"
         data = data.encode('utf-8')
-        header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
-        sock.send(header+data)
-        sock.close
-        """message = sock.recv(1024).decode()
-        if len(message)>1:
-            print(message)
-            sock.close()
-            print("closed socket")
-            break"""
+        #header = f"{len(data):<{1024}}".encode('utf-8')
+        #sock.send(header+data)
+        sock.send(data)
     except Exception as e:
         print(e)
+
+def rock_paper_scissors():
+    def widget_send(data):
+        send(data)
+    receiving.start()
+    for widget in main_frame.winfo_children():
+        widget.destroy()
+    rock_btn = tk.Button(main_frame, text="rock", command=lambda: widget_send("rock"))
+    rock_btn.grid(column=1,row=1)
+    paper_btn = tk.Button(main_frame, text="paper", command=lambda: widget_send("paper"))
+    paper_btn.grid(column=2, row=1)
+    scissor_btn = tk.Button(main_frame, text="scissors", command=lambda: widget_send("scissors"))
+    scissor_btn.grid(column=3, row=1)
+
 
 
 def encodeAndSend(data, sock):
     data = data.encode('utf-8')
-    header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
+    header = f"{len(data):<{1024}}".encode('utf-8')
     print(header)
     sock.send(header+data)
 
 def decodeData(sock):
-    header = sock.recv(HEADER_LENGTH)
+    header = sock.recv(1024)
     print(header)
     data_length = int(float(header.decode('utf-8').strip()))
     data = sock.recv(data_length).decode('utf-8')
     print(data)
 
 
-receiving = Thread(target = recv, daemon=True)
+receiving = Thread(target = receive, daemon=True)
 sending = Thread(target = send, daemon= True)
 
 print("Client Test")
@@ -100,7 +103,7 @@ port_entry.grid(column=1, row=1, columnspan=2, sticky="ew")
 connect_btn = tk.Button(main_frame, text="Receive", command=lambda: receiving.start(), width=25)
 connect_btn.grid(column=0, row=2)
 
-send_btn = tk.Button(main_frame, text="Send", command=lambda: send(), width=25)
+send_btn = tk.Button(main_frame, text="Send", command=lambda: rock_paper_scissors(), width=25)
 send_btn.grid(column=1, row=2)
 
 quit_btn = tk.Button(main_frame, text="Quit", command=lambda: quit(), width=25)

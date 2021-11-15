@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.constants import DISABLED, NORMAL
 from classes.config import Config
 import socket
 from threading import Thread
@@ -25,9 +26,15 @@ class Lobby():
         self.connect_btn = tk.Button(self.lobby_frame, text="Connect to Server", command=self.connect_to_server)
         self.connect_btn.grid(column=0, row=5, columnspan=3)
         self.lobby_frame.grid(column=0, row=0)
+        self.data = []
     
     def create_thread(self):
         self.lobby_thread = Thread(target=self.connect_to_server, daemon=True)
+        self.connect_btn.configure(text="lolololo")
+        self.connect_btn.grid(column=0, row=5, columnspan=3)
+        self.lobby_frame.grid(column=0, row=0)
+
+
 
     def connect_to_server(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -40,10 +47,8 @@ class Lobby():
             try:
                 message = sock.recv(1024).decode()
                 if len(message)>1:
-                    print(message)
-                    sock.close()
-                    print("closed socket")
-                    break
+                    self.data.append(message)
+                    for x in self.data:
+                        print(x)
             except Exception as e:
-                print(e)
-            
+                print(e)            
