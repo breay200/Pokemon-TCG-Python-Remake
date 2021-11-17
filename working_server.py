@@ -7,9 +7,10 @@ from tkinter.constants import E
 import select
 import queue
 
+from classes.config import Config
+
 global HEADER_LENGTH
 HEADER_LENGTH = 1024
-
 
 def initiate_server():
     print("started server")
@@ -27,14 +28,14 @@ def initiate_server():
     inputs = [server]
     
     outputs = []
-
-    # Outgoing message queues (socket:Queue)
     data_dict = {}
     data_count = 0
+
     while True:
-        # Wait for at least one of the sockets to be ready for processing
+
         readable, writable, exceptional = select.select(inputs, outputs, inputs)
         for s in readable:
+
             if s is server:
                 connection, address = s.accept()
                 print(f"new connection from {address}")
@@ -42,15 +43,26 @@ def initiate_server():
                 inputs.append(connection)
             else:
                 data_header = s.recv(HEADER_LENGTH)
+
                 if not data_header:
                     continue
+
                 data_length = int(data_header.decode('utf-8').strip())
                 data = s.recv(data_length)
                 print(f"received {data.decode('utf-8')} from {s.getpeername()}")
                 data_count += 1
                 data_dict[data_count] = {"data": data.decode('utf-8')}
+                
+                """
                 if s not in outputs:
                     outputs.append(s)
+                if 'user1' in data.decode('utf-8'):
+                    data = "user 1 received"
+                elif 'user2' in data.decode('utf-8'):
+                    data = "user 2 received"
+                data_header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
+                s.send(data_header+data.encode('utf-8'))
+                """
  
         for s in writable:
             try:
@@ -68,4 +80,28 @@ def initiate_server():
         data_count = 0
 
 
-initiate_server()
+class Server():
+    def __init__(self):
+        Config.master = tk.Tk()
+        width = Config.master.winfo_screenwidth() * 0.75
+        height = Config.master.winfo_screenheight() * 0.75
+        Config.master.geometry("%dx%d" % (width, height))
+        Config.master.title("SERVER")
+        self.lobby_frame = tk.Frame(Config.master)
+        self.lobby_title = tk.Label(self.lobby_frame, text="LOBBY")
+        self.lobby_title.grid(column=0, row=0, sticky="ew")
+        self.lobby_count = 0
+        self.players_in_lobby_label = tk.Label(self.lobby_frame, text=f"players in lobby: {self.lobby_count}")
+        self.players_in_lobby_label.grid(column=0, row=2)
+        self.player_names = []
+        self.player_frame = tk.Label(self.lobby_frame)
+        self.player_frame.grid(column=0, row=3, sticky="ew")
+        self.server_address = ('127.0.0.1', 65432)
+        self.server_address_label = tk.Label(self.lobby_frame, text=f"server details: {self.server_address}")
+        self.server_address_label.grid(column=0 ,row=4, columnspan=3)
+        self.start = tk.Button(self.lobby_frame, text="Start Server", command=initiate_server)
+        self.start.grid(column=0, row=5, columnspan=3)
+        self.lobby_frame.grid(column=0, row=0)
+        Config.master.mainloop()
+
+server = Server()

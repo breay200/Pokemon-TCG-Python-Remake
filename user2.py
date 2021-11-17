@@ -5,32 +5,41 @@ from threading import Thread, stack_size
 global HEADER_LENGTH
 HEADER_LENGTH = 1024
 
-
+status = {"sending":True}
 
 def receive(sock, server_address):
-    while True:
+    no_data = True
+    while no_data:
         try:
             data_header = sock.recv(HEADER_LENGTH)
             data_length = int(float(data_header.decode('utf-8').strip()))
             data = sock.recv(data_length).decode('utf-8')
-            
-            if 'user1' in data:
+
+            if data == 'user 2 received':
+                #status["sending"] = False
+                pass
+            elif 'user1' in data:
+                print("received user1's data")
                 with open("wow.txt", "a") as file1:
                     file1.write(data + "\n")
+                    #no_data = False
             elif 'user2' in data:
-                print("this is my sent data")
+                #print("this is my sent data")
+                pass
 
         except Exception as e:
-            print(e)
+            print(f"line 28 {e}")
 
 
 def send(data, sock):
+    #sending = status.get("sending")
     try:
-        data = data.encode('utf-8')
         data_header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
-        assert sock.send(data_header+data)
+        assert sock.send(data_header+data.encode('utf-8'))
     except Exception as e:
-        print(e)
+        print(f"line 39: {e}")
+    #sending = status.get("sending")
+
 
 def rock_paper_scissors():
     def widget_send(data):

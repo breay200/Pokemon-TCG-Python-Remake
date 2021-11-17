@@ -5,35 +5,49 @@ from threading import Thread, stack_size
 global HEADER_LENGTH
 HEADER_LENGTH = 1024
 
+status = {"sending": True}
+thread_list = []
 
-
-def receive(sock, server_address):
-    while True:
+def receive(sock):
+    no_data = True
+    while no_data:
         try:
             data_header = sock.recv(HEADER_LENGTH)
             data_length = int(float(data_header.decode('utf-8').strip()))
             data = sock.recv(data_length).decode('utf-8')
             
-            if 'user2' in data:
+            if data == 'user 1 received':
+                #status["sending"] = False
+                pass
+            elif 'user2' in data:
+                print("received data from user 1")
                 with open("rps.txt", "a") as file1:
                     file1.write(data + "\n")
+                    #no_data = False
             elif 'user1' in data:
-                print("this is my sent data")
+                #print("this is my sent data")
+                pass
 
         except Exception as e:
             print(e)
 
 
 def send(data, sock):
+    #sending = status.get("sending")
     try:
-        data = data.encode('utf-8')
         data_header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
-        sock.send(data_header+data)
+        assert sock.send(data_header+data.encode('utf-8'))
     except Exception as e:
-        print(e)
+        print(f"line 39: {e}")
+    #sending = status.get("sending")
+        
 
 def rock_paper_scissors():
     def widget_send(data):
+        if not receiving.is_alive():
+            
+            print("started recieving")
+            receiving.start()
         send(data, sock)
 
     for widget in main_frame.winfo_children():
@@ -44,7 +58,8 @@ def rock_paper_scissors():
     
     sock.connect(server_address)
     print('connecting to %s port %s' % server_address)
-    receiving = Thread(target = receive, args=(sock,server_address,), daemon=True)
+    receiving = Thread(target = receive, args=(sock,))
+    thread_list.append(receiving)
     receiving.start()
 
     rock_btn = tk.Button(main_frame, text="rock", command=lambda: widget_send("user1 rock"))
