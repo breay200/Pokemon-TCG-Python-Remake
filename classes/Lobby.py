@@ -35,7 +35,6 @@ class Lobby():
         self.lobby_frame.grid(column=0, row=0)
 
 
-
     def connect_to_server(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         print('connecting to %s port %s' % self.server_address)
@@ -51,4 +50,4 @@ class Lobby():
                     for x in self.data:
                         print(x)
             except Exception as e:
-                print(e)            
+                print(e)   
