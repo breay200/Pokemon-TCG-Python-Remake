@@ -19,14 +19,12 @@ def receive(sock, server_address):
                 #status["sending"] = False
                 pass
             elif 'user1' in data:
-                print("received user1's data")
-                with open("wow.txt", "a") as file1:
+                print("received data from user 1", data)
+                with open("received_data.txt", "a") as file1:
                     file1.write(data + "\n")
                     #no_data = False
             elif 'user2' in data:
-                #print("this is my sent data")
                 pass
-
         except Exception as e:
             print(f"line 28 {e}")
 
@@ -55,6 +53,8 @@ def rock_paper_scissors():
     print('connecting to %s port %s' % server_address)
     receiving = Thread(target = receive, args=(sock,server_address,), daemon=True)
     receiving.start()
+
+    send("connection test from user1", sock)
 
     rock_btn = tk.Button(main_frame, text="rock", command=lambda: widget_send("user2 rock"))
     rock_btn.grid(column=1,row=1)

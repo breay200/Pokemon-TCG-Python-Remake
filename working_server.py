@@ -53,9 +53,10 @@ def initiate_server():
                 data_count += 1
                 data_dict[data_count] = {"data": data.decode('utf-8')}
                 
-                """
                 if s not in outputs:
                     outputs.append(s)
+
+                """
                 if 'user1' in data.decode('utf-8'):
                     data = "user 1 received"
                 elif 'user2' in data.decode('utf-8'):
@@ -72,13 +73,14 @@ def initiate_server():
                     #data = f"{temp[0]} , {temp[1]} , {data}"
                     data = data.encode('utf-8')
                     data_header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
-                    s.send(data_header+data)
+                    assert s.send(data_header+data)
             except Exception as e:
                 print(e)
         
         data_dict = {}
         data_count = 0
 
+initiate_server()
 
 class Server():
     def __init__(self):
@@ -104,4 +106,4 @@ class Server():
         self.lobby_frame.grid(column=0, row=0)
         Config.master.mainloop()
 
-server = Server()
+#server = Server()

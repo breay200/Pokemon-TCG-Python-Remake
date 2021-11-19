@@ -20,8 +20,8 @@ def receive(sock):
                 #status["sending"] = False
                 pass
             elif 'user2' in data:
-                print("received data from user 1")
-                with open("rps.txt", "a") as file1:
+                print("received data from user 2", data)
+                with open("received_data.txt", "a") as file1:
                     file1.write(data + "\n")
                     #no_data = False
             elif 'user1' in data:
@@ -62,6 +62,7 @@ def rock_paper_scissors():
     thread_list.append(receiving)
     receiving.start()
 
+    send("connection test from user1", sock)
     rock_btn = tk.Button(main_frame, text="rock", command=lambda: widget_send("user1 rock"))
     rock_btn.grid(column=1,row=1)
 
