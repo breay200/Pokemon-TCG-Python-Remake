@@ -9,6 +9,7 @@ class Networking():
         self.status = "not connected"
         self.write_file = "received_data.txt"
         self.server_address = None
+        self.players = set()
     
     def set_server_address(self, server_address):
         """set_server_address: sets the server address"""
@@ -30,9 +31,10 @@ class Networking():
                 data_length = int(float(data_header.decode('utf-8').strip()))
                 data = self.sock.recv(data_length).decode('utf-8')
                 
-                if data == 'user 1 received':
-                    #status["sending"] = False
-                    pass
+                if "username:" in data:
+                    data = data[9:].strip()
+                    print(data)
+                    self.players.add(data)
                 elif 'user2' in data:
                     print("received data from user 2", data)
                     with open("received_data.txt", "a") as file1:
