@@ -32,9 +32,10 @@ class Networking():
                 data = self.sock.recv(data_length).decode('utf-8')
                 
                 if "username:" in data:
-                    data = data[9:].strip()
-                    print(data)
-                    self.players.add(data)
+                    username = data[9:].strip()
+                    print("username: ", username)
+                    if username not in self.players:
+                        self.players.add(username)
                 elif 'user2' in data:
                     print("received data from user 2", data)
                     with open("received_data.txt", "a") as file1:

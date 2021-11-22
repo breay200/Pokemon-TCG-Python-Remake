@@ -61,9 +61,9 @@ class Lobby():
         server_address = (address, port)
         self.connectivity.set_server_address(server_address)
         self.connectivity.connect_to_server()
-        self.connectivity.send(f"username: {self.user.username}")
 
     def refresh_lobby(self):
+        self.connectivity.send(f"username: {self.user.username}")
         self.players = self.connectivity.players
         self.lobby_count_label.configure(text=f"number of available players: {len(self.players)}")
         self.lobby_count_label.grid(column=0, row=7)
