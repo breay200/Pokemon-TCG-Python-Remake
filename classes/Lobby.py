@@ -67,6 +67,9 @@ class Lobby():
         self.players = self.connectivity.players
         self.lobby_count_label.configure(text=f"number of available players: {len(self.players)}")
         self.lobby_count_label.grid(column=0, row=7)
+
+        for widget in self.player_radiobuttons:
+            widget.destroy()
         
         for player in self.players:
             self.player_radiobuttons.append(tk.Radiobutton(self.players_frame, text=f"{player}", variable=player, command=lambda: self.prompt_user(player)))
