@@ -3,7 +3,8 @@ from threading import Thread
 import socket
 
 class Networking():
-    def __init__(self) -> None:
+    def __init__(self, username) -> None:
+        self.username = username
         self.header_length = 1024
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.status = "not connected"
@@ -32,9 +33,9 @@ class Networking():
                 data = self.sock.recv(data_length).decode('utf-8')
                 
                 if "username:" in data:
-                    data = data[9:].strip()
-                    print(data)
-                    self.players.add(data)
+                    username = data[9:].strip()
+                    if username != self.username:
+                        self.players.add(username)
                 elif 'user2' in data:
                     print("received data from user 2", data)
                     with open("received_data.txt", "a") as file1:

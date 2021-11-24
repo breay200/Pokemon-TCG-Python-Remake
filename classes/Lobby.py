@@ -7,7 +7,7 @@ import tkinter as tk
 class Lobby():
     def __init__(self, user):
         self.user = user
-        self.connectivity = Networking()
+        self.connectivity = Networking(user.username)
 
         self.lobby_frame = tk.Frame(Config.master)
         
@@ -61,12 +61,17 @@ class Lobby():
         server_address = (address, port)
         self.connectivity.set_server_address(server_address)
         self.connectivity.connect_to_server()
-        self.connectivity.send(f"username: {self.user.username}")
 
     def refresh_lobby(self):
+        self.connectivity.send(f"username: {self.user.username}")
         self.players = self.connectivity.players
         self.lobby_count_label.configure(text=f"number of available players: {len(self.players)}")
         self.lobby_count_label.grid(column=0, row=7)
+        
+        for widget in self.players_frame.winfo_children():
+            widget.destroy()
+        
+        self.player_radiobuttons = []
         
         for player in self.players:
             self.player_radiobuttons.append(tk.Radiobutton(self.players_frame, text=f"{player}", variable=player, command=lambda: self.prompt_user(player)))
