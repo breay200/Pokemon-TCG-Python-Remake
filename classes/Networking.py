@@ -34,7 +34,7 @@ class Networking():
                 
                 if "username:" in data:
                     username = data[9:].strip()
-                    if username != self.username:
+                    if (username != self.username) and (username not in self.players):
                         self.players.add(username)
                 elif 'user2' in data:
                     print("received data from user 2", data)
