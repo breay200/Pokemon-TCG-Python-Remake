@@ -21,7 +21,6 @@ class Deck:
         pass
     
     def get_decks(self, filename):
-        print("Available Decks: \n")
         file = open(filename,encoding='utf-8')
         data = json.load(file)
         decks = []
@@ -48,7 +47,6 @@ class Deck:
         file.close()
 
     def check_deck(self):
-        
         pass
 
     def shuffle_deck(self):
@@ -72,3 +70,27 @@ class Deck:
 
     def get_deck_size(self):
         return len(self.id_list)
+
+    def change_deck(self, frame):
+        """change_deck: """
+        def set_deck(deck):
+            for widget in frame.winfo_children():
+                widget.destroy()
+            tk.messagebox.showinfo("Deck Selection", f"{deck.capitalize()} has been selected as your active deck")
+            return deck
+        
+        decks = self.get_decks("data/set1.json")
+        
+        deck_widgets = []
+        
+        for deck in decks:
+            card_widget = tk.Button(frame, text=deck, command=lambda: set_deck(deck))
+            deck_widgets.append(card_widget)
+        
+        widget_count = 0
+        for widget in deck_widgets:
+            widget.grid(column = widget_count, row = 1)
+            widget_count += 1
+        
+        frame.grid(column=0, row=0)
+    

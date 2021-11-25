@@ -5,7 +5,6 @@ import tkinter as tk
 from threading import Thread
 from tkinter.constants import E
 import select
-import queue
 
 from classes.config import Config
 
@@ -55,15 +54,6 @@ def initiate_server():
                 
                 if s not in outputs:
                     outputs.append(s)
-
-                """
-                if 'user1' in data.decode('utf-8'):
-                    data = "user 1 received"
-                elif 'user2' in data.decode('utf-8'):
-                    data = "user 2 received"
-                data_header = f"{len(data):<{HEADER_LENGTH}}".encode('utf-8')
-                s.send(data_header+data.encode('utf-8'))
-                """
  
         for s in writable:
             try:

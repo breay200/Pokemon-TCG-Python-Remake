@@ -1,7 +1,7 @@
+from classes.Lobby import Lobby
 from classes.MainGameLoop import MainGameLoop
 from classes.User import *
 from classes.config import *
-from classes.MainGameLoop import *
 import tkinter as tk
 from classes.Lobby import *
 
@@ -28,7 +28,6 @@ class Game():
     def start_game(self):
         self.game_frame.destroy()
         lobby = Lobby(self.user)
-        """I COMMENTED THIS OUT AND THIS NEEDS TO BE UNCOMMENTED ONCE I FIGURE OUT THE LOBBY STUFF XX"""
-        #mgl = MainGameLoop(self.user)   
+           
 
         

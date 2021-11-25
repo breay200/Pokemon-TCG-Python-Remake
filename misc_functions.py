@@ -42,3 +42,11 @@ def check_in_file(filename, text):
             break
     file.close()
     return found
+
+def read_file(filename, data):
+    with open(filename, "r") as f:
+        lines = f.readline()
+        for line in lines:
+            if data in line:
+                return line
+    return False

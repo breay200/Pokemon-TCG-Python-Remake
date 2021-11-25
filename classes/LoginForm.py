@@ -98,8 +98,8 @@ class LoginForm(Form):
         """forgot_password: call this method when the user clicks on the forgot password button. Checks to see if the user has entered a username, and continues with the password reset."""
         try:
             username = self.login_username.get()
-        except error:
-            print(error)
+        except Exception as e:
+            print(e)
         
         if len(username)>1:
             print("username greater than 1")

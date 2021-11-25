@@ -1,20 +1,22 @@
 from tkinter.constants import DISABLED, NE, NORMAL
 from classes.config import Config
-from classes.Networking import *
+from classes.Networking import Networking
+from classes.MainGameLoop import MainGameLoop
 from tkinter import messagebox
 import tkinter as tk
+from threading import Thread
 
 class Lobby():
     def __init__(self, user):
         self.user = user
-        self.connectivity = Networking(user.username)
+        self.networking = Networking(user.username)
 
         self.lobby_frame = tk.Frame(Config.master)
         
         self.lobby_title = tk.Label(self.lobby_frame, text="Lobby")
         self.lobby_title.grid(column=0, row=0, sticky="ew")
         
-        self.connection_status_label = tk.Label(self.lobby_frame, text=f"connection status: {self.connectivity.status}")
+        self.connection_status_label = tk.Label(self.lobby_frame, text=f"connection status: {self.networking.status}")
         self.connection_status_label.grid(column=0, row=1)
 
         self.address = tk.StringVar()
@@ -47,6 +49,17 @@ class Lobby():
         self.refresh_btn.grid(column=0, row=6)
 
         self.lobby_frame.grid(column=0, row=0)
+
+        self.check_opponent_thread = Thread(target = self.check_opponent)
+        self.check_opponent_thread.start()
+    
+    def check_opponent(self):
+        no_opponent = True
+        while no_opponent:
+            if self.networking.opponent:
+                self.lobby_frame.destroy()
+                mgl = MainGameLoop(self.user, self.networking)
+                no_opponent = False
     
     def connect_to_server(self):
         """connect_to_server: gets the variable valyes for address and port, then validates them as string and integer values. A tuple is made containing their values, and this data is passed to the set_server_address() , before calling connect_to_server (from the networking object)"""
@@ -59,12 +72,12 @@ class Lobby():
             print("error converting types in connect_to_server method in lobby class", e)
             return
         server_address = (address, port)
-        self.connectivity.set_server_address(server_address)
-        self.connectivity.connect_to_server()
+        self.networking.set_server_address(server_address)
+        self.networking.connect_to_server()
 
     def refresh_lobby(self):
-        self.connectivity.send(f"username: {self.user.username}")
-        self.players = self.connectivity.players
+        self.networking.send(f"username: {self.user.username}")
+        self.players = self.networking.players
         self.lobby_count_label.configure(text=f"number of available players: {len(self.players)}")
         self.lobby_count_label.grid(column=0, row=7)
 
@@ -83,9 +96,8 @@ class Lobby():
 
 
     def prompt_user(self, player):
-        result = tk.messagebox.askquestion(f"Connect with {player}?", f"Would you like to attempt to connect with {player} and start a match with them?")
+        result = tk.messagebox.askquestion(f"Connect with {player}?", f"Would you like to attempt to connect with {player} and start?")
         if result == 'yes':
-            #do things
-            print("doing things")
+            self.networking.match_request(self.user.username, player)
         else:
-            pass
+            print(f"you choose not to connect with {player}")

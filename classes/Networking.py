@@ -1,6 +1,8 @@
 from os import error
 from threading import Thread
 import socket
+import tkinter as tk
+from classes.MainGameLoop import *
 
 class Networking():
     def __init__(self, username) -> None:
@@ -11,6 +13,7 @@ class Networking():
         self.write_file = "received_data.txt"
         self.server_address = None
         self.players = set()
+        self.opponent = ""
     
     def set_server_address(self, server_address):
         """set_server_address: sets the server address"""
@@ -34,16 +37,22 @@ class Networking():
                 
                 if "username:" in data:
                     username = data[9:].strip()
+                    print(username)
                     if (username != self.username) and (username not in self.players):
                         self.players.add(username)
-                elif 'user2' in data:
-                    print("received data from user 2", data)
-                    with open("received_data.txt", "a") as file1:
-                        file1.write(data + "\n")
-                        #no_data = False
-                elif 'user1' in data:
-                    #print("this is my sent data")
-                    pass
+                elif "request:" in data:
+                    request = data[8:].strip()
+                    sender, player = request.split(',')
+                    if player == self.username:
+                        self.request_pop_up(sender)
+                elif "response:" in data:
+                    response = data[9:].strip()
+                    sender, username, status = response.split(',')
+                    if username == self.username:
+                        self.response_pop_up(sender, status)
+                elif self.opponent in data:
+                    with open("data/received_data.txt", "a") as f:
+                        f.write(data + "\n")
             except Exception as e:
                 print(e)
     
@@ -54,3 +63,25 @@ class Networking():
             assert self.sock.send(data_header+data.encode('utf-8'))
         except Exception as e:
             print(f"Exception in send method of networking class: {e}")
+    
+    def match_request(self, sender, player):
+        self.send(f"request: {sender},{player}")
+
+    def request_pop_up(self, sender):
+        answer = tk.messagebox.askyesno("Battle request", f"{sender.capitalize()} would like to start a battle with you. Accept?")
+        if answer:
+            print("you accepted the request")
+            self.send(f"response: {self.username},{sender},accepted")
+            tk.messagebox.showinfo("Match starting", f"Starting battle with {sender}!")
+            self.opponent = sender
+        else:
+            self.send(f"response: {self.username},{sender},refused")
+    
+    def response_pop_up(self, sender, status):
+        if status == "accepted":
+            tk.messagebox.showinfo("Request accepted", f"{sender.capitalize()} accepted your battle request!")
+            tk.messagebox.showinfo("Match starting", f"Starting battle with {sender}!")
+            self.opponent = sender
+        elif status == "refused":
+            tk.messagebox.showinfo("Request refused", f"{sender.capitalize()} refused your battle request.")
+

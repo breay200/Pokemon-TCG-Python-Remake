@@ -12,11 +12,14 @@ from classes.Colours import *
 from classes.Bench import *
 from classes.config import *
 from classes.Deck_UI import *
+from classes.GameLogic import *
 from misc_functions import *
 
 class MainGameLoop:
-    def __init__(self, user) -> None:
+    def __init__(self, user, networking) -> None:
         self.user = user
+        self.networking = networking
+        self.opponent = networking.opponent
 
         self.completed = False
         self.added_to_bench = False
@@ -28,35 +31,43 @@ class MainGameLoop:
         self.active_pokemon = object
         self.obj_list = object
         self.prize = object
+        self.game_logic = GameLogic(self.user, self.networking)
 
         self.mgl_frame = tk.Frame(Config.master)
-        
-        self.block_label = tk.Label(self.mgl_frame, width=400, height=200, background='#4A7A8C')
-        self.block_label.grid(column=0, row=0)
-
-        self.block_inner_label = tk.Label(self.block_label)
 
         self.deck = Deck()
 
-        if user.active_deck != "":
-            message = f"Your current deck is: {self.user.active_deck}.\nWould you like to change your deck?"
-            self.block_inner_label.configure(text=message)
-            self.block_inner_label.grid(column=0, row=0)
-
-            self.yes_btn = tk.Button(self.block_label, text="Yes", command=self.change_deck)
-            self.yes_btn.grid(column=0, row=1)
-
-            self.no_btn = tk.Button(self.block_label, text="No", command=self.load_current_deck)
-            self.no_btn.grid(column=1, row=1)
-        else:
-            message = "You don't have an active deck selected, please choose one for your battle: "
-            self.block_inner_label.configure(text=message)
-            self.block_inner_label.grid(column=0, row=0)
-        
         self.mgl_frame.grid(column=0, row=0)
+
+        if user.active_deck != "":
+            answer = tk.messagebox.askyesno("Deck Selection", f"The currently selected deck is {self.user.active_deck}.\nWould you like to change it?")
+            if answer:
+                chosen_deck = self.deck.change_deck(self.mgl_frame)
+                self.user.active_deck = str(chosen_deck).replace(" ", "")
+                self.deck.active_deck = str(chosen_deck).replace(" ", "")
+                self.deck.load_deck("data/set1.json")
+                self.initiate_game()
+            else:
+                self.deck.load_deck("data/set1.json")
+                self.initiate_game()
+        else:
+            tk.messagebox.showinfo("Deck Selection", "You don't have a deck selected.\nPlease choose one for your battle!")
+            chosen_deck = self.deck.change_deck(self.mgl_frame)
+            self.user.active_deck = str(chosen_deck).replace(" ", "")
+            self.deck.active_deck = str(chosen_deck).replace(" ", "")
+            self.deck.load_deck("data/set1.json")
+            self.initiate_game()
 
     
     def initiate_game(self):
+        print("here")
+        self.game_logic.rock_paper_scissors(self.mgl_frame)
+        print("finished rock paper scissors")
+
+
+
+
+
         def set_active_pokemon(basic_card):
             self.hand_obj.remove_basic_card(basic_card)
             self.active_pokemon.set_card_data(basic_card)
@@ -256,26 +267,13 @@ class MainGameLoop:
                 self.attached_energy = True
                 self.initiate_game()
 
-        try:
-            self.no_btn.destroy()
-            self.yes_btn.destroy()
-        except error:
-            print("Error trying to destroy yes and no buttons")
-
         #should make a card frame to put cards into
         if not self.completed:
-            message = "STARTING GAME!"
-            try:
-                if not self.block_label or self.block_inner_label:
-                    self.block_label = tk.Label(self.mgl_frame, width=400, height=200, background='#4A7A8C')
-                    self.block_label.grid(column=0, row=0)
-                    self.block_inner_label = tk.Label(self.block_label)
-                    self.block_label.grid(column=0, row=0)
-            except error:
-                print(error)
-            self.block_inner_label = tk.Label(self.block_label)
-            self.block_inner_label.configure(text=message)
-            self.block_inner_label.grid(column=0, row=0)
+            self.game_logic.rock_paper_scissors(self.mgl_frame)
+
+            #self.block_inner_label = tk.Label(self.block_label)
+            #self.block_inner_label.configure(text=message)
+            #self.block_inner_label.grid(column=0, row=0)
             self.deck.shuffle_deck()
             self.hand = self.deck.draw_number_of_cards(7)
             self.obj_list = self.load_card_data(self.hand)
@@ -396,38 +394,3 @@ class MainGameLoop:
         hand.append_to_hand(deck.pop_card())
         hand.add_to_bench(bench)
 
-    def change_deck(self):
-        """change_deck: calls the deck_ui class which prompts the user to choose a new deck"""
-        def get_active(deck):
-            self.user.active_deck = deck
-            self.deck.active_deck = deck
-            text = f"{self.user.username}, {self.user.matches_won}, {self.user.matches_lost}, {self.user.date_joined}, {self.user.favourite_pokemon}, {self.user.email_addr}, {self.user.active_deck}"
-            append_to_file("data/player_data.txt", text)
-            self.block_label.destroy()
-            self.load_current_deck()
-            
-        for widget in self.mgl_frame.winfo_children():
-            widget.destroy()
-        
-        self.block_label = tk.Label(self.mgl_frame, width=400, height=200, background='#4A7A8C')
-        
-        #probably want to delete the previous frame
-        decks = self.deck.get_decks("data/set1.json")
-        deck_widgets = []
-        
-        for deck in decks:
-            card_widget = tk.Button(self.block_label, text=deck, command=lambda: get_active(deck))
-            deck_widgets.append(card_widget)
-        widget_count = 0
-        
-        for widget in deck_widgets:
-            widget.grid(column = widget_count, row = 1)
-            widget_count += 1
-        
-        self.block_label.grid(column=0, row=0)
-    
-            
-    def load_current_deck(self):
-        self.deck.active_deck = str(self.user.active_deck).replace(" ", "")
-        self.deck.load_deck("data/set1.json")
-        self.initiate_game()
