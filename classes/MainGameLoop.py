@@ -22,6 +22,7 @@ class MainGameLoop:
         self.networking = networking
         self.opponent = networking.opponent
 
+        self.play_order = ""
         self.completed = False
         self.added_to_bench = False
         self.attached_energy = False
@@ -61,15 +62,15 @@ class MainGameLoop:
 
     
     def initiate_game(self):
-        print("here")
         winner = ""
         turn = 1
-        while not winner:
+        while True:
             winner = self.game_logic.rock_paper_scissors(self.mgl_frame, turn)
-            if not winner:
-                turn += 1
-            
-        print("finished rock paper scissors")
+            turn += 1
+            if winner:
+                break
+        self.play_order = self.game_logic.first_or_second(self.mgl_frame, turn, winner)
+        print(self.play_order)
 
 
 

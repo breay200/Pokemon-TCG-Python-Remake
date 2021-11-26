@@ -49,3 +49,19 @@ def read_file(filename, data):
         for line in lines:
             if data in line:
                 return line
+
+def read_from_received(infile):
+            received = False
+            while not received:
+                try:
+                    file_data = read_file("data/received_data.txt", infile)
+                except Exception as e:
+                    continue
+
+                if file_data:
+                    return file_data
+
+def destroy_widgets(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    frame.destroy()
