@@ -1,4 +1,5 @@
 from os import error
+from tkinter.constants import W
 from classes.Bench import Bench
 from classes.Player import *
 from classes.Deck import *
@@ -61,7 +62,13 @@ class MainGameLoop:
     
     def initiate_game(self):
         print("here")
-        self.game_logic.rock_paper_scissors(self.mgl_frame)
+        winner = ""
+        turn = 1
+        while not winner:
+            winner = self.game_logic.rock_paper_scissors(self.mgl_frame, turn)
+            if not winner:
+                turn += 1
+            
         print("finished rock paper scissors")
 
 

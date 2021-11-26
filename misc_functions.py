@@ -45,8 +45,7 @@ def check_in_file(filename, text):
 
 def read_file(filename, data):
     with open(filename, "r") as f:
-        lines = f.readline()
+        lines = f.readlines()
         for line in lines:
             if data in line:
                 return line
-    return False
