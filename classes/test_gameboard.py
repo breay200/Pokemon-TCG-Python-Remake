@@ -1,7 +1,7 @@
 import tkinter as tk
-from tkinter import Pack, ttk
+from tkinter import Pack, PhotoImage, ttk
 from tkinter.ttk import *
-
+from PIL import Image, ImageTk
 
 master = tk.Tk()
 #master.geometry("1920x1080")
@@ -13,12 +13,15 @@ master.title("TCG REMAKE")
 opponent = tk.Frame(master, width=width, height=height/2, bg="red")
 opponent.place(x=0,y=0)
 
+photo = PhotoImage(file = "images/pokemon_back.png")
+photoimage = photo.subsample(1, 2)
+
 
 player = tk.Frame(master, width=width, height=height/2, bg="blue")
 prize = tk.Frame(player, width=width*0.2, height=height*0.45, bg="black")
 bench = tk.Frame(player, width=width*0.5, height=height*0.17, bg="black")
 discard = tk.Frame(player, width=width*0.1, height=height*0.17, bg="black")
-deck = tk.Frame(player, width=width*0.1, height=height*0.17, bg="black")
+deck = tk.Button(player, image=photoimage, width=width*0.1, height=height*0.17, bg="black")
 active = tk.Frame(player, width=width*0.1, height=height*0.2, bg="white")
 
 prize.place(x=width*0.02, y=height*0.04)
