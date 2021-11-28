@@ -62,6 +62,7 @@ class MainGameLoop:
 
     
     def initiate_game(self):
+        open('data/received_data.txt', 'w').close()
         winner = ""
         turn = 1
         while True:
@@ -71,7 +72,7 @@ class MainGameLoop:
                 break
         self.play_order = self.game_logic.first_or_second(self.mgl_frame, turn, winner)
         print(self.play_order)
-
+        
 
 
 

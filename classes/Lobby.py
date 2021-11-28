@@ -74,8 +74,10 @@ class Lobby():
         server_address = (address, port)
         self.networking.set_server_address(server_address)
         self.networking.connect_to_server()
+        self.networking.send(f"username: {self.user.username}")
 
     def refresh_lobby(self):
+        """refresh_lobby: when the user presses the refresh button, this method is called."""
         self.networking.send(f"username: {self.user.username}")
         self.players = self.networking.players
         self.lobby_count_label.configure(text=f"number of available players: {len(self.players)}")
