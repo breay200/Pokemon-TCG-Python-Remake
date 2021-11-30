@@ -3,17 +3,23 @@ import tkinter as tk
 from tkinter.constants import YES
 from tkinter.ttk import *
 from PIL import Image, ImageTk
+from tkinter import messagebox
+
 
 def add_to_bench():
-    btn_widget_list.append(tk.Button(bench, image=deck_img, width=width*0.08, height=height*0.2, borderwidth=0, highlightthickness=0))
-    x_coordinates = 0
-    for x in btn_widget_list:
-        if btn_widget_list.index(x) == 0:
-            pass
-        else:
-            x_coordinates += (width*0.015)+(width*0.08)
-        x.place(x=x_coordinates, y=0)
-    bench.place(x=(width*0.02+width*0.2+width*0.03), y=height*0.225)
+    if len(btn_widget_list) < 5:
+        btn_widget_list.append(tk.Button(bench, image=deck_img, width=width*0.08, height=height*0.2, borderwidth=0, highlightthickness=0))
+        x_coordinates = 0
+        for x in btn_widget_list:
+            if btn_widget_list.index(x) == 0:
+                pass
+            else:
+                x_coordinates += (width*0.015)+(width*0.08)
+            x.place(x=x_coordinates, y=0)
+        bench.place(x=(width*0.02+width*0.2+width*0.03), y=height*0.225)
+    else:
+        tk.messagebox.showinfo("error", "you cannot add more than 5 cards to the bench")
+
 
 def load_prize():
     for x in range(6):
@@ -79,7 +85,7 @@ prize.place(x=width*0.02, y=0)
 bench.place(x=(width*0.02+width*0.2+width*0.03), y=height*0.225)
 discard.place(x=(width*0.02+width*0.2+width*0.03+width*0.5+width*0.02), y=height*0.3)
 deck.place(x=(width*0.02+width*0.2+width*0.03+width*0.5+width*0.02), y=height*0.04)
-active.place(x=(width/2), y=height*0.04)
+active.place(x=(width*0.46), y=height*0.015)
 player.place(x=0,y=height/2)
 
 
