@@ -6,9 +6,16 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 
 
+def make_active():
+    active_card = tk.Button(active, image=deck_img, width=width*0.08, height=height*0.2, bg="blue", borderwidth=0, highlightthickness=0)
+    active_card.place(x=0, y=0)
+    active.place(x=(width*0.46), y=height*0.015)
+
+
 def add_to_bench():
     if len(btn_widget_list) < 5:
-        btn_widget_list.append(tk.Button(bench, image=deck_img, width=width*0.08, height=height*0.2, borderwidth=0, highlightthickness=0))
+        button = tk.Button(bench, image=deck_img, width=width*0.08, height=height*0.2, borderwidth=0, highlightthickness=0, command=lambda: make_active())
+        btn_widget_list.append(button)
         x_coordinates = 0
         for x in btn_widget_list:
             if btn_widget_list.index(x) == 0:
@@ -43,8 +50,8 @@ def load_prize():
 
 master = tk.Tk()
 #master.geometry("1920x1080")
-width = master.winfo_screenwidth() * 0.8
-height = master.winfo_screenheight() * 0.8
+width = master.winfo_screenwidth() * 0.5
+height = master.winfo_screenheight() * 0.5
 master.geometry(f"{int(width)}x{int(height)}")
 master.title("TCG REMAKE")
 
@@ -63,7 +70,11 @@ prize = tk.Frame(player, width=width*0.15, height=height*0.5)
 bench = tk.Frame(player, width=width*0.5, height=height*0.25, highlightthickness=5, highlightbackground="black")
 discard = tk.Button(player, image=discard_img, width=width*0.08, height=height*0.2, bg="blue", borderwidth=0, highlightthickness=0)
 deck = tk.Button(player, image=deck_img, width=width*0.08, height=height*0.2, bg="blue", borderwidth=0, highlightthickness=0, command=add_to_bench)
-active = tk.Frame(player, width=width*0.1, height=height*0.2, bg="white")
+active = tk.Frame(player, width=int(width*0.08), height=int(height*0.2), bg="white")
+#hand = tk.Frame(master)
+w = int(width*0.015)
+h = int(height*0.005)
+view_hand = tk.Button(player, width=w, height=h, text="View Hand")
 
 prize_img_width = int(width*0.075)
 prize_img_height = int(height*0.16666)
@@ -75,6 +86,7 @@ prize_widget_list = []
 
 load_prize()
 
+view_hand.place(x=(width*0.87), y=(height*0.225))
 prize.place(x=width*0.02, y=0)
 bench.place(x=(width*0.02+width*0.2+width*0.03), y=height*0.225)
 discard.place(x=(width*0.02+width*0.2+width*0.03+width*0.5+width*0.02), y=height*0.3)
