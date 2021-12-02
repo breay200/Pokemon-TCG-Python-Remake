@@ -1,6 +1,7 @@
 from os import error
 from tkinter.constants import W
 from classes.Bench import Bench
+from classes.GameBoard import Gameboard
 from classes.Player import *
 from classes.Deck import *
 from classes.EnergyCard import *
@@ -72,6 +73,7 @@ class MainGameLoop:
                 break
         self.play_order = self.game_logic.first_or_second(self.mgl_frame, turn, winner)
         print(self.play_order)
+        game_board = Gameboard()
         
 
 
