@@ -5,8 +5,9 @@ from PIL import Image, ImageTk
 
 class MainMenu:
     def __init__(self, width, height):
-        print(width, height)
 
+        self.width = width
+        self.height = height
 
         self.main_frame = tk.Frame(Config.master, width=width, height=height)
 
@@ -29,4 +30,4 @@ class MainMenu:
 
     def start(self):
         self.main_frame.destroy()
-        login_form = LoginForm()
+        login_form = LoginForm(self.width, self.height)

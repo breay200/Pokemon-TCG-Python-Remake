@@ -9,39 +9,45 @@ import hashlib
 from classes.config import *
 
 class LoginForm(Form):
-    def __init__(self):
-        self.login_frame = tk.Frame(Config.master)
+    def __init__(self, width, height):
+        self.width = width 
+        self.height = height
+
+        self.login_frame = tk.Frame(Config.master, width=self.width, height=self.height)
+
+        self.side_bar_frame = tk.Frame(self.login_frame, width=int(width/3), height=int(height), bg="red")
+        self.side_bar_frame.place(x=0, y=0)
 
         self.failed_logins = 0
-
+        
         self.login_username_label = tk.Label(self.login_frame, text="Username: ")
-        self.login_username_label.grid(column=3, row=2)
+        #self.login_username_label.grid(column=3, row=2)
 
         self.login_username = tk.StringVar()
         self.login_username_entry = tk.Entry(self.login_frame, textvariable=self.login_username)
-        self.login_username_entry.grid(column=4, row=2)
+        #self.login_username_entry.grid(column=4, row=2)
         
         self.login_password_label = tk.Label(self.login_frame, text="Password: ")
-        self.login_password_label.grid(column=3,row=3)
+        #self.login_password_label.grid(column=3,row=3)
 
         self.login_password = tk.StringVar()
-        self.login_password_entry = tk.Entry(self.login_frame, textvariable=self.login_password)
-        self.login_password_entry.grid(column=4, row=3)
+        self.login_password_entry = tk.Entry(self.login_frame, textvariable=self.login_password, show="*")
+        #self.login_password_entry.grid(column=4, row=3)
 
         self.login_submit_btn = tk.Button(self.login_frame, text="Login", command=self.check_account)
-        self.login_submit_btn.grid(column=3, row=4)
+        #self.login_submit_btn.grid(column=3, row=4)
 
         self.login_forgot_btn = tk.Button(self.login_frame, text="Forgot Password", command=self.forgot_password)
-        self.login_forgot_btn.grid(column=4, row=4)
+        #self.login_forgot_btn.grid(column=4, row=4)
 
         self.login_error_label = tk.Label(self.login_frame)
 
         self.login_create_btn = tk.Button(self.login_frame, text="Create Account", command=self.create_account)
-        self.login_create_btn.grid(column=5, row=4)
+        #self.login_create_btn.grid(column=5, row=4)
 
         self.login_fail_label = tk.Label(self.login_frame)
 
-        self.login_frame.grid(column=0, row=0)
+        self.login_frame.place(x=0, y=0)
 
     def check_account(self):
         username = self.login_username.get()
