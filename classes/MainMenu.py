@@ -17,11 +17,14 @@ class MainMenu:
         self.img_label = tk.Label(self.main_frame, image=self.title_img, borderwidth=0, highlightthickness=0, width=int(width), height=int(height))
         self.img_label.place(x=0, y=0)
 
-        self.start_button = tk.Button(self.main_frame, text="Start", command=self.start, width=int(width*0.015), height=int(height*0.005), bg="blue")
-        self.start_button.place(x=((width*0.5)-(width*0.015)), y=(height*0.6))
+        self.start_btn = tk.Button(self.main_frame, text="Start", command=self.start, width=int(width*0.015), height=int(height*0.005), bg="blue")
+        self.start_btn.place(x=((width*0.5)-(width*0.015)), y=(height*0.5))
+
+        self.settings_btn = tk.Button(self.main_frame, text="Settings", command=self.settings, width=int(width*0.015), height=int(height*0.005), bg="silver")
+        self.settings_btn.place(x=((width*0.5)-(width*0.015)), y=(height*0.6))
         
-        self.quit_button = tk.Button(self.main_frame, text="Quit", command=self.quit, width=int(width*0.015), height=int(height*0.005), bg="green")
-        self.quit_button.place(x=((width*0.5)-(width*0.015)), y=(height*0.7))
+        self.quit_btn = tk.Button(self.main_frame, text="Quit", command=self.quit, width=int(width*0.015), height=int(height*0.005), bg="green")
+        self.quit_btn.place(x=((width*0.5)-(width*0.015)), y=(height*0.7))
 
         self.main_frame.place(x=0,y=0)
 
@@ -31,3 +34,29 @@ class MainMenu:
     def start(self):
         self.main_frame.destroy()
         login_form = LoginForm(self.width, self.height)
+    
+    def settings(self):
+        self.main_frame.destroy()
+        self.settings_frame = tk.Frame(Config.master, width=self.width, height=self.height)
+        
+        RESOLUTIONS = [
+            "1920X1080",
+            "1680x1050",
+            "1600x900",
+            "1280x1024",
+            "1280x720",
+            "1024x768",
+            "800x600"
+        ]
+        self.change_resolution_label = tk.Label(self.settings_frame, text="Change Resolution: ", bg="silver")
+        
+        self.default = tk.StringVar()
+        self.default.set(RESOLUTIONS[4])
+
+        self.drop_down = tk.OptionMenu(self.settings_frame, self.default, *RESOLUTIONS)
+
+        self.change_resolution_label.place(x=int(self.width*0.5), y=int(self.height*0.5))
+        self.drop_down.place(x=int(self.width*0.5), y=int(self.height*0.8))
+        self.settings_frame.place(x=0, y=0)
+
+
