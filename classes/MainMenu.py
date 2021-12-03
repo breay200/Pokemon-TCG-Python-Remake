@@ -36,27 +36,29 @@ class MainMenu:
         login_form = LoginForm(self.width, self.height)
     
     def settings(self):
+        #should I create a settings class for creater seperation?
+
         self.main_frame.destroy()
         self.settings_frame = tk.Frame(Config.master, width=self.width, height=self.height)
-        
-        RESOLUTIONS = [
-            "1920X1080",
-            "1680x1050",
-            "1600x900",
-            "1280x1024",
-            "1280x720",
-            "1024x768",
-            "800x600"
-        ]
+
         self.change_resolution_label = tk.Label(self.settings_frame, text="Change Resolution: ", bg="silver")
         
         self.default = tk.StringVar()
-        self.default.set(RESOLUTIONS[4])
+        self.default.set(Config.RESOLUTIONS[4])
 
-        self.drop_down = tk.OptionMenu(self.settings_frame, self.default, *RESOLUTIONS)
+        self.drop_down = tk.OptionMenu(self.settings_frame, self.default, *Config.RESOLUTIONS)
 
-        self.change_resolution_label.place(x=int(self.width*0.5), y=int(self.height*0.5))
-        self.drop_down.place(x=int(self.width*0.5), y=int(self.height*0.8))
+        self.apply_btn = tk.Button(self.settings_frame, text="Apply Changes", command=self.apply_settings)
+        
+
+        self.change_resolution_label.place(x=int(self.width*0.4), y=int(self.height*0.5))
+        self.drop_down.place(x=int(self.width*0.5), y=int(self.height*0.5))
+        self.apply_btn.place(x=int(self.width*0.5), y=int(self.height*0.6))
         self.settings_frame.place(x=0, y=0)
+    
+    def apply_settings(self):
+        result = tk.messagebox.askyesno("Apply Settings", "Would you like to save and apply these settings?")
+        if result:
+            print("apply settings")
 
 
