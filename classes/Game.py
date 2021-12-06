@@ -28,6 +28,3 @@ class Game():
     def start_game(self):
         self.game_frame.destroy()
         lobby = Lobby(self.user)
-           
-
-        

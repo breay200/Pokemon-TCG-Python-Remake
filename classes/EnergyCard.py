@@ -26,5 +26,3 @@ class EnergyCard(Card):
             else:
                 pass
         print(f"\n{colour}{self.name}")
-
-

@@ -93,4 +93,3 @@ class Deck:
             widget_count += 1
         
         frame.grid(column=0, row=0)
-    
