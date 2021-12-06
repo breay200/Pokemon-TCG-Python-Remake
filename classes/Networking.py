@@ -84,4 +84,3 @@ class Networking():
             self.opponent = sender
         elif status == "refused":
             tk.messagebox.showinfo("Request refused", f"{sender.capitalize()} refused your battle request.")
-
