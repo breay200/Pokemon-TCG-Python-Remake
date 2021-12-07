@@ -43,5 +43,3 @@ class ActivePokemon():
                     discard.append(removed_cards)
                 elif count > number:
                     break
-        
-    

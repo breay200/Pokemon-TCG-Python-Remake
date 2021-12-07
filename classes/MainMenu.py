@@ -68,5 +68,3 @@ class MainMenu:
         result = tk.messagebox.askyesno("Apply Settings", "Would you like to save and apply these settings?")
         if result:
             print("apply settings")
-
-

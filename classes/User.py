@@ -74,8 +74,3 @@ class User():
             else:
                 print("username not found")
             file.close()
-        
-        
-            
-        
-
