@@ -1,47 +1,45 @@
-from ctypes import WinDLL
-import tkinter as tk
+from classes.Lobby import Lobby
+from classes.MainGameLoop import MainGameLoop
+from classes.User import *
 from classes.config import *
-from classes.LoginForm import LoginForm
-from PIL import Image, ImageTk
+import tkinter as tk
+from classes.Lobby import *
 from tkinter import font
 
-class MainMenu:
-    def __init__(self, width, height):
+class MainMenu():
+    def __init__(self, user):
+        self.user = user
 
+        width = Config.master.winfo_width()
+        height = Config.master.winfo_height()
         self.width = width
         self.height = height
 
-        self.main_frame = tk.Frame(Config.master, width=width, height=height)
+        self.main_menu_frame = tk.Frame(Config.master, width=self.width, height=self.height)
 
-        self.title_img = Image.open("images/menu_logo.png").resize((int(width*0.55), int(height*0.55)))
-        self.title_img = ImageTk.PhotoImage(self.title_img)
+        font_height = 0 - int(self.height*0.05)
+        banner_font = font.Font(family="Courier", size=font_height, weight="bold", underline=1)
 
-        self.img_label = tk.Label(self.main_frame, image=self.title_img, borderwidth=0, highlightthickness=0, width=int(width*0.55), height=int(height*0.55))
-        self.img_label.place(x=int(width*0.225), y=int(height*0.1))
+        self.banner = tk.Label(self.main_menu_frame, text=f"WELCOME TO POKEMON TCG (PYTHON EDITION), {user.username.capitalize()}!", font=banner_font)
+        self.banner.place(x=0,y=self.height*0.2)
 
-        input_font = font.Font(family="Courier", size=(0 - int(self.height*0.04)), weight="bold")
+        self.start_btn = tk.Button(self.main_menu_frame, text="JOIN LOBBY", command=self.start_game)
+        self.start_btn.place()
 
-        btn_width = int((width*0.5)/3)
-        btn_x_coordinates = [btn_width*0.5, btn_width*2.5, btn_width*4.5]
-        btn_y_coordinates = height*0.75
+        self.settings_btn = tk.Button(self.main_menu_frame, text="SETTINGS", command=self.settings)
+        self.settings_btn.place()
 
-        self.start_btn = tk.Button(self.main_frame, text="START", font=input_font, fg="white", command=self.start, width=btn_width, bg="red")
-        self.start_btn.place(x=btn_x_coordinates[0], y=btn_y_coordinates, width=btn_width)
+        self.exit_btn = tk.Button(self.main_menu_frame, text="QUIT", command=self.quit)
+        self.exit_btn.place()
 
-        self.settings_btn = tk.Button(self.main_frame, text="SETTINGS", font=input_font, fg="white", command=self.settings, width=btn_width, bg="red")
-        self.settings_btn.place(x=btn_x_coordinates[1], y=btn_y_coordinates, width=btn_width)
-        
-        self.quit_btn = tk.Button(self.main_frame, text="QUIT", font=input_font, fg="white", command=self.quit, width=btn_width, bg="red")
-        self.quit_btn.place(x=btn_x_coordinates[2], y=btn_y_coordinates, width=btn_width)
+        self.main_menu_frame.place(x=0,y=0)
 
-        self.main_frame.place(x=0,y=0)
-
+    def start_game(self):
+        self.game_frame.destroy()
+        lobby = Lobby(self.user)
+    
     def quit(self):
         Config.master.destroy()
-
-    def start(self):
-        self.main_frame.destroy()
-        login_form = LoginForm(self.width, self.height)
     
     def settings(self):
         #should I create a settings class for creater seperation?
@@ -63,8 +61,3 @@ class MainMenu:
         self.drop_down.place(x=int(self.width*0.5), y=int(self.height*0.5))
         self.apply_btn.place(x=int(self.width*0.5), y=int(self.height*0.6))
         self.settings_frame.place(x=0, y=0)
-    
-    def apply_settings(self):
-        result = tk.messagebox.askyesno("Apply Settings", "Would you like to save and apply these settings?")
-        if result:
-            print("apply settings")

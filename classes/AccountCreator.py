@@ -1,9 +1,10 @@
 from classes.AccountManger import *
+from classes.Deck_UI import DeckUI
 from classes.User import *
 from misc_functions import check_in_file
 import tkinter as tk
 from classes.config import *
-from classes.Game import *
+from classes.MainMenu import *
 
 class AccountCreator(AccountManager):
     def __init__(self):

@@ -1,5 +1,5 @@
-from classes.MainMenu import MainMenu
-from classes.config import *
+from classes.StartMenu import StartMenu
+from classes.config import Config
 import tkinter as tk
 
 class Start():
@@ -10,5 +10,6 @@ class Start():
         height = int(Config.master.winfo_screenheight() * 0.75)
         Config.master.geometry(f"{width}x{height}")
         Config.master.title("TCG REMAKE")
-        mainmenu = MainMenu(width, height)
+        Config.master.update()
+        startmenu = StartMenu()
         Config.master.mainloop()

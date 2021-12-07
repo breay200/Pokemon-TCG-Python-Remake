@@ -3,6 +3,7 @@ from tkinter.font import Font
 from typing import Text
 from classes.AccountCreator import *
 from classes.Form import *
+from classes.MainMenu import MainMenu
 from misc_functions import check_in_file, check_password
 from tkinter import font
 import tkinter as tk
@@ -12,8 +13,10 @@ from classes.config import *
 from PIL import Image, ImageTk
 
 class LoginForm(Form):
-    def __init__(self, width, height):
-        self.width = width 
+    def __init__(self):
+        width = Config.master.winfo_width()
+        height = Config.master.winfo_height()
+        self.width = width
         self.height = height
 
         self.login_frame = tk.Frame(Config.master, width=self.width, height=self.height)
@@ -57,9 +60,6 @@ class LoginForm(Form):
         self.login_create_btn = tk.Button(self.login_frame, text="Create Account", command=self.create_account)
 
         self.login_fail_label = tk.Label(self.login_frame)
-        
-        print(self.side_bar_width)
-        print(int(self.side_bar_width*0.2))
 
         self.txt_label.place(x=0, y=int(self.side_bar_height*0.1))
         
@@ -83,7 +83,7 @@ class LoginForm(Form):
                     user = User(username)
                     user.load_user_data()
                     self.login_frame.destroy()
-                    game = Game(user)
+                    mainmenu = MainMenu(user)
                 else:
                     self.login_error_label.configure(text="You did not login successfully.")
                     self.login_error_label.grid(column=3, row=5)

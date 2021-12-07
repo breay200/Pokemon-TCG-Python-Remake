@@ -1,7 +1,7 @@
 from classes.Deck import *
 from classes.config import *
 from misc_functions import *
-from classes.Game import *
+from classes.MainMenu import *
 
 class DeckUI(Deck):
     def __init__(self, user) -> None:
