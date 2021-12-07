@@ -1,7 +1,9 @@
+from ctypes import WinDLL
 import tkinter as tk
 from classes.config import *
 from classes.LoginForm import LoginForm
 from PIL import Image, ImageTk
+from tkinter import font
 
 class MainMenu:
     def __init__(self, width, height):
@@ -11,20 +13,26 @@ class MainMenu:
 
         self.main_frame = tk.Frame(Config.master, width=width, height=height)
 
-        self.title_img = Image.open("images/menu_logo.png").resize((int(width*0.8), int(height*0.8)))
+        self.title_img = Image.open("images/menu_logo.png").resize((int(width*0.55), int(height*0.55)))
         self.title_img = ImageTk.PhotoImage(self.title_img)
 
-        self.img_label = tk.Label(self.main_frame, image=self.title_img, borderwidth=0, highlightthickness=0, width=int(width), height=int(height))
-        self.img_label.place(x=0, y=0)
+        self.img_label = tk.Label(self.main_frame, image=self.title_img, borderwidth=0, highlightthickness=0, width=int(width*0.55), height=int(height*0.55))
+        self.img_label.place(x=int(width*0.225), y=int(height*0.1))
 
-        self.start_btn = tk.Button(self.main_frame, text="Start", command=self.start, width=int(width*0.015), height=int(height*0.005), bg="blue")
-        self.start_btn.place(x=((width*0.5)-(width*0.015)), y=(height*0.5))
+        input_font = font.Font(family="Courier", size=(0 - int(self.height*0.04)), weight="bold")
 
-        self.settings_btn = tk.Button(self.main_frame, text="Settings", command=self.settings, width=int(width*0.015), height=int(height*0.005), bg="silver")
-        self.settings_btn.place(x=((width*0.5)-(width*0.015)), y=(height*0.6))
+        btn_width = int((width*0.5)/3)
+        btn_x_coordinates = [btn_width*0.5, btn_width*2.5, btn_width*4.5]
+        btn_y_coordinates = height*0.75
+
+        self.start_btn = tk.Button(self.main_frame, text="START", font=input_font, fg="white", command=self.start, width=btn_width, bg="red")
+        self.start_btn.place(x=btn_x_coordinates[0], y=btn_y_coordinates, width=btn_width)
+
+        self.settings_btn = tk.Button(self.main_frame, text="SETTINGS", font=input_font, fg="white", command=self.settings, width=btn_width, bg="red")
+        self.settings_btn.place(x=btn_x_coordinates[1], y=btn_y_coordinates, width=btn_width)
         
-        self.quit_btn = tk.Button(self.main_frame, text="Quit", command=self.quit, width=int(width*0.015), height=int(height*0.005), bg="green")
-        self.quit_btn.place(x=((width*0.5)-(width*0.015)), y=(height*0.7))
+        self.quit_btn = tk.Button(self.main_frame, text="QUIT", font=input_font, fg="white", command=self.quit, width=btn_width, bg="red")
+        self.quit_btn.place(x=btn_x_coordinates[2], y=btn_y_coordinates, width=btn_width)
 
         self.main_frame.place(x=0,y=0)
 
