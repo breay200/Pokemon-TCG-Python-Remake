@@ -7,32 +7,18 @@ import tkinter as tk
 from threading import Thread
 
 class Lobby():
-    def __init__(self, user):
+    def __init__(self, user, main_menu):
         self.user = user
         self.width = Config.master.winfo_width()
         self.height = Config.master.winfo_height()
         self.networking = Networking(user.username)
         self.lobby_frame = tk.Frame(Config.master, width=self.width, height=self.height)
         
-        self.lobby_title = tk.Label(self.lobby_frame, text="OPEN LOBBIES")
+        self.lobby_title = tk.Label(self.lobby_frame, text="PLAYERS IN THE LOBBY")
         self.lobby_title.place()
         
         self.connection_status_label = tk.Label(self.lobby_frame, text=f"YOUR STATUS: {self.networking.status.capitalize()}")
         self.connection_status_label.place()
-
-        self.address = tk.StringVar()
-        self.address_label = tk.Label(self.lobby_frame, text="Enter the IP Address of the Server: ")
-        self.address_label.place()
-        self.address_entry = tk.Entry(self.lobby_frame, textvariable=self.address)
-        self.address_entry.place()
-
-        self.port = tk.IntVar()
-        self.port_label = tk.Label(self.lobby_frame, text="Enter the Port Number of the Server: ")
-        self.port_label.place()
-        self.port_entry = tk.Entry(self.lobby_frame, textvariable=self.port)
-        self.port_entry.place()
-        
-        self.lobby_count_label = tk.Label(self.lobby_frame, text=f"connect to server to see active players")
 
         self.players_frame = tk.Frame(self.lobby_frame)
         self.players_frame.grid(column=0, row=7, columnspan=3)

@@ -36,8 +36,10 @@ class MainMenu():
         self.search_btn = tk.Button(self.main_menu_frame, text="SEARCH THE CARD DATABASE", command=self.search_cards, bg="red", fg="white", font=btn_font)
         self.search_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[2], width=btn_width)
 
+
+        
         self.view_profile = tk.Button(self.main_menu_frame, text="VIEW PROFILE", command=self.view_profile)
-        #self.view_profile.place()
+        self.view_profile.place(x=self.width*0.91, y=self.height*0.02, width=self.width*0.08, height=self.height*0.16)
 
         self.settings_btn = tk.Button(self.main_menu_frame, text="SETTINGS", command=self.settings)
         #self.settings_btn.place()
@@ -49,7 +51,7 @@ class MainMenu():
 
     def go_to_lobby(self):
         self.main_menu_frame.destroy()
-        lobby = Lobby(self.user)
+        lobby = Lobby(self.user, self)
     
     def view_decks(self):
         pass
@@ -83,3 +85,17 @@ class MainMenu():
         self.drop_down.place(x=int(self.width*0.5), y=int(self.height*0.5))
         self.apply_btn.place(x=int(self.width*0.5), y=int(self.height*0.6))
         self.settings_frame.place(x=0, y=0)
+
+        self.address = tk.StringVar()
+        self.address_label = tk.Label(self.lobby_frame, text="Enter the IP Address of the Server: ")
+        self.address_label.place()
+        self.address_entry = tk.Entry(self.lobby_frame, textvariable=self.address)
+        self.address_entry.place()
+
+        self.port = tk.IntVar()
+        self.port_label = tk.Label(self.lobby_frame, text="Enter the Port Number of the Server: ")
+        self.port_label.place()
+        self.port_entry = tk.Entry(self.lobby_frame, textvariable=self.port)
+        self.port_entry.place()
+        
+        self.lobby_count_label = tk.Label(self.lobby_frame, text=f"connect to server to see active players")
