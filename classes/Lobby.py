@@ -9,27 +9,28 @@ from threading import Thread
 class Lobby():
     def __init__(self, user):
         self.user = user
+        self.width = Config.master.winfo_width()
+        self.height = Config.master.winfo_height()
         self.networking = Networking(user.username)
-
-        self.lobby_frame = tk.Frame(Config.master)
+        self.lobby_frame = tk.Frame(Config.master, width=self.width, height=self.height)
         
-        self.lobby_title = tk.Label(self.lobby_frame, text="Lobby")
-        self.lobby_title.grid(column=0, row=0, sticky="ew")
+        self.lobby_title = tk.Label(self.lobby_frame, text="OPEN LOBBIES")
+        self.lobby_title.place()
         
-        self.connection_status_label = tk.Label(self.lobby_frame, text=f"connection status: {self.networking.status}")
-        self.connection_status_label.grid(column=0, row=1)
+        self.connection_status_label = tk.Label(self.lobby_frame, text=f"YOUR STATUS: {self.networking.status.capitalize()}")
+        self.connection_status_label.place()
 
         self.address = tk.StringVar()
-        self.address_label = tk.Label(self.lobby_frame, text="Enter server IP address: ")
-        self.address_label.grid(column=0, row=2)
+        self.address_label = tk.Label(self.lobby_frame, text="Enter the IP Address of the Server: ")
+        self.address_label.place()
         self.address_entry = tk.Entry(self.lobby_frame, textvariable=self.address)
-        self.address_entry.grid(column=1, row=2)
+        self.address_entry.place()
 
         self.port = tk.IntVar()
-        self.port_label = tk.Label(self.lobby_frame, text="Enter server port number: ")
-        self.port_label.grid(column=2,row=2)
+        self.port_label = tk.Label(self.lobby_frame, text="Enter the Port Number of the Server: ")
+        self.port_label.place()
         self.port_entry = tk.Entry(self.lobby_frame, textvariable=self.port)
-        self.port_entry.grid(column=3, row=2)
+        self.port_entry.place()
         
         self.lobby_count_label = tk.Label(self.lobby_frame, text=f"connect to server to see active players")
 
@@ -43,12 +44,12 @@ class Lobby():
         #self.server_address_label.grid(column=0 ,row=4, columnspan=3)
 
         self.connect_btn = tk.Button(self.lobby_frame, text="Connect to Server", command=self.connect_to_server)
-        self.connect_btn.grid(column=0, row=5, columnspan=3)
+        self.connect_btn.place()
 
         self.refresh_btn = tk.Button(self.lobby_frame, text="Refresh Lobby", command=self.refresh_lobby)
-        self.refresh_btn.grid(column=0, row=6)
+        self.refresh_btn.place()
 
-        self.lobby_frame.grid(column=0, row=0)
+        self.lobby_frame.place()
 
         self.check_opponent_thread = Thread(target = self.check_opponent)
         self.check_opponent_thread.start()

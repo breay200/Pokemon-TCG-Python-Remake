@@ -14,15 +14,13 @@ from PIL import Image, ImageTk
 
 class LoginForm(Form):
     def __init__(self):
-        width = Config.master.winfo_width()
-        height = Config.master.winfo_height()
-        self.width = width
-        self.height = height
+        self.width = Config.master.winfo_width()
+        self.height = Config.master.winfo_height()
 
         self.login_frame = tk.Frame(Config.master, width=self.width, height=self.height)
 
-        self.side_bar_width = int(width/3)
-        self.side_bar_height = int(height)
+        self.side_bar_width = int(self.width/3)
+        self.side_bar_height = int(self.height)
         self.side_bar_frame = tk.Frame(self.login_frame, width=self.side_bar_width, height=self.side_bar_height, bg="red")
         
 
