@@ -4,9 +4,13 @@ from classes.config import *
 from classes.LoginForm import LoginForm
 from PIL import Image, ImageTk
 from tkinter import font
+from playsound import playsound
+from threading import Thread
 
 class StartMenu:
     def __init__(self):
+        self.playsounds = Thread(target = self.playsounds, daemon=True)
+        self.playsounds.start()
         width = Config.master.winfo_width()
         height = Config.master.winfo_height()
         self.width = width
@@ -36,6 +40,9 @@ class StartMenu:
         self.quit_btn.place(x=btn_x_coordinates[2], y=btn_y_coordinates, width=btn_width)
 
         self.main_frame.place(x=0,y=0)
+
+    def playsounds(self):
+        playsound('music/sundown.mp3')
 
     def quit(self):
         Config.master.destroy()
