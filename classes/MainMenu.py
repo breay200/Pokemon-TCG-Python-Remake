@@ -71,8 +71,10 @@ class MainMenu():
     def quit(self):
         Config.master.destroy()
 
-    def apply_settings(self):
-        pass
+    def close_settings(self):
+        for child in self.settings_frame.winfo_children():
+            child.destroy()
+        self.settings_frame.destroy()
     
     def settings(self):
         self.settings_width = int(self.width*0.8)
@@ -90,15 +92,18 @@ class MainMenu():
         self.default.set(Config.RESOLUTIONS[4])
 
         self.drop_down = tk.OptionMenu(self.settings_frame, self.default, *Config.RESOLUTIONS)
-        self.drop_down.place(x=self.settings_width*0.5, y=self.settings_height*0.1)
+        self.drop_down.place(x=self.settings_width*0.5, y=self.settings_height*0.3)
 
-        self.apply_btn = tk.Button(self.settings_frame, text="SAVE CHANGES", command=self.apply_settings)
+        self.close_btn = tk.Button(self.settings_frame, text="X", bg="white", fg="red", width=int(self.settings_width*0.5), height=int(self.settings_height*0.01), command=self.close_settings)
+        self.close_btn.place(x=self.settings_width*0.89, y=0)
+
+        self.apply_btn = tk.Button(self.settings_frame, text="SAVE CHANGES")
         self.apply_btn.place(x=self.width*0.9, y=self.height*0.9)
         
         self.drop_down.place(x=int(self.width*0.5), y=int(self.height*0.5))
         self.apply_btn.place(x=int(self.width*0.5), y=int(self.height*0.6))
-        self.settings_frame.place(x=0, y=0)
 
+        '''
         self.address = tk.StringVar()
         self.address_label = tk.Label(self.lobby_frame, text="Enter the IP Address of the Server: ")
         self.address_label.place()
@@ -112,3 +117,4 @@ class MainMenu():
         self.port_entry.place()
         
         self.lobby_count_label = tk.Label(self.lobby_frame, text=f"connect to server to see active players")
+        '''
