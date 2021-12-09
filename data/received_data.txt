@@ -1,0 +1,2 @@
+brandon: 1,scissors
+corrie: 1,paper

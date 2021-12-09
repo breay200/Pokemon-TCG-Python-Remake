@@ -1,6 +1,8 @@
 from datetime import date
-from classes.ActivePokemon import ActivePokemon
-from misc_functions import append_to_file
+from classes.Deck import *
+from classes.Deck_UI import *
+from misc_functions import *
+from classes.config import *
 
 class User():
     def __init__(self, username="", matches_won=0, matches_lost=0, date_joined=00-00-00, favourite_pokemon="", email_addr="", active_deck=""):
@@ -49,33 +51,11 @@ class User():
             file.close()
 
 
-    def create_user_data(self, deck):
-        while True:
-            print("Setting up your account for the first time...")
-            print("Please enter the name of your favourite Pokemon")
-            favourite_pokemon = input("input: ")
-            try:
-                favourite_pokemon = str(favourite_pokemon)
-            except ValueError:
-                print("Please enter a string value!")
-            print("Please enter your email address.")
-            email_addr = input("input: ")
-            try:
-                email_addr = str(email_addr)
-            except ValueError:
-                print("Please enter a string value!")
-            if type(favourite_pokemon) == str and type(email_addr) == str:
-                break
-            else:
-                pass
-        
-        self.active_deck = deck.print_decks() 
+    def create_user_data(self, fav_poke, email):
         today = date.today()
         self.date_joined = today.strftime("%d-%m-%Y")
-        self.favourite_pokemon = favourite_pokemon
-        self.email_addr = email_addr
-        text = f"{self.username}, {self.matches_won}, {self.matches_lost}, {self.date_joined}, {self.favourite_pokemon}, {self.email_addr}, {self.active_deck}"
-        append_to_file("data/player_data.txt", text)
+        self.favourite_pokemon = fav_poke
+        self.email_addr = email
     
     def update_to_file(self):
         file = open("data/player_data.txt", "wr")
@@ -94,8 +74,3 @@ class User():
             else:
                 print("username not found")
             file.close()
-        
-        
-            
-        
-

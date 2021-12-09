@@ -1,8 +1,7 @@
-from classes.Menu import *
+from classes.Start import Start
 
 def main():
-    menu = Menu()
-    menu.main_menu()
+    start = Start()
 
 if __name__ == "__main__":
     main()

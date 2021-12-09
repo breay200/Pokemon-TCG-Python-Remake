@@ -3,4 +3,3 @@ class Card:
         self.id = id
         self.name = name
         self.supertype = supertype
-    

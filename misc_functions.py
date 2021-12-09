@@ -10,7 +10,7 @@ def append_to_file(filename, text):
     file.write(text + "\n")
     file.close
 
-#This is very specific - maybe include in a class?
+#could probably include in account creator class.
 def hash_and_store(username, password):
     #This function hashes a password, and concatonates it with username before appending to file
     password_hash = hashlib.md5(str(password).encode('utf-8'))
@@ -42,3 +42,26 @@ def check_in_file(filename, text):
             break
     file.close()
     return found
+
+def read_file(filename, data):
+    with open(filename, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if data in line:
+                return line
+
+def read_from_received(infile):
+            received = False
+            while not received:
+                try:
+                    file_data = read_file("data/received_data.txt", infile)
+                except Exception as e:
+                    continue
+
+                if file_data:
+                    return file_data
+
+def destroy_widgets(frame):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    frame.destroy()

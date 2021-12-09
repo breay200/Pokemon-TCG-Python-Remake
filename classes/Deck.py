@@ -1,5 +1,6 @@
 import json
 import random
+import tkinter as tk
 
 class Deck:
     def __init__(self, active_deck="", id_list=[]):
@@ -20,7 +21,6 @@ class Deck:
         pass
     
     def get_decks(self, filename):
-        print("Available Decks: \n")
         file = open(filename,encoding='utf-8')
         data = json.load(file)
         decks = []
@@ -35,22 +35,6 @@ class Deck:
     def set_active_deck(self):
         self.active_deck = self.print_decks()
 
-    def print_decks(self):
-        decks = self.get_decks("data/set1.json")
-        for deck in decks:
-            print(deck)
-        print("\nEnter the name of the deck you want to select: ")
-        active_deck = ""
-        while active_deck not in decks:
-            active_deck = input("Enter deck name: ")
-            try:
-                active_deck = str(active_deck)
-            except ValueError:
-                print("You entered an invalid value!")
-        self.active_deck = active_deck
-        #not sure if return is necessary
-        return active_deck
-
     def load_deck(self, filename):
         file = open(filename,encoding='utf-8')
         data = json.load(file)
@@ -63,7 +47,6 @@ class Deck:
         file.close()
 
     def check_deck(self):
-        
         pass
 
     def shuffle_deck(self):
@@ -87,3 +70,26 @@ class Deck:
 
     def get_deck_size(self):
         return len(self.id_list)
+
+    def change_deck(self, frame):
+        """change_deck: """
+        def set_deck(deck):
+            for widget in frame.winfo_children():
+                widget.destroy()
+            tk.messagebox.showinfo("Deck Selection", f"{deck.capitalize()} has been selected as your active deck")
+            return deck
+        
+        decks = self.get_decks("data/set1.json")
+        
+        deck_widgets = []
+        
+        for deck in decks:
+            card_widget = tk.Button(frame, text=deck, command=lambda: set_deck(deck))
+            deck_widgets.append(card_widget)
+        
+        widget_count = 0
+        for widget in deck_widgets:
+            widget.grid(column = widget_count, row = 1)
+            widget_count += 1
+        
+        frame.grid(column=0, row=0)

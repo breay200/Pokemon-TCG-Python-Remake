@@ -147,10 +147,3 @@ class Attacks():
             defending_pokemon.health -= DMG
             print(f"{active_pokemon.card_data.name} dealt 10 damage to itself and {DMG} to {defending_pokemon.card_data.name}")
         return active_pokemon, defending_pokemon
-
-
-    
-
-    
-
-
