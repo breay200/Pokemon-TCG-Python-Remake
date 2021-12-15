@@ -52,13 +52,11 @@ class LoginForm(Form):
 
         self.login_submit_btn = tk.Button(self.login_frame, bg="red" , image=self.arrow_img, command=self.check_account, width=int(self.side_bar_width*0.2), height=int(input_frame_height*0.4))
 
-        self.login_forgot_btn = tk.Button(self.login_frame, text="Forgot Password", command=self.forgot_password)
+        self.login_forgot_btn = tk.Button(self.login_frame, text="Forgot Password", command=self.forgot_password, bg="white", fg="red")
 
         self.login_error_label = tk.Label(self.login_frame, bg="white", fg="red")
 
-        self.login_create_btn = tk.Button(self.login_frame, text="Create Account", command=self.create_account)
-
-        self.login_fail_label = tk.Label(self.login_frame)
+        self.login_create_btn = tk.Button(self.login_frame, text="Create an Account", command=self.create_account, bg="white", fg="red")        
 
         self.txt_label.place(x=0, y=int(self.side_bar_height*0.1))
         
@@ -68,14 +66,17 @@ class LoginForm(Form):
         self.password_label.place(x=0,y=int(input_frame_height*0.4))
         self.login_password_entry.place(x=0, y=int(input_frame_height*0.5), width=int(self.side_bar_width*0.6), height=int(input_frame_height*0.25))
         
-        self.login_submit_btn.place(x=int((self.side_bar_width*0.5)-(self.side_bar_width*0.1)), y=int(self.side_bar_height*0.5))
+        
+        self.login_submit_btn.place(x=int(self.side_bar_width*0.7), y=int(self.side_bar_height*0.2625))
+        self.login_forgot_btn.place(x=0, y=self.height*0.8)
+        self.login_create_btn.place(x=0, y=self.height*0.9)
 
         self.input_frame.place(x=0, y=int(self.side_bar_height*0.2))
         self.side_bar_frame.place(x=0, y=0)
         self.login_frame.place(x=0, y=0)
 
     def check_account(self):
-        username = self.login_username.get()
+        username = self.login_username.get().lower()
         if username:
             if check_in_file("data/passwd.txt", username):
                 if self.login(username):
