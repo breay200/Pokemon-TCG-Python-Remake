@@ -23,8 +23,9 @@ class LoginForm(Form):
         self.side_bar_height = int(self.height)
         self.side_bar_frame = tk.Frame(self.login_frame, width=self.side_bar_width, height=self.side_bar_height, bg="red")
         
-
-        self.failed_logins = 0
+        self.login_image = ImageTk.PhotoImage(Image.open("images/login_img.jpg").resize((int(self.width*(2/3)), self.height)))
+        self.login_image_label = tk.Label(self.login_frame, image=self.login_image, width=int(self.width*(2/3)), height=self.height, bd=-1)
+        self.login_image_label.place(x=int(self.width/3), y=0)
         
         font_height = 0 - int(self.side_bar_height*0.04)
         txt_label_font = font.Font(family="Courier", size=font_height, weight="bold", underline=1)
