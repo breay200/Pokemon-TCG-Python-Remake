@@ -1,2 +1,1 @@
-brandon: 1,scissors
-corrie: 1,paper
+corrie: 1,rock

@@ -27,7 +27,10 @@ class Gameboard():
         
         self.discard_btn = tk.Button(self.player_frame, image=self.discard_img, width=(self.width*0.08), height=(self.height*0.2), bg="blue", borderwidth=0, highlightthickness=0)
         self.deck_btn = tk.Button(self.player_frame, image=self.deck_img, width=self.width*0.08, height=self.height*0.2, bg="blue", borderwidth=0, highlightthickness=0, command=self.add_to_bench)
-        
+        #self.deck_btn.bind("<Enter>", func=lambda x=None:self.hover_action())
+        self.deck_btn.bind("<Enter>", func=lambda e: self.hover_action())
+        self.deck_btn.bind("<Leave>", func=lambda e: self.on_hover_leave())
+
         w = int(self.width*0.015)
         h = int(self.height*0.005)
 
@@ -52,6 +55,17 @@ class Gameboard():
         self.deck_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.04))
         self.player_frame.place(x=0,y=(self.height/2))
 
+    def hover_action(self):
+        print("hello")
+        # print("on enter btn")
+        # self.hover_frame = tk.Frame(Config.master, width=int(self.width*0.5), height=int(self.height*0.5), bg="yellow")
+        # self.hover_frame.place(x=0, y=0)
+        # self.player_frame.place()
+        # return
+    
+    def on_hover_leave(self):
+        print("goodbye")
+
     # def show_hand(self):
     #     if not self.hand_frame.winfo_ismapped():
     #         self.hand_frame.place(x=(self.width*0.25), y=(self.height*0.2))
@@ -59,7 +73,6 @@ class Gameboard():
     def make_active(self):
         self.active_btn = tk.Button(self.active_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
         self.active_btn.place(x=0, y=0)
-        self.active_frame.place(x=(self.width*0.46), y=(self.height*0.015))
 
 
     def add_to_bench(self):
