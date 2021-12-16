@@ -52,10 +52,10 @@ class MainMenu():
 
     def go_to_lobby(self):
         self.main_menu_frame.destroy()
-        lobby = Lobby(self.user, self)
+        Lobby(self.user)
     
     def view_decks(self):
-        pass
+        print("view decks")
     
     def view_profile(self):
         if self.view_profile_frame is None:
@@ -66,7 +66,7 @@ class MainMenu():
             self.view_profile_frame = None
 
     def search_cards(self):
-        pass
+        print("search cards")
 
     def quit(self):
         Config.master.destroy()

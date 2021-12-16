@@ -65,7 +65,6 @@ class StartMenu:
         self.drop_down = tk.OptionMenu(self.settings_frame, self.default, *Config.RESOLUTIONS)
 
         self.apply_btn = tk.Button(self.settings_frame, text="Apply Changes", command=self.apply_settings)
-        
 
         self.change_resolution_label.place(x=int(self.width*0.4), y=int(self.height*0.5))
         self.drop_down.place(x=int(self.width*0.5), y=int(self.height*0.5))
