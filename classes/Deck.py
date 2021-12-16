@@ -88,8 +88,12 @@ class Deck:
             deck_widgets.append(card_widget)
         
         widget_count = 0
+        x_coord = 0
         for widget in deck_widgets:
-            widget.grid(column = widget_count, row = 1)
+            x_coord += 100
+            widget.place(x=x_coord, y=0)
             widget_count += 1
         
-        frame.grid(column=0, row=0)
+        frame.place(x=0, y=0)
+        
+        #might need to place frame

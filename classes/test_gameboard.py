@@ -66,7 +66,6 @@ discard_img = ImageTk.PhotoImage(discard_img)
 
 player = tk.Frame(master, width=width, height=height/2, bg="blue")
 prize = tk.Frame(player, width=width*0.15, height=height*0.5)
-#print(width*0.16, height*0.45)
 bench = tk.Frame(player, width=width*0.5, height=height*0.25, highlightthickness=5, highlightbackground="black")
 discard = tk.Button(player, image=discard_img, width=width*0.08, height=height*0.2, bg="blue", borderwidth=0, highlightthickness=0)
 deck = tk.Button(player, image=deck_img, width=width*0.08, height=height*0.2, bg="blue", borderwidth=0, highlightthickness=0, command=add_to_bench)
