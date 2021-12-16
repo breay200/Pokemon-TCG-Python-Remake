@@ -121,56 +121,60 @@ class LoginForm(Form):
         if username:
             self.forgot_frame_width = int(self.width*(2/3)*(13/20))
             self.forgot_frame_height = int(self.height*(13/20))
-            self.forgot_frame = tk.Frame(self.login_frame, width=self.forgot_frame_width, height=self.forgot_frame_height)
+            self.forgot_frame = tk.Frame(self.login_frame, width=self.forgot_frame_width, height=self.forgot_frame_height, bg="white")
 
             self.reset_label = tk.Label(self.forgot_frame, text="To reset your password, we need to submit an authentication token to your E-mail address")
             self.reset_label.place(x=0,y=0)
 
             self.email_label = tk.Label(self.forgot_frame, text="Enter your E-mail address: ", fg="red")
-            self.email_label.place(x=0, y=self.forgot_frame_height*0.2)
+            self.email_label.place(x=0, y=self.forgot_frame_height*0.1)
 
             self.email_entry = tk.Entry(self.forgot_frame, fg="black")
-            self.email_entry.place(x=0, y=self.forgot_frame_height*0.25)
-
+            self.email_entry.place(x=0, y=self.forgot_frame_height*0.15)
 
             self.re_email_label = tk.Label(self.forgot_frame, text="Re-enter your E-mail address: ", fg="red")
-            self.re_email_label.place(x=0, y=self.forgot_frame_height*0.35)
+            self.re_email_label.place(x=0, y=self.forgot_frame_height*0.2)
 
             self.re_email_entry = tk.Entry(self.forgot_frame, fg="black")
-            self.re_email_entry.place(x=0, y=self.forgot_frame_height*0.4)
+            self.re_email_entry.place(x=0, y=self.forgot_frame_height*0.25)
+
+            self.forgot_submit_btn = tk.Button(self.forgot_frame, text="Submit", command=self.submit)
+            self.forgot_submit_btn.place(x=0, y=self.forgot_frame_height*0.4)
+
+            self.verification_label = tk.Label(self.forgot_frame, text="The authentication token sent to your E-mail address verifies your identity")
+            self.verification_label.place(x=0, y=self.forgot_frame_height*0.5)
+
+            self.auth_label = tk.Label(self.forgot_frame, text="Enter the authenticaiton token: ")
+            self.auth_label.place(x=0, y=self.forgot_frame_height*0.6)
+
+            self.auth_entry = tk.Entry(self.forgot_frame, fg="black")
+            self.auth_entry.place(x=0, y=self.forgot_frame_height*0.65)
 
             self.forgot_frame.place(x=int(self.width*0.45), y=int(self.height*0.175))
 
             for widget in self.forgot_frame.winfo_children():
                 widget.configure(bg="white")
 
-            #self.email_label.place(x=, y=)
-            #self.email_entry.place(x=, y=)
-            #self.re_email_label.place(x=,y=)
-            #self.re_email_entry.place(x=,y=)
-            #self.forgot_frame.place(x=, y=)
+        # else:
+        #     print("no username")
 
-
-
-        else:
-            print("no username")
-
-'''
-            self.login_frame.
-            account_creator = AccountCreator()
-            account_creator.create_account(self.master, username)
+        #     self.login_frame.
+        #     account_creator = AccountCreator()
+        #     account_creator.create_account(self.master, username)
             
-            else:
-                #NEED TO DO THIS - FORGOT PASSWORD METHOD
-                email = input("Please enter your email address: ")
-                try:
-                    email = str(email)
-                except TypeError:
-                    print("You enter an invalid value")
-                if check_in_file("data/player_data.txt", email):
-                    print("We are sending a password reset token to your email address")
-                    #NEED TO DO: SEND EMAIL RESET CODE - METHODS
-                    pass
-                else:
-                    print("This email isn't registered to an account")
-'''
+        #     else:
+        #         #NEED TO DO THIS - FORGOT PASSWORD METHOD
+        #         email = input("Please enter your email address: ")
+        #         try:
+        #             email = str(email)
+        #         except TypeError:
+        #             print("You enter an invalid value")
+        #         if check_in_file("data/player_data.txt", email):
+        #             print("We are sending a password reset token to your email address")
+        #             #NEED TO DO: SEND EMAIL RESET CODE - METHODS
+        #             pass
+        #         else:
+        #             print("This email isn't registered to an account")
+
+    def submit(self):
+        print("hello")
