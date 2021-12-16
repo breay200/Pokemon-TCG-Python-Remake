@@ -118,8 +118,40 @@ class LoginForm(Form):
         except Exception as e:
             print(e)
         
-        if len(username)>1:
-            print("username greater than 1")
+        if username:
+            self.forgot_frame_width = int(self.width*(2/3)*(13/20))
+            self.forgot_frame_height = int(self.height*(13/20))
+            self.forgot_frame = tk.Frame(self.login_frame, width=self.forgot_frame_width, height=self.forgot_frame_height)
+
+            self.reset_label = tk.Label(self.forgot_frame, text="To reset your password, we need to submit an authentication token to your E-mail address")
+            self.reset_label.place(x=0,y=0)
+
+            self.email_label = tk.Label(self.forgot_frame, text="Enter your E-mail address: ", fg="red")
+            self.email_label.place(x=0, y=self.forgot_frame_height*0.2)
+
+            self.email_entry = tk.Entry(self.forgot_frame, fg="black")
+            self.email_entry.place(x=0, y=self.forgot_frame_height*0.25)
+
+
+            self.re_email_label = tk.Label(self.forgot_frame, text="Re-enter your E-mail address: ", fg="red")
+            self.re_email_label.place(x=0, y=self.forgot_frame_height*0.35)
+
+            self.re_email_entry = tk.Entry(self.forgot_frame, fg="black")
+            self.re_email_entry.place(x=0, y=self.forgot_frame_height*0.4)
+
+            self.forgot_frame.place(x=int(self.width*0.45), y=int(self.height*0.175))
+
+            for widget in self.forgot_frame.winfo_children():
+                widget.configure(bg="white")
+
+            #self.email_label.place(x=, y=)
+            #self.email_entry.place(x=, y=)
+            #self.re_email_label.place(x=,y=)
+            #self.re_email_entry.place(x=,y=)
+            #self.forgot_frame.place(x=, y=)
+
+
+
         else:
             print("no username")
 
