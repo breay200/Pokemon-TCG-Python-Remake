@@ -39,6 +39,7 @@ class Deck:
         file = open(filename,encoding='utf-8')
         data = json.load(file)
         for set in data:
+            print(set['name'])
             if set['name'] == self.active_deck:
                 for x in set['cards']:
                     count = int(x['count'])

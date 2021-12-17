@@ -15,6 +15,7 @@ from classes.Bench import *
 from classes.config import *
 from classes.Deck_UI import *
 from classes.GameLogic import *
+from classes.User import *
 from misc_functions import *
 
 class MainGameLoop:
@@ -29,11 +30,11 @@ class MainGameLoop:
         self.attached_energy = False
         self.changed_deck = False
 
-        self.hand_obj = object
-        self.bench = object
-        self.active_pokemon = object
-        self.obj_list = object
-        self.prize = object
+        # self.hand_obj = object
+        # self.bench = object
+        # self.active_pokemon = object
+        # self.obj_list = object
+        # self.prize = object
 
         self.game_logic = GameLogic(self.user, self.networking)
         self.deck = Deck()
@@ -47,19 +48,16 @@ class MainGameLoop:
             if answer:
                 chosen_deck = self.deck.change_deck(self.mgl_frame)
                 self.user.active_deck = str(chosen_deck).replace(" ", "")
-                self.deck.active_deck = str(chosen_deck).replace(" ", "")
-                self.deck.load_deck("data/set1.json")
-                self.initiate_game()
-            else:
-                self.deck.load_deck("data/set1.json")
-                self.initiate_game()
         else:
             tk.messagebox.showinfo("Deck Selection", "You don't have a deck selected.\nPlease choose one for your battle!")
             chosen_deck = self.deck.change_deck(self.mgl_frame)
             self.user.active_deck = str(chosen_deck).replace(" ", "")
-            self.deck.active_deck = str(chosen_deck).replace(" ", "")
-            self.deck.load_deck("data/set1.json")
-            self.initiate_game()
+
+        self.deck.active_deck = str(self.user.active_deck).replace(" ", "")
+        self.deck.load_deck("data/set1.json")
+        self.initiate_game()
+        
+        
 
     
 
@@ -123,7 +121,31 @@ class MainGameLoop:
         #print(self.play_order)
         for widget in self.mgl_frame.winfo_children():
             widget.destroy()
+
         self.mgl_frame.destroy()
+
+        self.deck.shuffle_deck()
+
+        self.hand = self.deck.draw_number_of_cards(7)
+        self.obj_list = self.load_card_data(self.hand)
+        self.hand_obj = Hand(self.obj_list)
+        self.hand_obj.find_basics()
+
+        while not self.hand_obj.basic_cards:
+            print("Re-shuffling deck...")
+            self.deck.return_to_deck(self.hand)
+            self.deck.shuffle_deck()
+            self.hand = []
+            self.hand = self.deck.draw_number_of_cards(7)
+            obj_list = []
+            obj_list = self.load_card_data(self.hand)
+            self.hand_obj.list = obj_list
+            self.hand_obj.find_basics()
+
+        for x in self.hand_obj.list:
+            print(x.name)
+            print(x.images)
+            
         self.gameboard.place()
         
 

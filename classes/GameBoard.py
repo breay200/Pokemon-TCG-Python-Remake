@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 
 class Gameboard():
-    def __init__(self) -> None:
+    def __init__(self):
         self.width = Config.master.winfo_screenwidth() * 0.8
         self.height = Config.master.winfo_screenheight() * 0.8
 
@@ -58,14 +58,15 @@ class Gameboard():
     def hover_action(self):
         print("hello")
         # print("on enter btn")
-        # self.hover_frame = tk.Frame(Config.master, width=int(self.width*0.5), height=int(self.height*0.5), bg="yellow")
-        # self.hover_frame.place(x=0, y=0)
-        # self.player_frame.place()
+        self.hover_frame = tk.Frame(Config.master, width=int(self.width*0.5), height=int(self.height*0.5), bg="yellow")
+        self.hover_frame.place(x=0, y=0)
+        self.player_frame.update()
         # return
     
     def on_hover_leave(self):
         print("goodbye")
-
+        self.hover_frame.destroy()
+        self.player_frame.update()
     # def show_hand(self):
     #     if not self.hand_frame.winfo_ismapped():
     #         self.hand_frame.place(x=(self.width*0.25), y=(self.height*0.2))
