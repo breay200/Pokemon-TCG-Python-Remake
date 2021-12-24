@@ -8,11 +8,12 @@ from classes.Bench import *
 import tkinter as tk
 
 class Hand:
-    def __init__(self, list=[], basic_cards=[]):
+    def __init__(self, list=[], basic_cards=[], current_hand=[]):
         #the list of objects is the list of card objects
         self.list = list
         self.basic_cards = basic_cards
         self.completed = False
+        self.current_hand = current_hand
 
     def send_to_graveyard(self):
         pass
@@ -53,14 +54,11 @@ class Hand:
         print(Colours.Colorless)
     
     def find_basics(self):
-        for card in self.list:
+        for card in self.current_hand:
             if card.supertype == 'Pokémon':
                 if 'Basic' in card.subtypes:
-                    self.basic_cards.append(card)
-                else:
-                    continue
-            else:
-                continue
+                    return True
+        
         
     def select_basic(self):
         chosen_pokemon = input("Enter Pokémon's name: ")       

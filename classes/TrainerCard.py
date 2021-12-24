@@ -9,6 +9,7 @@ class TrainerCard(Card):
         self.artist = artist
         self.rarity = rarity
         self.images = images
+        self.local_img = ""
 
     def __str__(self):
         return f"name: {self.name}\ntype: {self.supertype}\nrules: {self.rules}"

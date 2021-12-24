@@ -21,6 +21,7 @@ class PokemonCard(Card):
         self.flavorText = flavorText
         self.nationalPokedexNumbers = nationalPokedexNumbers
         self.images = images
+        self.local_img = ""
 
     def __str__(self):
             return f"name: {self.name}\ntype: {self.supertype}\nstage: {self.subtypes}\nlevel: {self.level}\nhp: {self.hp}\ntype(s): {self.types}\nevolves from: {self.evolvesFrom}\nabilities: {self.abilities}\nattack(s): {self.attacks}\nweaknesses: {self.weaknesses}\nretreat cost: {self.retreatCost} / {self.convertedRetreatCost}\nflavour text: {self.flavorText}\nimage: {self.images}"

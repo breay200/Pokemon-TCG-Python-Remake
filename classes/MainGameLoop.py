@@ -1,3 +1,5 @@
+import urllib.request
+import os.path
 from os import error
 from tkinter.constants import W
 from classes.Bench import Bench
@@ -17,6 +19,8 @@ from classes.Deck_UI import *
 from classes.GameLogic import *
 from classes.User import *
 from misc_functions import *
+from PIL import Image
+
 
 class MainGameLoop:
     def __init__(self, user, networking):
@@ -123,28 +127,37 @@ class MainGameLoop:
             widget.destroy()
 
         self.mgl_frame.destroy()
-
+        self.deck.load_card_data()
         self.deck.shuffle_deck()
+        self.hand = Hand()
+        self.hand.current_hand.extend(self.deck.draw_number_of_cards(7))
+        #self.hand.find_basics()
 
-        self.hand = self.deck.draw_number_of_cards(7)
-        self.obj_list = self.load_card_data(self.hand)
-        self.hand_obj = Hand(self.obj_list)
-        self.hand_obj.find_basics()
-
-        while not self.hand_obj.basic_cards:
-            print("Re-shuffling deck...")
-            self.deck.return_to_deck(self.hand)
+        while not self.hand.find_basics():
+            self.deck.return_to_deck(self.hand.current_hand)
             self.deck.shuffle_deck()
-            self.hand = []
-            self.hand = self.deck.draw_number_of_cards(7)
-            obj_list = []
-            obj_list = self.load_card_data(self.hand)
-            self.hand_obj.list = obj_list
-            self.hand_obj.find_basics()
+            self.hand.current_hand = []
+            self.hand.current_hand.extend(self.deck.draw_number_of_cards(7))
+            #self.hand.find_basics()
 
-        for x in self.hand_obj.list:
-            print(x.name)
-            print(x.images)
+
+        opener=urllib.request.build_opener()
+        opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+        urllib.request.install_opener(opener)
+
+        for card in self.hand.current_hand:
+            print(card.name)
+            if isinstance(card.images, list):
+                for image in card.images:
+                    print(image)
+            elif isinstance(card.images, dict):
+                for key, val in card.images.items():
+                    if key == "large":
+                        if os.path.exists("temp/{x.name}.png"):
+                            pass
+                        else:
+                            urllib.request.urlretrieve(val, f"temp/{card.name}.png")
+                        card.local_img = f"temp/{card.name}.png"
             
         self.gameboard.place()
         
@@ -364,56 +377,7 @@ class MainGameLoop:
     #     else:
     #         return False
 
-    def load_card_data(self, hand):
-        obj_list = []
-        file = open("data/base1.json",encoding='utf-8')
-        data = json.load(file)
-        for card in hand:
-            count = 0
-            for x in data:
-                if card == x['id']:
-                    count += 1
-                    if x['supertype'] == 'Pokémon':
-                        if (x.get('weaknesses')!=None) and (x.get('retreatCost')!=None) and (x.get('evolvesFrom')!=None) and (x.get('abilities')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], x['evolvesFrom'], x['abilities'], x['attacks'], x['weaknesses'], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('weaknesses')!=None) and (x.get('retreatCost')!=None) and (x.get('evolvesFrom')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], x['evolvesFrom'], [], x['attacks'], x['weaknesses'], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('weaknesses')!=None) and (x.get('retreatCost')!=None) and (x.get('abilities')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", x['abilities'], x['attacks'], x['weaknesses'], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('weaknesses')!=None) and (x.get('retreatCost')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", [], x['attacks'], x['weaknesses'], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('weaknesses')!=None) and (x.get('evovlesFrom')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], x['evolvesFrom'], [], x['attacks'], x['weaknesses'], [], 0, x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('weaknesses')!=None) and (x.get('abilities')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", x['abilities'], x['attacks'], x['weaknesses'], [], 0, x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('weaknesses')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", [], x['attacks'], x['weaknesses'], [], 0, x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('retreatCost')!=None) and (x.get('evolvesFrom')!=None) and (x.get('abilities')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], x['evolvesFrom'], x['abilities'], x['attacks'], [], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif  (x.get('retreatCost')!=None) and (x.get('abilities')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", x['abilities'], x['attacks'], [], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('retreatCost')!=None) and (x.get('evolvesFrom')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], x['evolvesFrom'], [], x['attacks'], [], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('retreatCost')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", [], x['attacks'], [], x['retreatCost'], x['convertedRetreatCost'], x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('evolvesFrom')!=None) and (x.get('abilties')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], x['evolvesFrom'], x['abilities'], x['attacks'], [], [], 0, x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('evovlesFrom')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], x['evolvesFrom'], [], x['attacks'], [], [], 0, x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        elif (x.get('abilities')!=None):
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", x['abilities'], x['attacks'], [], [], 0, x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                        else:
-                            new_card = PokemonCard(x['name'], x['supertype'], x['subtypes'], x['level'], x['hp'], x['types'], "", [], x['attacks'], [], [], 0, x['number'], x['artist'], x['rarity'], x['flavorText'],x['nationalPokedexNumbers'], x['images'])
-                    elif x['supertype'] == 'Trainer':
-                        new_card = TrainerCard(x['name'], x['supertype'], x['rules'], x['number'], x['artist'], x['rarity'], x['images'])
-                    elif x['supertype'] == 'Energy':
-                        if (x.get('rules')!=None):
-                            new_card = EnergyCard(x['name'], x['supertype'], x['subtypes'], x['rules'],x['number'], x['artist'], x['rarity'], x['images'])
-                        else:
-                            new_card = EnergyCard(x['name'], x['supertype'], x['subtypes'], x['number'], x['artist'], x['rarity'], x['images'])
-                    obj_list.append(new_card)
-        file.close()
-        return obj_list
+    
         
     def player_turn_loop(self, hand, deck, bench):
         hand.append_to_hand(deck.pop_card())
