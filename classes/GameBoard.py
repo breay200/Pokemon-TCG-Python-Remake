@@ -7,7 +7,8 @@ from PIL import Image, ImageTk
 from tkinter import messagebox
 
 class Gameboard():
-    def __init__(self):
+    def __init__(self, maingameloop):
+        self.maingameloop = maingameloop
         self.width = Config.master.winfo_screenwidth() * 0.8
         self.height = Config.master.winfo_screenheight() * 0.8
 
@@ -20,40 +21,78 @@ class Gameboard():
         self.discard_img = ImageTk.PhotoImage(self.discard_img)
         
         self.player_frame = tk.Frame(Config.master, width=self.width, height=self.height/2, bg="blue")
-        self.prize_frame = tk.Frame(self.player_frame, width=self.width*0.15, height=self.height*0.5)
+        self.prize_frame = tk.Frame(self.player_frame, width=int(self.width*0.15), height=int(self.height*0.5))
         self.active_frame = tk.Frame(self.player_frame, width=int(self.width*0.08), height=int(self.height*0.2))
-        self.bench_frame = tk.Frame(self.player_frame, width=self.width*0.5, height=self.height*0.25, highlightthickness=5, highlightbackground="black")
-        #self.hand_frame = tk.Frame(Config.master, width=(self.width*0.75), height=(self.height/4), bg="black")
+        self.bench_frame = tk.Frame(self.player_frame, width=int(self.width*0.5), height=int(self.height*0.25), highlightthickness=5, highlightbackground="black")
         
         self.discard_btn = tk.Button(self.player_frame, image=self.discard_img, width=(self.width*0.08), height=(self.height*0.2), bg="blue", borderwidth=0, highlightthickness=0)
         self.deck_btn = tk.Button(self.player_frame, image=self.deck_img, width=self.width*0.08, height=self.height*0.2, bg="blue", borderwidth=0, highlightthickness=0, command=self.add_to_bench)
-        #self.deck_btn.bind("<Enter>", func=lambda x=None:self.hover_action())
-        self.deck_btn.bind("<Enter>", func=lambda e: self.hover_action())
-        self.deck_btn.bind("<Leave>", func=lambda e: self.on_hover_leave())
+        
+        #self.deck_btn.bind("<Enter>", func=lambda e: self.hover_action())
+        #self.deck_btn.bind("<Leave>", func=lambda e: self.on_hover_leave())
 
         w = int(self.width*0.015)
         h = int(self.height*0.005)
 
-        #self.view_hand_btn = tk.Button(self.player_frame, width=w, height=h, text="View Hand", command=self.show_hand)
+        self.hand_frame = None
+
+        self.hand_btn = tk.Button(self.player_frame, width=w, height=h, text="View Hand", command=self.show_hand)
 
         self.prize_img_width = int(self.width*0.075)
         self.prize_img_height = int(self.height*0.16666)
         self.prize_img = Image.open("images/pokemon_back.png").resize((self.prize_img_width, self.prize_img_height))
         self.prize_img = ImageTk.PhotoImage(self.prize_img)
 
+        self.hand_widget_list = []
         self.btn_widget_list = []
         self.prize_widget_list = []
+        
+        self.card_images = {}
 
         self.load_prize()
+        self.place()
 
     def place(self):
         self.opponent.place(x=0,y=0)
-        #self.view_hand_btn.place(x=(self.width*0.87), y=(self.height*0.225))
+        self.hand_btn.place(x=(self.width*0.87), y=(self.height*0.225))
         self.prize_frame.place(x=(self.width*0.02), y=0)
         self.bench_frame.place(x=(self.width*0.02+self.width*0.2+self.width*0.03), y=(self.height*0.225))
         self.discard_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.3))
         self.deck_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.04))
         self.player_frame.place(x=0,y=(self.height/2))
+    
+
+    def show_hand(self):
+        if self.hand_frame is None:
+            self.hand_frame = tk.Frame(Config.master, highlightthickness=5, highlightbackground="black")
+            
+            for card in self.maingameloop.hand.current_hand:
+                try:
+                    location = card.local_img
+                    card_img = Image.open(location).resize((int(self.width*0.08), int(self.height*0.2)))
+                    card_img = ImageTk.PhotoImage(card_img)
+                    self.card_images[card.name] = card_img
+                    button = tk.Button(self.hand_frame, image=self.card_images[card.name], width=int((self.width*0.08)), height=int((self.height*0.2)), borderwidth=0, highlightthickness=0)
+                except:
+                    button = tk.Button(self.hand_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
+                self.hand_widget_list.append(button)
+            
+            x_coordinates = 0
+            
+            for x in self.hand_widget_list:
+                if self.hand_widget_list.index(x) == 0:
+                    pass
+                else:
+                    x_coordinates += (self.width*0.015)+(self.width*0.08)
+                x.place(x=x_coordinates, y=0)
+            self.hand_frame.place(x=(self.width*0.125), y=(self.height*0.225), width=int(self.width*0.75), height=int(self.height*0.25))
+            self.player_frame.update()
+        
+        else:
+            for widget in self.hand_frame.winfo_children():
+                widget.destroy()
+            self.hand_frame.destroy()
+            self.hand_frame = None
 
     def hover_action(self):
         print("hello")

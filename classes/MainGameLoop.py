@@ -42,7 +42,6 @@ class MainGameLoop:
 
         self.game_logic = GameLogic(self.user, self.networking)
         self.deck = Deck()
-        self.gameboard = Gameboard()
 
         self.mgl_frame = tk.Frame(Config.master)
         self.mgl_frame.place(x=0,y=0)
@@ -131,14 +130,12 @@ class MainGameLoop:
         self.deck.shuffle_deck()
         self.hand = Hand()
         self.hand.current_hand.extend(self.deck.draw_number_of_cards(7))
-        #self.hand.find_basics()
 
         while not self.hand.find_basics():
             self.deck.return_to_deck(self.hand.current_hand)
             self.deck.shuffle_deck()
             self.hand.current_hand = []
             self.hand.current_hand.extend(self.deck.draw_number_of_cards(7))
-            #self.hand.find_basics()
 
 
         opener=urllib.request.build_opener()
@@ -159,7 +156,7 @@ class MainGameLoop:
                             urllib.request.urlretrieve(val, f"temp/{card.name}.png")
                         card.local_img = f"temp/{card.name}.png"
             
-        self.gameboard.place()
+        gameboard = Gameboard(self)
         
 
             # def set_active_pokemon(basic_card):
