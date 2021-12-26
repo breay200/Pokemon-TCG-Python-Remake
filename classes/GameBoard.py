@@ -46,9 +46,7 @@ class Gameboard():
         self.hand_widget_list = []
         self.btn_widget_list = []
         self.prize_widget_list = []
-        
-        self.card_images = {}
-
+    
         self.load_prize()
         self.place()
 
@@ -63,7 +61,9 @@ class Gameboard():
     
 
     def show_hand(self):
-        if self.hand_frame is None:
+        self.card_images = {}
+        self.hand_widget_list = []
+        if not self.hand_frame:
             self.hand_frame = tk.Frame(Config.master, highlightthickness=5, highlightbackground="black")
             
             for card in self.maingameloop.hand.current_hand:
@@ -86,13 +86,15 @@ class Gameboard():
                     x_coordinates += (self.width*0.015)+(self.width*0.08)
                 x.place(x=x_coordinates, y=0)
             self.hand_frame.place(x=(self.width*0.125), y=(self.height*0.225), width=int(self.width*0.75), height=int(self.height*0.25))
-            self.player_frame.update()
+            self.player_frame.place(x=0,y=(self.height/2))
         
         else:
             for widget in self.hand_frame.winfo_children():
                 widget.destroy()
             self.hand_frame.destroy()
             self.hand_frame = None
+            self.player_frame.place(x=0,y=(self.height/2))
+
 
     def hover_action(self):
         print("hello")
