@@ -35,7 +35,7 @@ class MainGameLoop:
         self.changed_deck = False
 
         # self.hand_obj = object
-        # self.bench = object
+        self.bench = Bench()
         # self.active_pokemon = object
         # self.obj_list = object
         # self.prize = object

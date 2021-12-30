@@ -46,8 +46,9 @@ class Gameboard():
         self.prize_img = ImageTk.PhotoImage(self.prize_img)
 
         self.hand_widget_list = []
-        self.btn_widget_list = []
+        self.bench_widget_list = []
         self.prize_widget_list = []
+        self.bench = {}
     
         self.load_prize()
         self.place()
@@ -76,7 +77,7 @@ class Gameboard():
                     card_img = Image.open(location).resize(((int(self.width*0.08), int(self.height*0.2))))
                     card_img = ImageTk.PhotoImage(card_img)
                     self.card_images[card.name] = card_img
-                    button = tk.Button(self.hand_frame, image=self.card_images[card.name], width=int((self.width*0.08)), height=int((self.height*0.2)), borderwidth=0, highlightthickness=0)
+                    button = tk.Button(self.hand_frame, image=self.card_images[card.name], width=int((self.width*0.08)), height=int((self.height*0.2)), borderwidth=0, highlightthickness=0, command=lambda _: self.add_to_bench(card))
                 except:
                     button = tk.Button(self.hand_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
                 self.widgets_cards[card] = button
@@ -165,20 +166,24 @@ class Gameboard():
         self.active_btn.place(x=0, y=0)
 
 
-    def add_to_bench(self):
-        if len(self.btn_widget_list) < 5:
-            button = tk.Button(self.bench_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=self.make_active)
-            self.btn_widget_list.append(button)
-            x_coordinates = 0
-            for x in self.btn_widget_list:
-                if self.btn_widget_list.index(x) == 0:
-                    pass
-                else:
-                    x_coordinates += (self.width*0.015)+(self.width*0.08)
-                x.place(x=x_coordinates, y=0)
-            self.bench_frame.place(x=(self.width*0.02+self.width*0.2+self.width*0.03), y=self.height*0.225)
-        else:
-            tk.messagebox.showinfo("error", "you cannot add more than 5 cards to the bench")
+    def add_to_bench(self, card):
+        if len(self.maingameloop.bench.bench_data) < 5:
+            button = tk.Button(self.bench_frame, image=card.local_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=self.make_active)
+            data = [button, card]
+            self.maingameloop.bench.add_to_bench(data)
+
+        #     button = tk.Button(self.bench_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=self.make_active)
+        #     self.btn_widget_list.append(button)
+        #     x_coordinates = 0
+        #     for x in self.btn_widget_list:
+        #         if self.btn_widget_list.index(x) == 0:
+        #             pass
+        #         else:
+        #             x_coordinates += (self.width*0.015)+(self.width*0.08)
+        #         x.place(x=x_coordinates, y=0)
+        #     self.bench_frame.place(x=(self.width*0.02+self.width*0.2+self.width*0.03), y=self.height*0.225)
+        # else:
+        #     tk.messagebox.showinfo("error", "you cannot add more than 5 cards to the bench")
 
 
     def load_prize(self):
