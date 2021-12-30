@@ -33,12 +33,14 @@ class Lobby():
         self.address_label = tk.Label(self.lobby_frame, text="Enter the IP Address of the Server: ")
         self.address_label.place(x=0, y=self.height*0.15)
         self.address_entry = tk.Entry(self.lobby_frame, textvariable=self.address)
+        self.address_entry.insert(0, "127.0.0.1")
         self.address_entry.place(x=0, y=self.height*0.2)
 
         self.port = tk.IntVar()
         self.port_label = tk.Label(self.lobby_frame, text="Enter the Port Number of the Server: ")
         self.port_label.place(x=0, y=self.height*0.25)
         self.port_entry = tk.Entry(self.lobby_frame, textvariable=self.port)
+        self.port_entry.insert(0, 65432)
         self.port_entry.place(x=0, y=self.height*0.3)
         
         self.lobby_count_label = tk.Label(self.lobby_frame, text=f"connect to server to see active players")

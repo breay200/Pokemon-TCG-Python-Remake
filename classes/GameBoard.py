@@ -5,6 +5,7 @@ from tkinter.constants import YES
 from tkinter.ttk import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
+import re
 
 class Gameboard():
     def __init__(self, maingameloop):
@@ -34,6 +35,8 @@ class Gameboard():
         h = int(self.height*0.005)
 
         self.hand_frame = None
+        self.expanded_card = None
+        self.expanded_image = None
 
         self.hand_btn = tk.Button(self.player_frame, width=w, height=h, text="View Hand", command=self.show_hand)
 
@@ -63,10 +66,10 @@ class Gameboard():
     def show_hand(self):
         self.widgets_cards = {}
         self.card_images = {}
-        self.hand_widget_list = []
+        self.coordinate_card_repository = {}
+
         if not self.hand_frame:
-            self.hand_frame = tk.Frame(self.entire_screen_frame, highlightthickness=5, highlightbackground="black", width=int(self.width*0.75), height=int(self.height*0.25))
-            
+            self.hand_frame = tk.Frame(self.entire_screen_frame, highlightthickness=5, highlightbackground="black", width=int(self.width*0.75), height=int(self.height*0.25))    
             for card in self.maingameloop.hand.current_hand:
                 try:
                     location = card.local_img
@@ -76,23 +79,28 @@ class Gameboard():
                     button = tk.Button(self.hand_frame, image=self.card_images[card.name], width=int((self.width*0.08)), height=int((self.height*0.2)), borderwidth=0, highlightthickness=0)
                 except:
                     button = tk.Button(self.hand_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
-                print("line 79", card.name)
                 self.widgets_cards[card] = button
             
-            x_coordinates = 0
+            x_coordinate = 0
 
             for card, button in self.widgets_cards.items():
-                print("line 85", card.name)
-                button.bind("<Enter>", lambda event: self.hand_hover_enter(event, card))
+                button.bind("<Enter>", lambda event: self.hand_hover_enter(event, Config.master.winfo_pointerx(), self.hand_frame.winfo_rootx()))
                 button.bind("<Leave>", lambda event: self.hand_hover_leave(event))
                 if list(self.widgets_cards).index(card) == 0:
                     pass
                 else:
-                    x_coordinates += (self.width*0.015)+(self.width*0.08)
-                    button.place(x=x_coordinates, y=0)
+                    x_coordinate += (self.width*0.015)+(self.width*0.08)
+                button.place(x=x_coordinate, y=0)
     
             self.hand_frame.place(x=(self.width*0.125), y=(self.height*0.225))
+            self.hand_frame.update()
             self.entire_screen_frame.update()
+
+            for card, widget in self.widgets_cards.items():
+                width, _, x, _ = re.split(r'[x+]', widget.winfo_geometry())
+                key = [int(x),int(x)+int(width)]
+                key = str(key)
+                self.coordinate_card_repository[key] = card
         
         else:
             for widget in self.hand_frame.winfo_children():
@@ -101,13 +109,26 @@ class Gameboard():
             self.hand_frame = None
             self.entire_screen_frame.update()
     
-    def hand_hover_enter(self, event=None, card=None):
-        print("card name: ", card.name)
-        self.expanded_image = None
-        if card.supertype == "Energy":
+    def hand_hover_enter(self, event=None, widget_x=0, root_x=0):
+        x_coordinate  = widget_x - root_x
+        for key, value in self.coordinate_card_repository.items():
+            try:
+                coords = key
+                coords = coords.replace('[','').replace(']','')
+                min_x, max_x = coords.split(",")
+                min_x = int(min_x)
+                max_x = int(max_x)
+            except Exception as error:
+                print(error)
+            print(x_coordinate, min_x, max_x)
+            if min_x <= x_coordinate <= max_x:
+                self.hover_card = value
+                break
+        print(self.hover_card.name)
+        if self.hover_card.supertype == "Energy":
             location = "images/pokemon_back.png"
         else:
-            location = card.local_img
+            location = self.hover_card.local_img
         expanded_card_width = int(self.width*0.25)
         expanded_card_height = int(self.height*0.75)
         self.expanded_card = tk.Frame(self.entire_screen_frame, width=expanded_card_width, height=expanded_card_height, bg="white", highlightthickness=3, highlightbackground="black")
@@ -119,8 +140,9 @@ class Gameboard():
         self.entire_screen_frame.update()
 
     def hand_hover_leave(self, event=None):
-        self.expanded_card.destroy()
-        self.expanded_image = None
+        if self.expanded_card:
+            self.expanded_card.destroy()
+            self.expanded_image = None
 
     def hover_action(self):
         print("hello")
