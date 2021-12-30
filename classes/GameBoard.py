@@ -12,7 +12,9 @@ class Gameboard():
         self.width = Config.master.winfo_screenwidth() * 0.8
         self.height = Config.master.winfo_screenheight() * 0.8
 
-        self.opponent = tk.Frame(Config.master, width=self.width, height=self.height/2, bg="red")
+        self.entire_screen_frame = tk.Frame(Config.master, width=self.width, height=self.height)
+
+        self.opponent = tk.Frame(self.entire_screen_frame, width=self.width, height=self.height/2, bg="red")
 
         self.deck_img = Image.open("images/pokemon_back.png").resize((int(self.width*0.08), int(self.height*0.2)))
         self.deck_img = ImageTk.PhotoImage(self.deck_img)
@@ -20,16 +22,13 @@ class Gameboard():
         self.discard_img = Image.open("images/card_space.png").resize((int(self.width*0.08), int(self.height*0.2)))
         self.discard_img = ImageTk.PhotoImage(self.discard_img)
         
-        self.player_frame = tk.Frame(Config.master, width=self.width, height=self.height/2, bg="blue")
+        self.player_frame = tk.Frame(self.entire_screen_frame, width=self.width, height=self.height/2, bg="blue")
         self.prize_frame = tk.Frame(self.player_frame, width=int(self.width*0.15), height=int(self.height*0.5))
         self.active_frame = tk.Frame(self.player_frame, width=int(self.width*0.08), height=int(self.height*0.2))
         self.bench_frame = tk.Frame(self.player_frame, width=int(self.width*0.5), height=int(self.height*0.25), highlightthickness=5, highlightbackground="black")
         
         self.discard_btn = tk.Button(self.player_frame, image=self.discard_img, width=(self.width*0.08), height=(self.height*0.2), bg="blue", borderwidth=0, highlightthickness=0)
         self.deck_btn = tk.Button(self.player_frame, image=self.deck_img, width=self.width*0.08, height=self.height*0.2, bg="blue", borderwidth=0, highlightthickness=0, command=self.add_to_bench)
-        
-        #self.deck_btn.bind("<Enter>", func=lambda e: self.hover_action())
-        #self.deck_btn.bind("<Leave>", func=lambda e: self.on_hover_leave())
 
         w = int(self.width*0.015)
         h = int(self.height*0.005)
@@ -58,48 +57,75 @@ class Gameboard():
         self.discard_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.3))
         self.deck_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.04))
         self.player_frame.place(x=0,y=(self.height/2))
-    
+        self.entire_screen_frame.place(x=0,y=0)
+
 
     def show_hand(self):
+        self.widgets_cards = {}
         self.card_images = {}
         self.hand_widget_list = []
         if not self.hand_frame:
-            self.hand_frame = tk.Frame(Config.master, highlightthickness=5, highlightbackground="black")
+            self.hand_frame = tk.Frame(self.entire_screen_frame, highlightthickness=5, highlightbackground="black", width=int(self.width*0.75), height=int(self.height*0.25))
             
             for card in self.maingameloop.hand.current_hand:
                 try:
                     location = card.local_img
-                    card_img = Image.open(location).resize((int(self.width*0.08), int(self.height*0.2)))
+                    card_img = Image.open(location).resize(((int(self.width*0.08), int(self.height*0.2))))
                     card_img = ImageTk.PhotoImage(card_img)
                     self.card_images[card.name] = card_img
                     button = tk.Button(self.hand_frame, image=self.card_images[card.name], width=int((self.width*0.08)), height=int((self.height*0.2)), borderwidth=0, highlightthickness=0)
                 except:
                     button = tk.Button(self.hand_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
-                self.hand_widget_list.append(button)
+                print("line 79", card.name)
+                self.widgets_cards[card] = button
             
             x_coordinates = 0
-            
-            for x in self.hand_widget_list:
-                if self.hand_widget_list.index(x) == 0:
+
+            for card, button in self.widgets_cards.items():
+                print("line 85", card.name)
+                button.bind("<Enter>", lambda event: self.hand_hover_enter(event, card))
+                button.bind("<Leave>", lambda event: self.hand_hover_leave(event))
+                if list(self.widgets_cards).index(card) == 0:
                     pass
                 else:
                     x_coordinates += (self.width*0.015)+(self.width*0.08)
-                x.place(x=x_coordinates, y=0)
-            self.hand_frame.place(x=(self.width*0.125), y=(self.height*0.225), width=int(self.width*0.75), height=int(self.height*0.25))
-            self.player_frame.place(x=0,y=(self.height/2))
+                    button.place(x=x_coordinates, y=0)
+    
+            self.hand_frame.place(x=(self.width*0.125), y=(self.height*0.225))
+            self.entire_screen_frame.update()
         
         else:
             for widget in self.hand_frame.winfo_children():
                 widget.destroy()
             self.hand_frame.destroy()
             self.hand_frame = None
-            self.player_frame.place(x=0,y=(self.height/2))
+            self.entire_screen_frame.update()
+    
+    def hand_hover_enter(self, event=None, card=None):
+        print("card name: ", card.name)
+        self.expanded_image = None
+        if card.supertype == "Energy":
+            location = "images/pokemon_back.png"
+        else:
+            location = card.local_img
+        expanded_card_width = int(self.width*0.25)
+        expanded_card_height = int(self.height*0.75)
+        self.expanded_card = tk.Frame(self.entire_screen_frame, width=expanded_card_width, height=expanded_card_height, bg="white", highlightthickness=3, highlightbackground="black")
+        self.expanded_image = Image.open(location).resize((int(expanded_card_width*0.75), int(expanded_card_height*0.75)))
+        self.expanded_image = ImageTk.PhotoImage(self.expanded_image)
+        label = tk.Label(self.expanded_card, image=self.expanded_image, width=int(expanded_card_width*0.75), height=int(expanded_card_height*0.75), borderwidth=0, highlightthickness=0)
+        label.place(x=int(expanded_card_width*0.125), y=int(expanded_card_height*0.125))
+        self.expanded_card.place(x=int(self.width*0.375), y=int(self.height*0.5))
+        self.entire_screen_frame.update()
 
+    def hand_hover_leave(self, event=None):
+        self.expanded_card.destroy()
+        self.expanded_image = None
 
     def hover_action(self):
         print("hello")
         # print("on enter btn")
-        self.hover_frame = tk.Frame(Config.master, width=int(self.width*0.5), height=int(self.height*0.5), bg="yellow")
+        self.hover_frame = tk.Frame(Config.master, width=int(self.width*0.5), height=int(self.height*0.75), bg="white")
         self.hover_frame.place(x=0, y=0)
         self.player_frame.update()
         # return
