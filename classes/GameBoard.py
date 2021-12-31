@@ -121,11 +121,11 @@ class Gameboard():
                 max_x = int(max_x)
             except Exception as error:
                 print(error)
-            print(x_coordinate, min_x, max_x)
+            # print(x_coordinate, min_x, max_x)
             if min_x <= x_coordinate <= max_x:
                 self.hover_card = value
                 break
-        print(self.hover_card.name)
+        # print(self.hover_card.name)
         if self.hover_card.supertype == "Energy":
             location = "images/pokemon_back.png"
         else:
@@ -171,6 +171,12 @@ class Gameboard():
             button = tk.Button(self.bench_frame, image=card.local_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=self.make_active)
             data = [button, card]
             self.maingameloop.bench.add_to_bench(data)
+            no_benched_pokemon = len(self.maingameloop.bench.bench_data)
+            x_coordinate = ((self.width*0.015)+(self.width*0.08))*no_benched_pokemon
+            self.maingameloop.bench.bench_data[no_benched_pokemon][0].place(x=x_coordinate,y=0)
+            self.bench_frame.place(x=(self.width*0.02+self.width*0.2+self.width*0.03), y=self.height*0.225)
+
+
 
         #     button = tk.Button(self.bench_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=self.make_active)
         #     self.btn_widget_list.append(button)
