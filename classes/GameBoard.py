@@ -45,7 +45,8 @@ class Gameboard():
         self.prize_img_height = int(self.height*0.16666)
         self.prize_img = Image.open("images/pokemon_back.png").resize((self.prize_img_width, self.prize_img_height))
         self.prize_img = ImageTk.PhotoImage(self.prize_img)
-
+        
+        self.card_images = {}
         self.hand_widget_list = []
         self.bench_widget_list = []
         self.prize_widget_list = []
@@ -70,7 +71,6 @@ class Gameboard():
 
     def show_hand(self):
         self.widgets_cards = {}
-        self.card_images = {}
         self.coordinate_card_repository = {}
 
         if not self.hand_frame:
@@ -113,7 +113,7 @@ class Gameboard():
                 button.destroy()
             self.hand_frame.destroy()
             self.hand_frame = None
-            # self.entire_screen_frame.update()
+            self.entire_screen_frame.update()
     
     def hand_hover_enter(self, event=None, widget_x=0, root_x=0):
         x_coordinate  = widget_x - root_x
@@ -146,6 +146,21 @@ class Gameboard():
             self.expanded_card.destroy()
             self.expanded_image = None
 
+    def hover_action(self):
+        print("hello")
+        # print("on enter btn")
+        self.hover_frame = tk.Frame(Config.master, width=int(self.width*0.5), height=int(self.height*0.75), bg="white")
+        self.hover_frame.place(x=0, y=0)
+        self.player_frame.update()
+        # return
+    
+    def on_hover_leave(self):
+        print("goodbye")
+        self.hover_frame.destroy()
+        self.player_frame.update()
+    # def show_hand(self):
+    #     if not self.hand_frame.winfo_ismapped():
+    #         self.hand_frame.place(x=(self.width*0.25), y=(self.height*0.2))
     
     def make_active(self):
         self.active_btn = tk.Button(self.active_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
@@ -168,18 +183,12 @@ class Gameboard():
             if min_x <= x_coordinate <= max_x:
                 card = value
                 break
-        # try:
-        #     print(card.name, card.supertype, self.maingameloop.hand.current_hand.index(card))
-        # except Exception as e:
-        #     print(e)
+
         if self.maingameloop.bench.on_bench < 5:
-            print("len of hand", len(self.maingameloop.hand.current_hand))
-            print(card.name, card.supertype)
             self.maingameloop.hand.current_hand.remove(card)
+            self.hand_hover_leave()
+            self.show_hand()
             benched_pokemon = self.maingameloop.bench.add_to_bench(card)
-            # location = card.local_img
-            # self.card_img = Image.open(location).resize(((int(self.width*0.08), int(self.height*0.2))))
-            # self.card_img = ImageTk.PhotoImage(self.card_img)
             button = tk.Button(self.bench_frame, image=self.card_images[card], width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=self.make_active)
             position = 0
             for pokemon in self.bench:
@@ -198,8 +207,7 @@ class Gameboard():
                 self.bench[3][1][1].place(x=x_coordinate*3, y=0)
             elif position == 5:
                 self.bench[4][1][1].place(x=x_coordinate*4, y=0)
-            #self.bench_frame.place(x=(self.width*0.02+self.width*0.2+self.width*0.03), y=self.height*0.225)
-            self.bench_frame.update()
+            self.bench_frame.place(x=(self.width*0.02+self.width*0.2+self.width*0.03), y=self.height*0.225)
         else:
             tk.messagebox.showinfo("error", "you cannot add more than 5 cards to the bench")
 

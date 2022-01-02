@@ -46,70 +46,20 @@ class MainGameLoop:
         self.mgl_frame = tk.Frame(Config.master)
         self.mgl_frame.place(x=0,y=0)
 
-        if user.active_deck != "":
-            answer = tk.messagebox.askyesno("Deck Selection", f"The currently selected deck is {self.user.active_deck}.\nWould you like to change it?")
-            if answer:
-                chosen_deck = self.deck.change_deck(self.mgl_frame)
-                self.user.active_deck = str(chosen_deck).replace(" ", "")
-        else:
-            tk.messagebox.showinfo("Deck Selection", "You don't have a deck selected.\nPlease choose one for your battle!")
-            chosen_deck = self.deck.change_deck(self.mgl_frame)
-            self.user.active_deck = str(chosen_deck).replace(" ", "")
+        # if user.active_deck != "":
+        #     answer = tk.messagebox.askyesno("Deck Selection", f"The currently selected deck is {self.user.active_deck}.\nWould you like to change it?")
+        #     if answer:
+        #         chosen_deck = self.deck.change_deck(self.mgl_frame)
+        #         self.user.active_deck = str(chosen_deck).replace(" ", "")
+        # else:
+        #     tk.messagebox.showinfo("Deck Selection", "You don't have a deck selected.\nPlease choose one for your battle!")
+        #     chosen_deck = self.deck.change_deck(self.mgl_frame)
+        #     self.user.active_deck = str(chosen_deck).replace(" ", "")
 
         self.deck.active_deck = str(self.user.active_deck).replace(" ", "")
         self.deck.load_deck("data/set1.json")
         self.initiate_game()
         
-        
-
-    
-
-    # #should make a card frame to put cards into
-    #     if not self.completed:
-    #         self.game_logic.rock_paper_scissors(self.mgl_frame)
-    #         self.deck.shuffle_deck()
-    #         self.hand = self.deck.draw_number_of_cards(7)
-    #         self.obj_list = self.load_card_data(self.hand)
-    #         self.hand_obj = Hand(self.obj_list)
-    #         self.hand_obj.find_basics()
-
-    #         while not self.hand_obj.basic_cards:
-    #             message = "Re-shuffling deck..."
-    #             self.block_inner_label.configure(text=message)
-    #             self.block_inner_label.grid(column=0, row=0)
-    #             self.deck.return_to_deck(self.hand)
-    #             self.deck.shuffle_deck()
-    #             self.hand = []
-    #             self.hand = self.deck.draw_number_of_cards(7)
-    #             obj_list = []
-    #             obj_list = self.load_card_data(self.hand)
-    #             self.hand_obj.list = obj_list
-    #             self.hand_obj.find_basics()
-            
-    #         self.active_pokemon = ActivePokemon()
-    #         self.bench = Bench()
-    #         buttons = []
-    #         for basic_card in self.hand_obj.basic_cards: 
-    #             card = tk.Button(self.mgl_frame, text=basic_card.name, width=20, height=70, command= lambda: set_active_pokemon(basic_card))
-    #             buttons.append(card)
-                
-    #         count=0
-    #         for value in buttons:
-    #             value.grid(column=count, row=3)
-    #             count += 1
-
-    #         message = "Please click on the Pokemon you would like to make the Active!"
-    #         self.block_inner_label.configure(text=message)
-    #         self.block_inner_label.grid(column=0, row=0)
-    #     elif not self.added_to_bench:
-    #         add_to_bench()
-    #     elif not self.attached_energy:
-    #         attach_energy()
-    #     else:
-    #         self.prize = Prize()
-    #         self.prize.set_prize_cards(self.deck)
-    #         print("working on it...")
-    #         self.choose_player_order()
 
     def initiate_game(self):
         open('data/received_data.txt', 'w').close()
@@ -136,9 +86,6 @@ class MainGameLoop:
             self.deck.shuffle_deck()
             self.hand.current_hand = []
             self.hand.current_hand.extend(self.deck.draw_number_of_cards(7))
-
-        #this will need to happen every time a card is added to the hand, why not just do this for the whole deck?
-        #self.load_imgs()
             
         gameboard = Gameboard(self)
         
