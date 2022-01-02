@@ -7,12 +7,13 @@ from tkinter.ttk import *
 from PIL import Image, ImageTk
 from tkinter import messagebox
 import re
+from tkinter import font
 
 class Gameboard():
     def __init__(self, maingameloop):
         self.maingameloop = maingameloop
-        self.width = Config.master.winfo_screenwidth() * 0.8
-        self.height = Config.master.winfo_screenheight() * 0.8
+        self.width = Config.master.winfo_screenwidth() * 0.75
+        self.height = Config.master.winfo_screenheight() * 0.75
 
         self.entire_screen_frame = tk.Frame(Config.master, width=self.width, height=self.height)
 
@@ -38,6 +39,7 @@ class Gameboard():
         self.hand_frame = None
         self.expanded_card = None
         self.expanded_image = None
+        self.options_frame = None
 
         self.hand_btn = tk.Button(self.player_frame, width=w, height=h, text="View Hand", command=self.show_hand)
 
@@ -55,6 +57,7 @@ class Gameboard():
         ]
         self.load_prize()
         self.place()
+        Config.master.bind("<Escape>", lambda event: self.options_menu(event))
 
     def place(self):
         self.opponent.place(x=0,y=0)
@@ -65,6 +68,23 @@ class Gameboard():
         self.deck_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.04))
         self.player_frame.place(x=0,y=(self.height/2))
         self.entire_screen_frame.place(x=0,y=0)
+
+    def options_menu(self, event=None):
+        if not self.options_frame:
+            options_width = int(self.width*0.4)
+            options_height = int(self.height*0.6)
+            self.options_frame = tk.Frame(self.entire_screen_frame, width=options_width, height=options_height, bg="white")
+            self.btn_font = font.Font(family="Courier", size=(0 - int(self.height*0.04)), weight="bold")
+            btn_width = int(self.width*0.2)
+            quit_btn = tk.Button(self.options_frame, command=lambda:quit(), text="Quit", bg="red", fg="white", font=self.btn_font)
+            btn_coordinates = [(options_width/2)-(btn_width/2), (options_height*0.2)]
+            quit_btn.place(x=btn_coordinates[0], y=btn_coordinates[1], width=btn_width)
+            self.options_frame.place(x=(self.width/2)-(options_width/2),y=(self.height/2)-(options_height/2))
+        else:
+            for widget in self.options_frame.winfo_children():
+                widget.destroy()
+            self.options_frame.destroy()
+            self.options_frame = None
 
     def not_pokemon_card(self):
         tk.messagebox.showinfo("Error", "You can only add Pokemon cards to the bench")
