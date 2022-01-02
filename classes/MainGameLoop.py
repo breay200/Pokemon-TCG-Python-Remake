@@ -137,24 +137,8 @@ class MainGameLoop:
             self.hand.current_hand = []
             self.hand.current_hand.extend(self.deck.draw_number_of_cards(7))
 
-
-        opener=urllib.request.build_opener()
-        opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
-        urllib.request.install_opener(opener)
-
-        for card in self.hand.current_hand:
-            print(card.name)
-            if isinstance(card.images, list):
-                for image in card.images:
-                    print(image)
-            elif isinstance(card.images, dict):
-                for key, val in card.images.items():
-                    if key == "large":
-                        if os.path.exists("temp/{x.name}.png"):
-                            pass
-                        else:
-                            urllib.request.urlretrieve(val, f"temp/{card.name}.png")
-                        card.local_img = f"temp/{card.name}.png"
+        #this will need to happen every time a card is added to the hand, why not just do this for the whole deck?
+        #self.load_imgs()
             
         gameboard = Gameboard(self)
         
@@ -374,7 +358,38 @@ class MainGameLoop:
     #     else:
     #         return False
 
-    
+    def load_imgs(self):
+        opener=urllib.request.build_opener()
+        opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+        urllib.request.install_opener(opener)
+        for card in self.hand.current_hand:
+            if isinstance(card.images, list):
+                if card.name == "Water Energy":
+                    card.local_img = "images/energies/water.jpg"
+                elif card.name == "Grass Energy":
+                    card.local_img = "images/energies/grass.jpg"
+                elif card.name == "Fire Energy":
+                    card.local_img = "images/energies/fire.jpg"
+                elif card.name == "Lightning Energy":
+                    card.local_img = "images/energies/lightning.jpg"
+                elif card.name == "Fighting Energy":
+                    card.local_img = "images/energies/fighting.jpg"
+                elif card.name == "Psychic Energy":
+                    card.local_img = "images/energies/psychic.jpg"
+                elif card.name == "Metal Energy":
+                    card.local_img = "images/energies/metal.jpg"
+                elif card.name == "Darkness Energy":
+                    card.local_img = "images/energies/darkness.jpg"
+                elif card.name == "Fairy Energy":
+                    card.local_img = "images/energies/fairy.jpg"
+            elif isinstance(card.images, dict):
+                for key, val in card.images.items():
+                    if key == "large":
+                        if os.path.exists("temp/{x.name}.png"):
+                            pass
+                        else:
+                            urllib.request.urlretrieve(val, f"temp/{card.name}.png")
+                        card.local_img = f"temp/{card.name}.png"
         
     def player_turn_loop(self, hand, deck, bench):
         hand.append_to_hand(deck.pop_card())

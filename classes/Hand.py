@@ -85,13 +85,14 @@ class Hand:
                 return
     
 
-    def add_to_bench(self, basic_card, card, bench):
-        benched_pokemon = BenchedPokemon(basic_card, getattr(basic_card, 'hp'), 0)
-        bench.add_to_bench(benched_pokemon)
-        self.remove_basic_card(basic_card)
-        card.destroy()
-        
-
+    # def add_to_bench(self, basic_card, card, bench):
+    #     benched_pokemon = BenchedPokemon(basic_card, getattr(basic_card, 'hp'), 0)
+    #     bench.add_to_bench(benched_pokemon)
+    #     self.remove_basic_card(basic_card)
+    #     card.destroy()
+    
+    def remove_from_hand(self, index):
+        self.current_hand.pop(index)
     def attach_energy_to_active(self, energy, active_pokemon):
         for card in self.list:
             if card.name == energy.name:

@@ -55,6 +55,8 @@ class Lobby():
 
         self.check_opponent_thread = Thread(target = self.check_opponent)
         self.check_opponent_thread.start()
+
+        Config.master.bind("<Return>", lambda event: self.connect_to_server(event))
     
     def check_opponent(self):
         no_opponent = True
@@ -64,8 +66,8 @@ class Lobby():
                 MainGameLoop(self.user, self.networking)
                 no_opponent = False
     
-    def connect_to_server(self):
-        """connect_to_server: gets the variable valyes for address and port, then validates them as string and integer values. A tuple is made containing their values, and this data is passed to the set_server_address() , before calling connect_to_server (from the networking object)"""
+    def connect_to_server(self, event=None):
+        """connect_to_server: gets the variable values for address and port, then validates them as string and integer values. A tuple is made containing their values, and this data is passed to the set_server_address() , before calling connect_to_server (from the networking object)"""
         address = self.address.get()
         port = self.port.get()
         try:
@@ -78,6 +80,8 @@ class Lobby():
         self.networking.set_server_address(server_address)
         self.networking.connect_to_server()
         self.networking.send(f"username: {self.user.username}")
+        self.connect_btn["state"] = "disabled"
+        Config.master.unbind("<Return>")
 
     def refresh_lobby(self):
         """refresh_lobby: when the user presses the refresh button, this method is called."""

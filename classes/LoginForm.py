@@ -66,7 +66,8 @@ class LoginForm(Form):
         self.password_label.place(x=0,y=int(input_frame_height*0.4))
         self.login_password_entry.place(x=0, y=int(input_frame_height*0.5), width=int(self.side_bar_width*0.6), height=int(input_frame_height*0.25))
         
-        
+        Config.master.bind("<Return>", lambda event:self.check_account(event))
+
         self.login_submit_btn.place(x=int(self.side_bar_width*0.7), y=int(self.side_bar_height*0.2625))
         self.login_forgot_btn.place(x=0, y=self.height*0.8)
         self.login_create_btn.place(x=0, y=self.height*0.9)
@@ -75,11 +76,12 @@ class LoginForm(Form):
         self.side_bar_frame.place(x=0, y=0)
         self.login_frame.place(x=0, y=0)
 
-    def check_account(self):
+    def check_account(self, event=None):
         username = self.login_username.get().lower()
         if username:
             if check_in_file("data/passwd.txt", username):
                 if self.login(username):
+                    Config.master.unbind("<Return>")
                     user = User(username)
                     user.load_user_data()
                     self.login_frame.destroy()

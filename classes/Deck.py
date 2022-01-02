@@ -1,6 +1,9 @@
 import json
 import random
 import tkinter as tk
+import urllib.request
+import os.path
+from os import error
 from classes.EnergyCard import *
 from classes.TrainerCard import *
 from classes.PokemonCard import *
@@ -154,3 +157,37 @@ class Deck:
                             new_card = EnergyCard(x['name'], x['supertype'], x['subtypes'], x['number'], x['artist'], x['rarity'], x['images'])
                     self.card_objects.append(new_card)
         file.close()
+        self.load_imgs()
+
+    def load_imgs(self):
+        opener=urllib.request.build_opener()
+        opener.addheaders=[('User-Agent','Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1941.0 Safari/537.36')]
+        urllib.request.install_opener(opener)
+        for card in self.card_objects:
+            if isinstance(card.images, list):
+                if card.name == "Water Energy":
+                    card.local_img = "images/energies/water.jpg"
+                elif card.name == "Grass Energy":
+                    card.local_img = "images/energies/grass.jpg"
+                elif card.name == "Fire Energy":
+                    card.local_img = "images/energies/fire.jpg"
+                elif card.name == "Lightning Energy":
+                    card.local_img = "images/energies/lightning.jpg"
+                elif card.name == "Fighting Energy":
+                    card.local_img = "images/energies/fighting.jpg"
+                elif card.name == "Psychic Energy":
+                    card.local_img = "images/energies/psychic.jpg"
+                elif card.name == "Metal Energy":
+                    card.local_img = "images/energies/metal.jpg"
+                elif card.name == "Darkness Energy":
+                    card.local_img = "images/energies/darkness.jpg"
+                elif card.name == "Fairy Energy":
+                    card.local_img = "images/energies/fairy.jpg"
+            elif isinstance(card.images, dict):
+                for key, val in card.images.items():
+                    if key == "large":
+                        if os.path.exists("temp/{x.name}.png"):
+                            pass
+                        else:
+                            urllib.request.urlretrieve(val, f"temp/{card.name}.png")
+                        card.local_img = f"temp/{card.name}.png"
