@@ -2,6 +2,8 @@ from os import stat
 import tkinter as tk
 from misc_functions import read_file, read_from_received, destroy_widgets
 from threading import Thread
+from classes.config import Config
+
 
 class GameLogic():
     def __init__(self, user, networking) -> None:
@@ -42,7 +44,7 @@ class GameLogic():
 
     def rock_paper_scissors(self, frame, turn):
         """rock_paper_scissors: is called from maingameloop. prompts user to choose one of three buttons. sends data to opponent. waits for opponents data. makes comparison of data."""
-        def send(data):
+        def send(event=None, data=""):
             self.rps_choice = str(data)
             self.rps_choice = self.rps_choice.strip()
             chosen_label.configure(text=f"Your choice: {data}")
@@ -66,6 +68,10 @@ class GameLogic():
         rock = tk.Button(rps_frame, text="rock", command = lambda: send("rock"))
         paper = tk.Button(rps_frame, text="paper", command = lambda: send("paper"))
         scissors = tk.Button(rps_frame, text="scissors", command = lambda: send("scissors"))
+
+        Config.master.bind('1', lambda event: send(event, "rock"))
+        Config.master.bind('2', lambda event: send(event, "paper"))
+        Config.master.bind('3', lambda event: send(event, "scissors"))
 
         rock.grid(column=0, row=2)
         paper.grid(column=1, row=2)
