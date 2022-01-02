@@ -66,6 +66,7 @@ class Gameboard():
         self.bench_frame.place(x=(self.width*0.02+self.width*0.2+self.width*0.03), y=(self.height*0.225))
         self.discard_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.3))
         self.deck_btn.place(x=(self.width*0.02+self.width*0.2+self.width*0.03+self.width*0.5+self.width*0.02), y=(self.height*0.04))
+        self.active_frame.place(x=(self.width*0.46), y=0)
         self.player_frame.place(x=0,y=(self.height/2))
         self.entire_screen_frame.place(x=0,y=0)
 
@@ -166,25 +167,11 @@ class Gameboard():
             self.expanded_card.destroy()
             self.expanded_image = None
 
-    def hover_action(self):
-        print("hello")
-        # print("on enter btn")
-        self.hover_frame = tk.Frame(Config.master, width=int(self.width*0.5), height=int(self.height*0.75), bg="white")
-        self.hover_frame.place(x=0, y=0)
-        self.player_frame.update()
-        # return
     
-    def on_hover_leave(self):
-        print("goodbye")
-        self.hover_frame.destroy()
-        self.player_frame.update()
-    # def show_hand(self):
-    #     if not self.hand_frame.winfo_ismapped():
-    #         self.hand_frame.place(x=(self.width*0.25), y=(self.height*0.2))
-    
-    def make_active(self):
-        self.active_btn = tk.Button(self.active_frame, image=self.deck_img, width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
+    def make_active(self, card):
+        self.active_btn = tk.Button(self.active_frame, image=self.card_images[card], width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0)
         self.active_btn.place(x=0, y=0)
+        self.active_frame.update()
 
 
     def add_to_bench(self, widget_x=0, root_x=0):
@@ -209,7 +196,7 @@ class Gameboard():
             self.hand_hover_leave()
             self.show_hand()
             benched_pokemon = self.maingameloop.bench.add_to_bench(card)
-            button = tk.Button(self.bench_frame, image=self.card_images[card], width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=self.make_active)
+            button = tk.Button(self.bench_frame, image=self.card_images[card], width=(self.width*0.08), height=(self.height*0.2), borderwidth=0, highlightthickness=0, command=lambda:self.make_active(card))
             position = 0
             for pokemon in self.bench:
                 if not pokemon[1]:
