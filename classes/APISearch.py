@@ -24,10 +24,10 @@ class APISearch():
         self.search_frame.place(x=0, y=0)
 
     def destroy(self, event=None):
-        print("destroying")
         for widget in self.search_frame.winfo_children():
             widget.destroy()
         self.search_frame.destroy()
+        Config.master.unbind("<Escape>")
 
     def search(self):
         name = self.query.get().lower()

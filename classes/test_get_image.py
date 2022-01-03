@@ -1,39 +1,28 @@
-# import tkinter as tk
-# import re
+import tkinter as tk
+import time
 
-# def get_coords_on_enter(a, b, c, d):
-#     coords = (a-c, b-d)
-#     print(coords)
+master = tk.Tk()
+width = int(master.winfo_screenwidth() * 0.75)
+height = int(master.winfo_screenheight() * 0.75)
+master.geometry(f"{width}x{height}")
+master.title("TCG REMAKE")
 
-# def get_btn_dimensions(geo, a, b, c, d, wid, height):
-#     print(geo)
-#     coords = (a-c, b-d)
-#     print(coords)
-#     print(wid, height)
+canvas = tk.Canvas(master, width=width, height=height)
+canvas.place(x=0,y=0)
 
-# def split_geo(geo):
-#     print(geo)
-#     width, height, x, y = re.split(r'[x+]', geo)
-#     print(width, height, x, y)
+rec = canvas.create_rectangle(0, 0, 30, 30, fill="red")
+def test(event=None, x=0):
+    x += 12
+    canvas.move(rec, x, 0)
+    if x == 400:
+        print("done")
+    else:
+        canvas.after(16, test)
 
+x = 0
+master.bind("<Return>", lambda event: test(event, x))
+# canvas.after(1000, lambda: canvas.move(rec, 0, 400))
+# #canvas.move(rec, 400, 400)
+master.mainloop()
 
-# master = tk.Tk()
-# width = int(master.winfo_screenwidth() * 0.75)
-# height = int(master.winfo_screenheight() * 0.75)
-# master.geometry(f"{width}x{height}")
-# master.title("TCG REMAKE")
-# button1=tk.Button(master, text="hello")
-# button2=tk.Button(master, text="hello2")
-# buttons = [button1, button2]
-# for btn in buttons:
-#     #print(buttons.index(btn))
-#     # if buttons.index(btn) == 0:
-#         #btn.bind("<Enter>", lambda event: get_coords_on_enter(master.winfo_pointerx(), master.winfo_pointery(), master.winfo_rootx(), master.winfo_rooty()))
-#         #btn.bind("<Enter>", lambda event: get_btn_dimensions(button2.winfo_geometry(), button2.winfo_rootx(), button2.winfo_rooty(), master.winfo_rootx(), master.winfo_rooty(), button2.winfo_width(), button2.winfo_height()))
-#     btn.bind("<Enter>", lambda event: split_geo(button2.winfo_geometry()))
-#     btn.grid()
-# # master.update()
-# master.mainloop()
-
-name = "brandon"
 
