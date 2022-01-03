@@ -3,10 +3,12 @@ from classes.Lobby import Lobby
 from classes.MainGameLoop import MainGameLoop
 from classes.User import *
 from classes.config import *
+from classes.APISearch import *
 import tkinter as tk
 from classes.Lobby import *
 from tkinter import font
 from PIL import Image, ImageTk
+
 
 class MainMenu():
     def __init__(self, user):
@@ -66,7 +68,7 @@ class MainMenu():
             self.view_profile_frame = None
 
     def search_cards(self):
-        print("search cards")
+        api_search = APISearch()
 
     def quit(self):
         Config.master.destroy()
