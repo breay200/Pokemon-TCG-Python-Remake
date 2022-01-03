@@ -66,7 +66,7 @@ class MainGameLoop:
         winner = ""
         turn = 1
         while True:
-            winner = self.game_logic.rock_paper_scissors(self.mgl_frame, turn)
+            winner = self.game_logic.rock_paper_scissors(turn)
             turn += 1
             if winner:
                 break

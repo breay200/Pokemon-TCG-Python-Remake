@@ -58,6 +58,7 @@ class Gameboard():
         self.load_prize()
         self.place()
         Config.master.bind("<Escape>", lambda event: self.options_menu(event))
+        Config.master.bind("h", lambda event: self.show_hand(event))
 
     def place(self):
         self.opponent.place(x=0,y=0)
@@ -90,7 +91,7 @@ class Gameboard():
     def not_pokemon_card(self):
         tk.messagebox.showinfo("Error", "You can only add Pokemon cards to the bench")
 
-    def show_hand(self):
+    def show_hand(self, event=None):
         self.widgets_cards = {}
         self.coordinate_card_repository = {}
 

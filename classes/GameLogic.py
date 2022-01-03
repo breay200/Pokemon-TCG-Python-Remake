@@ -3,6 +3,9 @@ import tkinter as tk
 from misc_functions import read_file, read_from_received, destroy_widgets
 from threading import Thread
 from classes.config import Config
+import re
+from PIL import Image, ImageTk
+from tkinter import font
 
 
 class GameLogic():
@@ -42,42 +45,52 @@ class GameLogic():
                 return "first"
 
 
-    def rock_paper_scissors(self, frame, turn):
+    def rock_paper_scissors(self, turn):
         """rock_paper_scissors: is called from maingameloop. prompts user to choose one of three buttons. sends data to opponent. waits for opponents data. makes comparison of data."""
         def send(event=None, data=""):
             self.rps_choice = str(data)
             self.rps_choice = self.rps_choice.strip()
-            chosen_label.configure(text=f"Your choice: {data}")
-            chosen_label.grid(column=0, row=1)
             self.networking.send(f"{self.user.username}: {turn},{data}")
             rock.configure(state=tk.DISABLED)
             paper.configure(state=tk.DISABLED)
             scissors.configure(state=tk.DISABLED)
-            #rock.grid(column=0, row=2)
-            #paper.grid(column=1, row=2)
-            #scissors.grid(column=2, row=2)
 
-        rps_frame = tk.Frame(frame)
+        width, height, _, _ = re.split(r'[x+]', Config.master.winfo_geometry())
+        rps_width = int(width)
+        rps_height = int(height)
+        rps_frame = tk.Frame(Config.master, width=rps_width, height=rps_height)
 
-        chosen_label = tk.Label(rps_frame)
-        chosen_label.grid(column=0, row=1)
+        font_height = 0 - int(rps_height*0.04)
+        txt_label_font = font.Font(family="Courier", size=font_height, weight="bold", underline=1)
+        text_label = tk.Label(rps_frame, text="Choose Rock, Paper, or Scissors", font=txt_label_font)
+        text_label.place(x=0, y=0)
+        
+        btn_dimensions = (int(rps_width*0.05), int(rps_height*0.1))
+        # btn_width = int(rps_width*0.05)
+        # btn_height = int(rps_height*0.1)
 
-        opponent_label = tk.Label(rps_frame)
-        opponent_label.grid(column=1, row=1)
+        self.rock_img = Image.open("images/rock.png").resize(btn_dimensions)
+        self.rock_img = ImageTk.PhotoImage(self.rock_img)
 
-        rock = tk.Button(rps_frame, text="rock", command = lambda: send("rock"))
-        paper = tk.Button(rps_frame, text="paper", command = lambda: send("paper"))
-        scissors = tk.Button(rps_frame, text="scissors", command = lambda: send("scissors"))
+        self.paper_img =  Image.open("images/paper.png").resize(btn_dimensions)
+        self.paper_img = ImageTk.PhotoImage(self.paper_img)
+
+        self.scissors_img =  Image.open("images/scissors.png").resize(btn_dimensions)
+        self.scissors_img = ImageTk.PhotoImage(self.scissors_img)
+
+        rock = tk.Button(rps_frame, command = lambda: send("rock"), image=self.rock_img)
+        paper = tk.Button(rps_frame, command = lambda: send("paper"), image=self.paper_img)
+        scissors = tk.Button(rps_frame, command = lambda: send("scissors"), image=self.scissors_img)
 
         Config.master.bind('1', lambda event: send(event, "rock"))
         Config.master.bind('2', lambda event: send(event, "paper"))
         Config.master.bind('3', lambda event: send(event, "scissors"))
 
-        rock.grid(column=0, row=2)
-        paper.grid(column=1, row=2)
-        scissors.grid(column=2, row=2)
+        rock.place(x=(rps_width/2), y=rps_height*0.1, width=btn_dimensions[0], height=btn_dimensions[1])
+        paper.place(x=(rps_width/2), y=rps_height*0.3, width=btn_dimensions[0], height=btn_dimensions[1])
+        scissors.place(x=(rps_width/2), y=rps_height*0.5, width=btn_dimensions[0], height=btn_dimensions[1])
 
-        rps_frame.grid(column=0,row=0)
+        rps_frame.place(x=0, y=0)
         
         infile= f"{self.networking.opponent}: {turn}"
         file_data = read_from_received(infile)
@@ -88,9 +101,6 @@ class GameLogic():
         opponent_choice = str(opponent_choice)
         opponent_choice = opponent_choice.strip()
         
-        #opponent_label.configure(text=f"{self.networking.opponent} chose {opponent_choice}")
-        #opponent_label.grid(column=1, row=1)
-
         winner = ""
 
         while True:

@@ -1,2 +1,2 @@
 corrie: 1,rock
-brandon: 1,paper
+brandon: 1,scissors

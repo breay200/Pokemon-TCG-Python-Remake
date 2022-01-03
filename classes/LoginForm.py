@@ -1,5 +1,4 @@
 from os import execl
-from tkinter.font import Font
 from typing import Text
 from classes.AccountCreator import *
 from classes.Form import *
@@ -30,7 +29,6 @@ class LoginForm(Form):
         font_height = 0 - int(self.side_bar_height*0.04)
         txt_label_font = font.Font(family="Courier", size=font_height, weight="bold", underline=1)
         self.txt_label = tk.Label(self.side_bar_frame, text="Sign into your account", fg="white", bg="red", font=txt_label_font)
-
 
         input_frame_height = int(self.side_bar_height*0.3)
         self.input_frame = tk.Frame(self.login_frame, width=self.side_bar_width, height=input_frame_height, bg="red")
