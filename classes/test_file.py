@@ -5,30 +5,26 @@ from tkinter.constants import NUMERIC
 
 from PIL import Image, ImageTk
 
-master = tk.Tk()
-width = int(master.winfo_screenwidth() * 0.75)
-height = int(master.winfo_screenheight() * 0.75)
-master.geometry(f"{width}x{height}")
-master.title("TCG REMAKE")
+#master = tk.Tk()
+# width = int(master.winfo_screenwidth() * 0.75)
+# height = int(master.winfo_screenheight() * 0.75)
+#master.geometry(f"{width}x{height}")
+#master.title("TCG REMAKE")
 
 ##WORDS THAT APPEAR AS IF THEY ARE BEING TYPED CODE --
-# root = tk.Tk()
-# canvas = tk.Canvas(root)
-# canvas.pack()
-
 # canvas_text = canvas.create_text(10, 10, text='', anchor=tk.NW)
 
-# test_string = "This is a test"
-# #Time delay between chars, in milliseconds
-# delta = 500 
+# test_string = "Pikachu used lightning bolt! It did 30 damage!"
+# # #Time delay between chars, in milliseconds
+# #change the first value (milliseconds for how long you want it to take the text to appear)
+# delta = int(1000/len(test_string))
 # delay = 0
-# for i in range(len(test_string) + 1):
+# for i in range(0, len(test_string)+1):
 #     s = test_string[:i]
 #     update_text = lambda s=s: canvas.itemconfigure(canvas_text, text=s)
 #     canvas.after(delay, update_text)
 #     delay += delta
 
-# root.mainloop()
 
 ###END
 
@@ -135,6 +131,6 @@ master.title("TCG REMAKE")
 # master.bind("<Return>", lambda event: test(event, marker))
 # canvas.after(1000, lambda: canvas.move(rec, 0, 400))
 # #canvas.move(rec, 400, 400)
-master.mainloop()
+#master.mainloop()
 
 
