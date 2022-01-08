@@ -44,8 +44,8 @@ canvas.place(x=0,y=0)
 #                     coords_list.append(tup[index])
 #         canvas.create_polygon(coords_list, fill="red")
 
-max_health = 60
-current_health = 40
+max_health = random.randint(0, 100)
+current_health = random.randint(0, max_health)
 ratio = current_health/max_health
 max_x = int(100 * ratio)
 green = [(0, 0), (max_x, 0), (max_x, 30), (0, 30)]
