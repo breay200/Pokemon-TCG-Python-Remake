@@ -1,6 +1,9 @@
 import tkinter as tk
 import time
 import random
+from tkinter.constants import NUMERIC
+
+from PIL import Image, ImageTk
 
 master = tk.Tk()
 width = int(master.winfo_screenwidth() * 0.75)
@@ -52,6 +55,21 @@ green = [(0, 0), (max_x, 0), (max_x, 30), (0, 30)]
 red = [(max_x, 0), (100, 0), (100, 30), (max_x, 30)]
 canvas.create_polygon(green, fill="green")
 canvas.create_polygon(red, fill="red")
+
+burn_marker = Image.open("images/burn_marker.png").resize((50, 50))
+burn_marker = ImageTk.PhotoImage(burn_marker)
+label = tk.Label(canvas, image=burn_marker, width=50, height=50, bg="black")
+label.place(x=0, y=200)
+
+
+#CANVAS CAN CREATE ELEMENTS
+# # Load the .gif image file.
+# gif1 = tk.PhotoImage(file='small_globe.gif')
+
+# # Put gif image on canvas.
+# # Pic's upper-left corner (NW) on the canvas is at x=50 y=10.
+# canvas.create_image(50, 10, image=gif1, anchor=NW)
+
 
 
 # for index in range (0, len(points[digits[digit]])):
