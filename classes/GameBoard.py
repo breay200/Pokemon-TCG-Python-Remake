@@ -17,7 +17,7 @@ class Gameboard():
 
         self.entire_screen_frame = tk.Frame(Config.master, width=self.width, height=self.height)
 
-        self.opponent = tk.Frame(self.entire_screen_frame, width=self.width, height=self.height/2, bg="red")
+        self.opponent = tk.Frame(self.entire_screen_frame, width=self.width, height=self.height/2, bg="#DCFCF6")
 
         self.deck_img = Image.open("images/pokemon_back.png").resize((int(self.width*0.08), int(self.height*0.2)))
         self.deck_img = ImageTk.PhotoImage(self.deck_img)
@@ -25,7 +25,7 @@ class Gameboard():
         self.discard_img = Image.open("images/card_space.png").resize((int(self.width*0.08), int(self.height*0.2)))
         self.discard_img = ImageTk.PhotoImage(self.discard_img)
         
-        self.player_frame = tk.Frame(self.entire_screen_frame, width=self.width, height=self.height/2, bg="blue")
+        self.player_frame = tk.Frame(self.entire_screen_frame, width=self.width, height=self.height/2, bg="#FFDDF1")
         self.prize_frame = tk.Frame(self.player_frame, width=int(self.width*0.15), height=int(self.height*0.5))
         self.active_frame = tk.Frame(self.player_frame, width=int(self.width*0.08), height=int(self.height*0.2))
         self.bench_frame = tk.Frame(self.player_frame, width=int(self.width*0.5), height=int(self.height*0.25), highlightthickness=5, highlightbackground="black")

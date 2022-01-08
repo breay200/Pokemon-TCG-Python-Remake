@@ -11,8 +11,29 @@ height = int(master.winfo_screenheight() * 0.75)
 master.geometry(f"{width}x{height}")
 master.title("TCG REMAKE")
 
-canvas = tk.Canvas(master, width=width, height=height)
-canvas.place(x=0,y=0)
+##WORDS THAT APPEAR AS IF THEY ARE BEING TYPED CODE --
+# root = tk.Tk()
+# canvas = tk.Canvas(root)
+# canvas.pack()
+
+# canvas_text = canvas.create_text(10, 10, text='', anchor=tk.NW)
+
+# test_string = "This is a test"
+# #Time delay between chars, in milliseconds
+# delta = 500 
+# delay = 0
+# for i in range(len(test_string) + 1):
+#     s = test_string[:i]
+#     update_text = lambda s=s: canvas.itemconfigure(canvas_text, text=s)
+#     canvas.after(delay, update_text)
+#     delay += delta
+
+# root.mainloop()
+
+###END
+
+# canvas = tk.Canvas(master, width=width, height=height)
+# canvas.place(x=0,y=0)
 
 # points = {
 #     0: [(0, 0), (100, 0), (100, 150), (0, 150), (30, 120), (70, 120), (70, 30), (30, 30), (30, 120), (0, 150)],
@@ -47,20 +68,39 @@ canvas.place(x=0,y=0)
 #                     coords_list.append(tup[index])
 #         canvas.create_polygon(coords_list, fill="red")
 
-max_health = random.randint(0, 100)
-current_health = random.randint(0, max_health)
-ratio = current_health/max_health
-max_x = int(100 * ratio)
-green = [(0, 0), (max_x, 0), (max_x, 30), (0, 30)]
-red = [(max_x, 0), (100, 0), (100, 30), (max_x, 30)]
-canvas.create_polygon(green, fill="green")
-canvas.create_polygon(red, fill="red")
+# max_health = random.randint(0, 100)
+# current_health = random.randint(0, max_health)
+# ratio = current_health/max_health
+# max_x = int(100 * ratio)
+# green = [(0, 0), (max_x, 0), (max_x, 30), (0, 30)]
+# red = [(max_x, 0), (100, 0), (100, 30), (max_x, 30)]
+# canvas.create_polygon(green, fill="green")
+# canvas.create_polygon(red, fill="red")
 
-burn_marker = Image.open("images/burn_marker.png").resize((50, 50))
-burn_marker = ImageTk.PhotoImage(burn_marker)
-label = tk.Label(canvas, image=burn_marker, width=50, height=50, bg="black")
-label.place(x=0, y=200)
+# burn_marker = Image.open("images/burn_marker.png").resize((50, 50))
+# burn_marker = ImageTk.PhotoImage(burn_marker)
+# # label = tk.Label(canvas, image=burn_marker, width=50, height=50, bg="black")
+# # label.place(x=0, y=200)
+# marker = canvas.create_image(50, 200, image=burn_marker)
+# #canvas.move(marker, 200, 200)
 
+# print(canvas.type(marker))
+
+# label = tk.Label(canvas, width=200, height=200, bg="#FFDFF1")
+# label.place(x=0, y=300)
+
+# turn = {
+#     "Place": "Unlimited",
+#     "Evolve": "Unlimited",
+#     "Attach": False, #once per turn
+#     "Trainer": "Unlimited",
+#     "Supporter": False, #once per turn
+#     "Stadium": False,  #once per turn
+#     "Retreat": False,  #once per turn
+#     "Abilities": "Unlimited",
+#     "Attack": False, #last action before ending turn
+
+# }
 
 #CANVAS CAN CREATE ELEMENTS
 # # Load the .gif image file.
@@ -78,10 +118,13 @@ label.place(x=0, y=200)
 #         points[digits[digit]][index] += (110*digit)
 # rec = canvas.create_rectangle(0, 0, 100, 100, fill="red")
 
-# def test(event=None, x=0):
+# def test(event=None, canvas_item=None):
 #     x = 12
-#     canvas.move(rec, x, 0)
-#     x1, y1, x2, x2 = canvas.coords(rec)
+#     canvas.move(canvas_item, x, 0)
+#     try:
+#         x1, y1, x2, x2 = canvas.coords(canvas_item)
+#     except:
+#         x1, y1  = canvas.coords(canvas_item)
 #     if x1 >= 400:
 #         print("done")
 #         master.unbind("<Return>")
@@ -89,7 +132,7 @@ label.place(x=0, y=200)
 #         canvas.after(16, test)
 
 # x = 0
-#master.bind("<Return>", lambda event: test(event))
+# master.bind("<Return>", lambda event: test(event, marker))
 # canvas.after(1000, lambda: canvas.move(rec, 0, 400))
 # #canvas.move(rec, 400, 400)
 master.mainloop()

@@ -1,0 +1,10 @@
+shake hands
+shuffle
+draw 7
+check for basic 
+opponent can draw card for each time a player reshuffles
+put one pokemon as active FACE DOWN
+put up to 5 on bench FACE DOWN
+set 6 prize cards
+flip coin to decide who goes first
+flip pokemon to FACE UPr
