@@ -1,4 +1,5 @@
 from ctypes import WINFUNCTYPE
+from http.client import PRECONDITION_FAILED
 from classes.Lobby import Lobby
 from classes.MainGameLoop import MainGameLoop
 from classes.User import *
@@ -28,27 +29,30 @@ class MainMenu():
         self.btn_font = font.Font(family="Courier", size=(0 - int(self.height*0.04)), weight="bold")
         btn_width = int(self.width*0.4)
         btn_x_coordinate = ((self.width/2)-btn_width)
-        btn_y_coordinates = [(self.height*0.3), (self.height*0.4), (self.height*0.5), (self.height*0.6), (self.height*0.7)]
+        btn_y_coordinates = [(self.height*0.25), (self.height*0.35), (self.height*0.45), (self.height*0.55), (self.height*0.65), (self.height*0.75)]
 
         self.lobby_btn = tk.Button(self.main_menu_frame, text="JOIN ONLINE LOBBY", command=self.go_to_lobby, bg="red", fg="white", font=self.btn_font)
         self.lobby_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[0], width=btn_width)
 
+        self.offline_btn = tk.Button(self.main_menu_frame, text="OFFLINE MODE", bg="red", fg="white", font=self.btn_font)
+        self.offline_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[1], width=btn_width)
+
         self.deck_btn = tk.Button(self.main_menu_frame, text="VIEW / EDIT DECKS", command=self.view_decks, bg="red", fg="white", font=self.btn_font)
-        self.deck_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[1], width=btn_width)
+        self.deck_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[2], width=btn_width)
 
         self.search_btn = tk.Button(self.main_menu_frame, text="SEARCH THE CARD DATABASE", command=self.search_cards, bg="red", fg="white", font=self.btn_font)
-        self.search_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[2], width=btn_width)
+        self.search_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[3], width=btn_width)
 
-        self.profile_img = Image.open("images/406.png").resize((int(self.width*0.10), int(self.height*0.16)))
-        self.profile_img = ImageTk.PhotoImage(self.profile_img)
+        self.profile_img = Image.open("images/649.gif").resize((int(self.width*0.10), int(self.height*0.16)))
+        self.profile_img = ImageTk.PhotoImage(self.profile_img, format="gif -index 2")
         self.view_profile = tk.Button(self.main_menu_frame, text="VIEW PROFILE", command=self.view_profile, image=self.profile_img, highlightthickness=2, highlightbackground = "red")
         self.view_profile.place(x=self.width*0.89, y=self.height*0.02, width=self.width*0.10, height=self.height*0.16)
 
         self.settings_btn = tk.Button(self.main_menu_frame, text="SETTINGS", command=self.settings, bg="red", fg="white", font=self.btn_font)
-        self.settings_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[3], width=btn_width)
+        self.settings_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[4], width=btn_width)
 
         self.quit_btn = tk.Button(self.main_menu_frame, text="QUIT", command=self.quit, bg="red", fg="white", font=self.btn_font)
-        self.quit_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[4], width=btn_width)
+        self.quit_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[5], width=btn_width)
 
         self.main_menu_frame.place(x=0,y=0)
 
@@ -61,8 +65,27 @@ class MainMenu():
     
     def view_profile(self):
         if self.view_profile_frame is None:
-            self.view_profile_frame = tk.Frame(self.main_menu_frame, width=int(self.width*0.8), height=int(self.height*0.5), bg="red") 
+            profile_frame_width = int(self.width*0.8)
+            profile_frame_height = int(self.height*0.5)
+            self.view_profile_frame = tk.Frame(self.main_menu_frame, width = profile_frame_width,  height = profile_frame_height, bg="red") 
             self.view_profile_frame.place(x=self.width*0.1, y=self.height*0.3)
+            
+            self.profile_label = tk.Label(self.view_profile_frame, text="Account Information", fg="white", bg="red")
+            self.profile_label.place(x=profile_frame_width*0.4, y=profile_frame_height*0.05)
+
+            #Change Avatar Option
+            self.change_avatar_label = tk.Label(self.view_profile_frame, text="Change Avatar: ")
+            self.change_avatar_label.place(x=profile_frame_width*0.05, y=profile_frame_height*0.1)
+
+            avatar_width = int(profile_frame_width*0.05)
+            avatar_height = int(profile_frame_height*0.15)
+            
+            self.avatar_img = Image.open("images/406.png").resize((avatar_width, avatar_height))
+            self.avatar_img = ImageTk.PhotoImage(self.avatar_img)
+            
+            self.avatar_icon = tk.Button(self.view_profile_frame, image=self.profile_img, width=avatar_width, height=avatar_height)
+            self.avatar_icon.place(x=profile_frame_width*0.2, y=profile_frame_height*0.1)
+
         else:
             self.view_profile_frame.destroy()
             self.view_profile_frame = None

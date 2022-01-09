@@ -5,11 +5,15 @@ from tkinter.constants import NUMERIC
 
 from PIL import Image, ImageTk
 
-#master = tk.Tk()
-# width = int(master.winfo_screenwidth() * 0.75)
-# height = int(master.winfo_screenheight() * 0.75)
-#master.geometry(f"{width}x{height}")
-#master.title("TCG REMAKE")
+master = tk.Tk()
+width = int(master.winfo_screenwidth() * 0.75)
+height = int(master.winfo_screenheight() * 0.75)
+master.geometry(f"{width}x{height}")
+master.title("TCG REMAKE")
+
+canvas = tk.Canvas(master, width=width, height=height)
+canvas.place(x=0,y=0)
+
 
 ##WORDS THAT APPEAR AS IF THEY ARE BEING TYPED CODE --
 # canvas_text = canvas.create_text(10, 10, text='', anchor=tk.NW)
