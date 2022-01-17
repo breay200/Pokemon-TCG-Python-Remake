@@ -1,40 +1,41 @@
 from tkinter import *
 import time
 import os
-root = Tk()
+from PIL import Image, ImageSequence
 
-# EXTRACTION OF IMAGES FROM GIF INTO TEMP
+class Sprites():
+    def __init__(self) -> None:
+        pass
 
-# location = "images/001.gif"
-# location1 = "images/649.gif"
+    def extract_images(profile_img):
+        location = profile_img
+        img = Image.open(location)
+        print(img.n_frames)
+        counter = 0
+        for frame in ImageSequence.Iterator(img):
+            print(counter)
+            frame.save(f"temp/avatar{counter}.png")
+            counter += 1
 
-# img = Image.open(location)
-# print(img.n_frames)
-# counter = 0
-# for frame in ImageSequence.Iterator(img):
-#     print(counter)
-#     frame.save(f"images/temp/{counter}.png")
-#     counter += 1
 
+    # def play_gif(self):
+    #     def update(ind):
+    #         frame = frames[ind]
+    #         ind += 1
+    #         if ind == frameCnt:
+    #             ind = 0
+    #         label.configure(image=frame)
+    #         root.after(delta, update, ind)
+
+    #     frameCnt = len(os.listdir(dir))
+    #     frames = [PhotoImage(file=f'images/temp/{i}.png') for i in range(frameCnt)]
+    #     delta = int(3000/frameCnt)
+    #     label = Label(root)
+    #     label.pack()
+    #     update(0)
+    #     root.mainloop()
 
 ## ITERATING THROUGH IMAGES IN FOLDER AND UPDATING THE ELEMENT
-
-frameCnt = 99
-frames = [PhotoImage(file=f'images/temp/{i}.png') for i in range(frameCnt)]
-delta = int(3000/99)
-def update(ind):
-
-    frame = frames[ind]
-    ind += 1
-    if ind == frameCnt:
-        ind = 0
-    label.configure(image=frame)
-    root.after(delta, update, ind)
-label = Label(root)
-label.pack()
-update(0)
-root.mainloop()
-
 
 # ## SETTING THE ICON OF TKINTER ROOT
 
