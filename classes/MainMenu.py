@@ -43,7 +43,7 @@ class MainMenu():
         self.search_btn = tk.Button(self.main_menu_frame, text="SEARCH THE CARD DATABASE", command=self.search_cards, bg="red", fg="white", font=self.btn_font)
         self.search_btn.place(x=btn_x_coordinate, y=btn_y_coordinates[3], width=btn_width)
 
-        self.profile_img = Image.open("images/649.gif").resize((int(self.width*0.10), int(self.height*0.16)))
+        self.profile_img = Image.open("images/406.png").resize((int(self.width*0.10), int(self.height*0.16)))
         self.profile_img = ImageTk.PhotoImage(self.profile_img, format="gif -index 2")
         self.view_profile = tk.Button(self.main_menu_frame, text="VIEW PROFILE", command=self.view_profile, image=self.profile_img, highlightthickness=2, highlightbackground = "red")
         self.view_profile.place(x=self.width*0.89, y=self.height*0.02, width=self.width*0.10, height=self.height*0.16)
